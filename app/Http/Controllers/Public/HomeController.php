@@ -26,4 +26,34 @@ class HomeController extends Controller
     {
         return view('public.home');
     }
+
+    public function aboutUs()
+    {
+        return view('public.about-us');
+    }
+
+    public function services()
+    {
+        return view('public.services');
+    }
+
+    public function booking()
+    {
+        return view('public.booking');
+    }
+
+    public function pricing()
+    {
+        return view('public.pricing');
+    }
+
+    public function faq()
+    {
+        return view('public.faq');
+    }
+
+    public function contact()
+    {
+        return view('public.contact');
+    }
 }

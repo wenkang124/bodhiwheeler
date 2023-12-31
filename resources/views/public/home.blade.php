@@ -7,13 +7,12 @@
             <div class="row justify-content-between">
                 <div class="col-xl-7 col-lg-7 col-md-6">
                     <div class="banner-txt">
-                        <h4>BUSINESS CONSULTING</h4>
-                        <h1>Fastest Way to Achieve Your Business <span>Goal</span></h1>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered
-                            alteration in some form, by injected humour.</p>
+                        <h4>Accessible Wheelchair Transport</h4>
+                        <h1>Secure & Reliable Journeys with <span><b>BodhiWheeler</b></span></h1>
+                        <p>Enjoy worry-free wheelchair-friendly transport, your dedicated partner for accessible and reliable journeys.</p>
                         <div class="btn-box">
-                            <a href="service.html" class="left-btn">Our Services</a>
-                            <a href="contact.html" class="right-btn">Contact Us</a>
+                            <a href="service.html" class="left-btn">Explore Our Services</a>
+                            <a href="contact.html" class="right-btn">Get In Touch</a>
                         </div>
                     </div>
                 </div>

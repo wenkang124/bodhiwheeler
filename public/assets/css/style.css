@@ -265,6 +265,10 @@ span {
   background: #D01D1D;
 }
 
+.whatsapp {
+    margin-bottom: 5px;
+}
+
 /*########## section style ##########*/
 .header {
   position: relative;
@@ -321,7 +325,7 @@ span {
           box-shadow: 0px 5px 5px 0px rgba(51, 51, 51, 0.3);
 }
 .header .bottom-header {
-  background: #F6F6F6;
+  background: #5C636E;
   position: relative;
   z-index: 2;
 }
@@ -378,7 +382,7 @@ span {
   left: 86%;
   width: 47%;
   height: 35%;
-  background: #F6F6F6;
+  background: #5C636E;
   border-radius: 0 0 0 24px;
   z-index: -1;
 }
@@ -408,7 +412,7 @@ span {
   width: 100%;
   -webkit-transform: skew(30deg);
           transform: skew(30deg);
-  background: #F6F6F6;
+  background: #5C636E;
   border-radius: 0 14px 0 0;
   z-index: -1;
 }
@@ -493,7 +497,8 @@ span {
   -webkit-transition: all 0.4s ease-in;
   transition: all 0.4s ease-in;
 }
-.header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link:hover, .header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link:focus {
+.header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link:hover, .header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link:focus,
+.header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link.active {
   color: #E7B03C;
 }
 .header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link:hover:after, .header .bottom-header .bg .bg-2 .bg-3 .navbar .navbar-nav .nav-item .nav-link:focus:after {
@@ -919,6 +924,7 @@ span {
   background: url(../images/banner-img.png) center center no-repeat;
   background-size: cover;
   z-index: -1;
+  opacity:0.5;
 }
 .banner .banner-txt {
   padding: 220px 0;
@@ -2519,8 +2525,7 @@ span {
 
 .footer {
   padding-top: 115px;
-  background: url(../images/footer-bg.jpg) center center no-repeat;
-  background-size: cover;
+  background-color: #5C636E;
 }
 .footer.footer-inner {
   padding: 0;
@@ -6191,7 +6196,7 @@ span {
     width: 240px;
   }
 
-  /*============================================= 
+  /*=============================================
   sections those are only in home page two
   =============================================*/
   .feature .single-box .part-txt h3 {
@@ -6231,7 +6236,7 @@ span {
     margin-bottom: 9px;
   }
 
-  /*============================================= 
+  /*=============================================
           inner pages responsive style
   =============================================*/
   /* breadcrumb section for all inner page */
@@ -6670,7 +6675,7 @@ span {
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .bottom-right {
@@ -6855,7 +6860,7 @@ span {
   }
 
   .header-2 .bottom-header .bg .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header-2 .bottom-header .bg .bottom-right {
@@ -7652,7 +7657,7 @@ span {
     font-size: 12px;
   }
 
-  /*============================================= 
+  /*=============================================
   sections those are only in home page two
   =============================================*/
   .faq {
@@ -7740,7 +7745,7 @@ span {
     font-size: 14px;
   }
 
-  /*============================================= 
+  /*=============================================
           inner pages responsive style
   =============================================*/
   /* breadcrumb section for all inner page */
@@ -9050,7 +9055,7 @@ span {
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .bottom-right {
@@ -9243,7 +9248,7 @@ span {
   }
 
   .header-2 .bottom-header .bg .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header-2 .bottom-header .bg .bottom-right {
@@ -10059,7 +10064,7 @@ span {
     font-size: 12px;
   }
 
-  /*============================================= 
+  /*=============================================
   sections those are only in home page two
   =============================================*/
   .faq {
@@ -10147,7 +10152,7 @@ span {
     font-size: 14px;
   }
 
-  /*============================================= 
+  /*=============================================
           inner pages responsive style
   =============================================*/
   /* breadcrumb section for all inner page */
@@ -11533,7 +11538,7 @@ span {
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .bottom-right {
@@ -11726,7 +11731,7 @@ span {
   }
 
   .header-2 .bottom-header .bg .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header-2 .bottom-header .bg .bottom-right {
@@ -12571,7 +12576,7 @@ span {
     font-size: 12px;
   }
 
-  /*============================================= 
+  /*=============================================
   sections those are only in home page two
   =============================================*/
   .faq {
@@ -12664,7 +12669,7 @@ span {
     font-size: 14px;
   }
 
-  /*============================================= 
+  /*=============================================
           inner pages responsive style
   =============================================*/
   /* breadcrumb section for all inner page */
@@ -14092,7 +14097,7 @@ span {
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header .bottom-header .bg .bg-2 .bg-3 .bottom-right {
@@ -14289,7 +14294,7 @@ span {
   }
 
   .header-2 .bottom-header .bg .logo img {
-    width: 40px;
+    width: 80px;
   }
 
   .header-2 .bottom-header .bg .bottom-right {
@@ -15152,7 +15157,7 @@ span {
     font-size: 12px;
   }
 
-  /*============================================= 
+  /*=============================================
   sections those are only in home page two
   =============================================*/
   .faq {
@@ -15240,7 +15245,7 @@ span {
     font-size: 14px;
   }
 
-  /*============================================= 
+  /*=============================================
           inner pages responsive style
   =============================================*/
   /* breadcrumb section for all inner page */
