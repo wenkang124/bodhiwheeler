@@ -2,39 +2,42 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
+
+    @env(['staging','local'])
+    <meta name="robots" content="noindex, nofollow">
+    @endenv
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler</title>
-	<meta name="description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!">
-
+    {{-- <title>Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler</title>
+    <meta name="description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"> --}}
     <meta name="keywords" content="cheap wheelchair transport, wheelchair taxi, wheelchair transport service Singapore" />
-    <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler"/>
-    <meta property="og:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"/>
-    <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler"/>
-    <meta name="facebook:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"/>
-    <meta property="og:site_name" content="Bodhiwheeler Wheelchair Transport"/>
-
+    <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta property="og:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta name="facebook:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta property="og:site_name" content="Bodhiwheeler Wheelchair Transport" />
     <meta name="classification" content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Bicycle Transport, Charter Service" />
-
-	<meta name="distribution" content="Global" />
-	<meta name="generator" content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
-	<meta name="rating" content="General" />
-	<meta name="robots" content="INDEX,follow" />
-	<meta name="revisit-after" content="7 days" />
-	<meta name="rating" content="general"/>
-	<meta name="googlebot" content="index, follow"/>
-	<meta name="creator" content="bodhiwheeler.com" />
-	<meta name="publisher" content="Bodhiwheeler (www.bodhiwheeler.com)" />
-	<meta name="author" content="Bodhiwheeler">
+    <meta name="distribution" content="Global" />
+    <meta name="generator" content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
+    <meta name="rating" content="General" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="creator" content="bodhiwheeler.com" />
+    <meta name="publisher" content="Bodhiwheeler (www.bodhiwheeler.com)" />
+    <meta name="author" content="Bodhiwheeler">
     <meta name="email" content="bodhiwheelers@gmail.com" />
-	<meta name="expire" content="2050-01-01" />
-	  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<meta name="document-classification" content="Wheelchair Transport" />
-	<meta name="document-type" content="Public" />
+    <meta name="expire" content="2050-01-01" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="document-classification" content="Wheelchair Transport" />
+    <meta name="document-type" content="Public" />
+    @stack('meta')
+
 
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicons/apple-icon-57x57.png').'?v=1' }}">

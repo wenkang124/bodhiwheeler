@@ -1,5 +1,7 @@
 @extends('public.layouts.index')
-
+@push('meta')
+<title>Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler</title>
+@endpush
 @section('content')
     <!-- banner begin -->
     <div class="banner">
