@@ -1541,6 +1541,7 @@ span {
   color: #E7B03C;
 }
 .process {
+  background: #FFE9A9;
   padding-top: 120px;
   padding-bottom: 60px;
 }
@@ -1592,7 +1593,6 @@ span {
 .process .single-box .part-icon {
   width: 64px;
   height: 64px;
-  background: #0D0925;
   border-radius: 8px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1946,6 +1946,10 @@ span {
   font-weight: 400;
   margin-left: 12px;
 }
+.pricing .tab-pane .single-box .part-txt {
+   width: 100%;
+  }
+
 .pricing .tab-pane .single-box .part-txt h3 {
   font-size: 20px;
   line-height: 100%;
@@ -1974,6 +1978,23 @@ span {
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-item .description {
+    font-size: 16px !important;
+    line-height: 30px !important;
+    color: #4b4b46 !important;
+    margin-left: 20px;
+}
+
+.list-item .price {
+    font-weight: 800; 
+}
+
 .pricing .tab-pane .single-box .part-btn {
   position: absolute;
   bottom: -20px;
@@ -7355,6 +7376,12 @@ span {
     margin-right: 10px;
   }
 
+  .list-item .description {
+    font-size: 14px !important;
+    line-height: 25px !important;
+    margin-left: 20px;
+  }
+
   .pricing .tab-pane .single-box .part-btn {
     right: 25px;
   }
@@ -9739,6 +9766,12 @@ span {
   .pricing .tab-pane .single-box .part-txt ul li span {
     font-size: 10px;
     margin-right: 10px;
+  }
+
+  .list-item .description {
+    font-size: 14px !important;
+    line-height: 25px !important;
+    margin-left: 10px;
   }
 
   .pricing .tab-pane .single-box .part-btn {
@@ -12246,6 +12279,12 @@ span {
   .pricing .tab-pane .single-box .part-txt ul li span {
     font-size: 10px;
     margin-right: 10px;
+  }
+
+  .list-item .description {
+    font-size: 14px !important;
+    line-height: 25px !important;
+    margin-left: 10px;
   }
 
   .pricing .tab-pane .single-box .part-btn {
@@ -14815,6 +14854,12 @@ span {
   .pricing .tab-pane .single-box .part-txt ul li span {
     font-size: 10px;
     margin-right: 10px;
+  }
+
+  .list-item .description {
+    font-size: 14px !important;
+    line-height: 25px !important;
+    margin-left: 10px;
   }
 
   .pricing .tab-pane .single-box .part-btn {
