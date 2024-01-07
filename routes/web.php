@@ -24,4 +24,9 @@ Route::get('/services', [HomeController::class, 'services'])->name('services');
 Route::get('/booking', [HomeController::class, 'booking'])->name('booking');
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
-Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
+
+Route::group(['prefix' => 'contact', 'as' => 'contact'], function () {
+    Route::get('/', [HomeController::class, 'contact']);
+    Route::post('/submit-contact', [HomeController::class, 'submitContact']);
+});
+// Route::get('/contact', [HomeController::class, 'contact'])->name('contact');

@@ -103,8 +103,45 @@
     <script src="assets/js/popper.min.js"></script>
     <!-- bootstrap -->
     <script src="assets/js/bootstrap.min.js"></script>
+    <!-- recaptcha -->
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <!-- custom js -->
     <script src="assets/js/main.js"></script>
+    <!-- sweetalert -->
+    <script type="text/javascript" src="{{asset('plugins/sweetalert/sweetalert2@9.js')}}"></script>
+
+
+    @if(Session::has('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully',
+            text: '{{Session::get('success')}}',
+            width: 600,
+            padding: '3em',
+            color: '#ffffff',
+            confirmButtonColor: '#c09869',
+            background: '#000000bf',
+        });
+    </script>
+    @endif
+
+    @if(Session::has('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{Session::get('error')}}',
+            width: 600,
+            padding: '3em',
+            color: '#ffffff',
+            confirmButtonColor: '#c09869',
+            background: '#000000bf',
+        });
+    </script>
+    @endif
+
+    @stack('scripts')
 </body>
 
 </html>
