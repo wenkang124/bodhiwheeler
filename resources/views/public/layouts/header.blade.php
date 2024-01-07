@@ -90,10 +90,6 @@
                             <div class="col-xl-2 col-lg-2 col-4">
                                 <div class="bottom-right">
                                     <a href="#" class="follow"></a>
-                                    <form class="nav-form">
-                                        <input type="search" placeholder="Search......" required>
-                                        <button><i class="flaticon-magnifying-glass-search"></i></button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

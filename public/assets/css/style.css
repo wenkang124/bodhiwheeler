@@ -217,9 +217,11 @@ span {
   text-align: center;
   margin-bottom: 70px;
 }
+
 .heading.heading-2 h5, .heading.heading-2 h2 {
-  color: #fff;
-}
+    color: #fff;
+  }
+
 .heading h5 {
   font-size: 18px;
   line-height: 100%;
@@ -1518,6 +1520,10 @@ span {
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
+.service-2 .part-txt .boxes .single-box .part-icon img {
+  width: 50px;
+  height: 50px;
+}
 .service-2 .part-txt .boxes .single-box .txt {
   width: 470px;
 }
@@ -1708,15 +1714,23 @@ span {
   padding: 0 15px;
 }
 .process-2 .no-gutters .single-box .part-icon {
-  width: 90px;
-  height: 90px;
-  background: #fff;
-  border-radius: 50%;
-  text-align: center;
-  margin-bottom: 40px;
-  position: relative;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+    width: 90px;
+    height: 90px;
+    background: #fff;
+    border-radius: 50%;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+}
+.process-2 .no-gutters .single-box .part-icon img {
+      width: 60px;
+      height: 60px;
+      margin: 0; /* Remove margin */
 }
 .process-2 .no-gutters .single-box .part-icon .icon {
   font-size: 35px;
@@ -1793,7 +1807,6 @@ span {
 
 .pricing {
   padding-top: 60px;
-  padding-bottom: 120px;
 }
 .pricing.pricing-inner {
   padding-bottom: 0;
@@ -1981,7 +1994,7 @@ span {
 .list-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
 }
 
 .list-item .description {
@@ -1992,7 +2005,7 @@ span {
 }
 
 .list-item .price {
-    font-weight: 800; 
+    font-weight: 800;
 }
 
 .pricing .tab-pane .single-box .part-btn {
@@ -3245,8 +3258,6 @@ span {
   padding: 0;
   margin: 0;
   border-radius: 0;
-  background: url(../images/default-breadcrumb.jpg) center center no-repeat;
-  background-size: cover;
   position: relative;
   z-index: 2;
 }
@@ -3258,7 +3269,7 @@ span {
   width: 100%;
   height: 100%;
   background: #0D0925;
-  opacity: 0.85;
+  opacity: 0.5;
   z-index: -1;
 }
 .breadcrumb.about-breadcrumb {
@@ -3273,18 +3284,18 @@ span {
   background: url(../images/team-breadcrumb.jpg) center center no-repeat;
   background-size: cover;
 }
-.breadcrumb.error-breadcrumb {
-  background: url(../images/error-breadcrumb.jpg) center center no-repeat;
-  background-size: cover;
-}
 .breadcrumb.faq-breadcrumb {
   background: url(../images/faq-breadcrumb.jpg) center center no-repeat;
   background-size: cover;
 }
-.breadcrumb.portfolio-breadcrumb {
-  background: url(../images/portfolio-breadcrumb.jpg) center center no-repeat;
+.breadcrumb.booking-breadcrumb {
+  background: url(../images/booking-breadcrumb.jpg) center center no-repeat;
   background-size: cover;
 }
+.breadcrumb.pricing-breadcrumb {
+    background: url(../images/pricing-breadcrumb.jpg) center center no-repeat;
+    background-size: cover;
+  }
 .breadcrumb.blog-breadcrumb {
   background: url(../images/blog-breadcrumb.jpg) center center no-repeat;
   background-size: cover;
@@ -3371,9 +3382,13 @@ span {
           box-shadow: 0px 0px 20px -5px rgba(51, 51, 51, 0.5);
   margin-right: 20px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .choosing-reason .part-txt .boxes .single-box .img img {
-  border-radius: 50%;
+  width: 65px;
+  height: 65px;
 }
 .choosing-reason .part-txt .boxes .single-box .img span {
   position: absolute;
@@ -3418,7 +3433,7 @@ span {
   width: 100%;
   height: 100%;
   background: #0D0925;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: 1;
 }
 .choosing-reason .part-img .video {
@@ -3513,7 +3528,8 @@ span {
   }
 }
 .service-details {
-  padding-top: 120px;
+  padding-top: 60px;
+  padding-bottom: 40px;
 }
 .service-details .main-content .part-img {
   border-radius: 10px;
@@ -3658,12 +3674,29 @@ span {
   color: #4b4b46;
   margin-bottom: -8px;
 }
+.service-details .sidebar{
+  max-height: 400px;
+  overflow-y: auto;
+}
+.service-details .sidebar::-webkit-scrollbar {
+    width: 12px;
+}
+.service-details .sidebar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+}
+.service-details .sidebar::-webkit-scrollbar-track {
+  background-color: #f5f5f5; /* Set the color of the scrollbar track */
+}
 .service-details .sidebar .side-nav {
-  padding: 30px;
+  padding-top:0;
+  padding-bottom:0;
+  padding-left:10px;
+  padding-right:10px;
   -webkit-box-shadow: 0px 0px 20px rgba(51, 51, 51, 0.1);
           box-shadow: 0px 0px 20px rgba(51, 51, 51, 0.1);
   border-radius: 10px;
-  margin-bottom: 50px;
+  margin-bottom: 0;
 }
 .service-details .sidebar .side-nav .nav .nav-link {
   height: 60px;
@@ -5939,6 +5972,7 @@ span {
 
 .error {
   padding-top: 120px;
+  padding-bottom: 120px;
 }
 .error .boxes {
   display: -webkit-box;
@@ -5987,6 +6021,33 @@ span {
   line-height: 100%;
   color: #4b4b46;
   margin-bottom: 55px;
+}
+.call-back-whatsapp {
+    width: 60px;
+    height: 60px;
+}
+
+#videoModal {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+#videoModal .modal-body {
+    background-color: #000;
+}
+
+#videoModal .close {
+    color: #fff;
+    opacity: 1;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #E7B03C;
+}
+.nav-tabs .nav-link {
+    color: #000;
+}
+.nav-tabs .nav-link:hover {
+    color: #E7B03C;
 }
 
 /*########## 31. responsive layout for all page ##########*/
@@ -7986,7 +8047,7 @@ span {
   .service-details .main-content .part-txt h2 {
     font-size: 20px;
     line-height: 30px;
-    margin-top: -7px;
+    margin-top: 20px;
     margin-bottom: 15px;
   }
 
@@ -10407,7 +10468,7 @@ span {
   .service-details .main-content .part-txt h2 {
     font-size: 20px;
     line-height: 30px;
-    margin-top: -7px;
+    margin-top: 20px;
     margin-bottom: 15px;
   }
 
@@ -12931,7 +12992,7 @@ span {
   .service-details .main-content .part-txt h2 {
     font-size: 20px;
     line-height: 30px;
-    margin-top: -7px;
+    margin-top: 20px;
     margin-bottom: 15px;
   }
 
@@ -13374,6 +13435,7 @@ span {
   /* error page responsive */
   .error {
     padding-top: 60px;
+    padding-bottom: 60px;
   }
 
   .error .boxes {
@@ -15538,7 +15600,7 @@ span {
   .service-details .main-content .part-txt h2 {
     font-size: 20px;
     line-height: 30px;
-    margin-top: -7px;
+    margin-top: 20px;
     margin-bottom: 15px;
   }
 
@@ -15599,8 +15661,11 @@ span {
   }
 
   .service-details .sidebar .side-nav {
-    padding: 25px;
-    margin-bottom: 40px;
+    padding-top:0;
+    padding-bottom:0;
+    padding-left:10px;
+    padding-right:10px;
+    margin-bottom: 0;
   }
 
   .service-details .sidebar .side-nav .nav .nav-link {

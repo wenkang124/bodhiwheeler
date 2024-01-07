@@ -31,7 +31,7 @@
                 $(".nav-form").removeClass("active");
             }
         });
-        
+
         // ========== language selection menu for home page two ==========
         $('#demo').flagStrap({
             countries: {
@@ -108,14 +108,14 @@
             arrows: false,
             cssEase: 'linear'
         });
-        $('.carousel-prev').click(function(){ 
+        $('.carousel-prev').click(function(){
             $(this).parents('.testimonial').find('.client-slider.slick-slider').slick('slickPrev');
         } );
         $('.carousel-next').click(function(e){
-            e.preventDefault(); 
+            e.preventDefault();
             $(this).parents('.testimonial').find('.client-slider.slick-slider').slick('slickNext');
         });
-        
+
         // ========== blog slider for home page one ===========
         $('.blog-slider').owlCarousel({
             loop: true,
@@ -148,7 +148,7 @@
                 }
             }
         });
-        
+
         // ========== project slider for home page two ===========
         $('.project-slider').owlCarousel({
             loop: true,
@@ -187,8 +187,8 @@
 
         //========== video popup ===========
         $("#video, .video-btn").videoPopup();
-        
-        
+
+
         // ========== testimonial slider for testimonial page ===========
         $('.testimonial-slider').owlCarousel({
             loop: true,
@@ -248,7 +248,16 @@
             }
         });
 
+        $('#videoLink').on('click', function(e) {
+            e.preventDefault();
+            var videoSrc = 'assets/videos/about-us.mp4';
+            $('#videoModal iframe').attr('src', videoSrc + '?autoplay=1');
+            $('#videoModal').modal('show');
+        });
 
+        $('#videoModal').on('hidden.bs.modal', function (e) {
+            $("#videoModal iframe").attr("src", "");
+        });
 
 
         // var testimonialSlider = $('.comment-slider-2');
@@ -291,7 +300,7 @@
         // $('.owl-prev').on('click', function() {
         //     testimonialSlider.trigger('prev.owl.carousel', [300]);
         // })
-        
+
         // ========== main image slider one project details page ===========
         // $('.project-details-slider').owlCarousel({
         //     items: 1,
