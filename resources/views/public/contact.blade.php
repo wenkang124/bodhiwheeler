@@ -60,7 +60,7 @@
 
         <h1 class="text-center">Leave a message </h1>
 
-        <form id="contact-form" class="form" action="{{route('contact')}}" method="POST">
+        <form id="contact-form" class="form" action="{{route('contact.submit-contact')}}" method="POST">
             @csrf
             <div class="row justify-content-center">
                 <div class="col-xl-5 col-lg-5 col-md-6">
@@ -96,9 +96,7 @@
 
 @push('scripts')
 <script>
-    console.log('contact page loaded');
     function onSubmit(token) {
-        console.log(token);
         if(document.getElementById("contact-form").reportValidity()){
             $('button.g-recaptcha').replaceWith(' <i class="fa fa-spinner fa-spin" aria-hidden="true"></i>');
             document.getElementById("contact-form").submit();

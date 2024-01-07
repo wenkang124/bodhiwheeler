@@ -27,6 +27,6 @@ Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
 Route::group(['prefix' => 'contact', 'as' => 'contact'], function () {
     Route::get('/', [HomeController::class, 'contact']);
-    Route::post('/submit-contact', [HomeController::class, 'submitContact']);
+    Route::post('/submit-contact', [HomeController::class, 'submitContact'])->name('.submit-contact');
 });
 // Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
