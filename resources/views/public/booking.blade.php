@@ -21,15 +21,15 @@
     <div class="contact">
         <div class="container">
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
-                <li class="nav-item">
+                <li class="nav-item col">
                     <a class="nav-link active" id="oneWayTab" data-toggle="tab" href="#oneWayForm" role="tab"
                         aria-controls="oneWayForm" aria-selected="true">One Way</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item col">
                     <a class="nav-link" id="returnTab" data-toggle="tab" href="#returnForm" role="tab"
                         aria-controls="returnForm" aria-selected="false">Return</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item col">
                     <a class="nav-link" id="charterTab" data-toggle="tab" href="#charterForm" role="tab"
                         aria-controls="charterForm" aria-selected="false">Charter</a>
                 </li>
@@ -37,7 +37,7 @@
 
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="oneWayForm" role="tabpanel" aria-labelledby="nameTab">
-                    <form class="form">
+                    <form class="form booking-form">
                         <div class="row justify-content-center">
                             <div class="col-xl-5 col-lg-5 col-md-6">
                                 <input type="text" placeholder="Name*" required>
@@ -74,7 +74,7 @@
                     </form>
                 </div>
                 <div class="tab-pane fade" id="returnForm" role="tabpanel" aria-labelledby="returnTab">
-                    <form class="form">
+                    <form class="form booking-form">
                         <div class="row justify-content-center">
                             <div class="col-xl-5 col-lg-5 col-md-6">
                                 <input type="text" placeholder="Name*" required>
@@ -114,7 +114,7 @@
                     </form>
                 </div>
                 <div class="tab-pane fade" id="charterForm" role="tabpanel" aria-labelledby="charterTab">
-                    <form class="form">
+                    <form class="form booking-form">
                         <div class="row justify-content-center">
                             <div class="col-xl-5 col-lg-5 col-md-6">
                                 <input type="text" placeholder="Name*" required>
