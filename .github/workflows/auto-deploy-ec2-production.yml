@@ -1,0 +1,18 @@
+name: Auto Deploy to OMI EC2 - Production
+on:
+  push:
+    branches:
+      - main
+jobs:
+  Deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH Setup
+        uses: appleboy/ssh-action@master
+        with:
+          host: 13.251.163.103
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/${{ github.event.repository.name }}
+            git pull
