@@ -10,7 +10,7 @@ jobs:
       - name: SSH Setup
         uses: appleboy/ssh-action@master
         with:
-          host: 13.251.163.103
+          host: 13.213.88.188
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
