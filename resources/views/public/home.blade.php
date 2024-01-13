@@ -24,6 +24,38 @@
     </div>
     <!-- banner end -->
 
+   <!-- partner begin -->
+<div class="partner">
+    <div class="container">
+        <div class="bg">
+            <div class="brand-slider owl-carousel">
+                @for ($i = 1; $i <= 8; $i++)
+                    <div class="single-img" data-toggle="modal" data-target="#partnerModal" data-image-number="{{ $i }}">
+                        <img src="assets/images/partner-{{ $i }}.jpg" alt="logo">
+                    </div>
+                @endfor
+            </div>
+        </div>
+    </div>
+</div>
+<!-- partner end -->
+
+<!-- Image Modal -->
+<div class="modal fade" id="partnerModal" tabindex="-1" role="dialog" aria-labelledby="partnerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered justify-content-center">
+        <div class="modal-content border-0 w-auto">
+            <div class="modal-body p-0">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <img class="modal-image" width="400px" height="600px" alt="logo">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Image Modal end -->
+
+
     <!-- about begin -->
     @include('public.components.about', ['showReadMore' => true])
     <!-- about end -->
@@ -103,3 +135,15 @@
     @include('public.components.call-back')
     <!-- call back end -->
 @endsection
+
+@push('scripts')
+    <script>
+        $('#partnerModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var imageNumber = button.data('image-number');
+        var imageUrl = 'assets/images/partner-' + imageNumber + '.jpg';
+        var modal = $(this);
+        modal.find('.modal-image').attr('src', imageUrl);
+    });
+    </script>
+@endpush

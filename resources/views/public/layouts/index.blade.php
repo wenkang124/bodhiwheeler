@@ -3,7 +3,7 @@
 
 <head>
 
-    @env(['staging','local'])
+    @env(['staging', 'local'])
     <meta name="robots" content="noindex, nofollow">
     @endenv
 
@@ -16,14 +16,20 @@
     {{-- <title>Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler</title>
     <meta name="description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"> --}}
     <meta name="keywords" content="cheap wheelchair transport, wheelchair taxi, wheelchair transport service Singapore" />
-    <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
-    <meta property="og:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
-    <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
-    <meta name="facebook:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta property="og:title"
+        content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta property="og:description"
+        content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta name="facebook:title"
+        content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta name="facebook:description"
+        content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
     <meta property="og:site_name" content="Bodhiwheeler Wheelchair Transport" />
-    <meta name="classification" content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Bicycle Transport, Charter Service" />
+    <meta name="classification"
+        content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Bicycle Transport, Charter Service" />
     <meta name="distribution" content="Global" />
-    <meta name="generator" content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
+    <meta name="generator"
+        content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
     <meta name="rating" content="General" />
     <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="general" />
@@ -39,7 +45,7 @@
     @stack('meta')
 
 
-    <!-- favicon -->
+   <!-- favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicons/apple-icon-57x57.png').'?v=1' }}">
     <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('assets/favicons/apple-icon-60x60.png').'?v=1' }}">
     <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('assets/favicons/apple-icon-72x72.png').'?v=1' }}">
@@ -55,19 +61,19 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicons/android-chrome-192x192.png').'?v=1' }}">
 
     <!-- animate css old -->
-    <link rel="stylesheet" href="assets/css/animate-2.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/animate-2.css') }}">
     <!-- flaticon -->
-    <link rel="stylesheet" href="assets/flaticon/flaticon.css">
+    <link rel="stylesheet" href="{{ asset('assets/flaticon/flaticon.css') }}">
     <!-- odometer -->
-    <link rel="stylesheet" href="assets/css/odometer.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/odometer.min.css') }}">
     <!-- owl carousel -->
-    <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
     <!-- slick slider -->
-    <link rel="stylesheet" href="assets/css/slick.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/slick.css') }}">
     <!-- bootstrap -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <!-- custom stylesheet -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 
 <body>
@@ -86,59 +92,59 @@
 
 
     <!-- jquery -->
-    <script src="assets/js/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
     <!-- flagstrap -->
-    <script src="assets/js/jquery.flagstrap.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.flagstrap.min.js') }}"></script>
     <!-- appear js -->
-    <script src="assets/js/jquery.appear.min.js"></script>
+    <script src="{{ asset('assets/js/jquery.appear.min.js') }}"></script>
     <!-- odometer -->
-    <script src="assets/js/odometer.min.js"></script>
+    <script src="{{ asset('assets/js/odometer.min.js') }}"></script>
     <!-- owl carousel -->
-    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="{{ asset('assets/js/owl.carousel.min.js') }}"></script>
     <!-- slick slider -->
-    <script src="assets/js/slick.min.js"></script>
+    <script src="{{ asset('assets/js/slick.min.js') }}"></script>
     <!-- video popup -->
-    <script src="assets/js/video.popup.js"></script>
+    <script src="{{ asset('assets/js/video.popup.js') }}"></script>
     <!-- popper js -->
-    <script src="assets/js/popper.min.js"></script>
+    <script src="{{ asset('assets/js/popper.min.js') }}"></script>
     <!-- bootstrap -->
-    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <!-- recaptcha -->
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <!-- custom js -->
-    <script src="assets/js/main.js"></script>
+    <script src="{{ asset('assets/js/main.js') }}"></script>
     <!-- sweetalert -->
-    <script type="text/javascript" src="{{asset('plugins/sweetalert/sweetalert2@9.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert2@9.js') }}"></script>
 
 
-    @if(Session::has('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Successfully',
-            text: '{{Session::get('success')}}',
-            width: 600,
-            padding: '3em',
-            color: '#ffffff',
-            confirmButtonColor: '#c09869',
-            background: '#000000bf',
-        });
-    </script>
+    @if (Session::has('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Successfully',
+                text: '{{ Session::get('success') }}',
+                width: 600,
+                padding: '3em',
+                color: '#ffffff',
+                confirmButtonColor: '#c09869',
+                background: '#000000bf',
+            });
+        </script>
     @endif
 
-    @if(Session::has('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: '{{Session::get('error')}}',
-            width: 600,
-            padding: '3em',
-            color: '#ffffff',
-            confirmButtonColor: '#c09869',
-            background: '#000000bf',
-        });
-    </script>
+    @if (Session::has('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '{{ Session::get('error') }}',
+                width: 600,
+                padding: '3em',
+                color: '#ffffff',
+                confirmButtonColor: '#c09869',
+                background: '#000000bf',
+            });
+        </script>
     @endif
 
     @stack('scripts')

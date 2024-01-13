@@ -109,7 +109,7 @@
                                         <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
                                             data-parent="#accordion">
                                             <div class="card-body">
-                                                <p>We do accept phone/ whatsapp booking.</p>
+                                                <p>Yes we do. Whatapps us for faster response.</p>
                                             </div>
                                         </div>
                                     </div>

@@ -5,7 +5,7 @@
                  <div class="col-xl-3 col-lg-4 col-sm-6">
                      <div class="about-txt">
                          <h3>About Us</h3>
-                         <p>Discover BodhiWheeler, your go-to for wheelchair and bicycle transport services in Singapore
+                         <p>Discover BodhiWheeler, your go-to for wheelchair transport services in Singapore
                              since 2014. We're dedicated to meeting your transportation needs with excellence</p>
                          <ul>
                              <li><span><i class="flaticon-pin"></i></span>26, Newton Road #23-09 Singapore - 307957</li>

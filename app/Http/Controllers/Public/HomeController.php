@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Public;
 
 
+use App\Models\Booking;
+use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -43,7 +45,69 @@ class HomeController extends Controller
 
     public function booking()
     {
-        return view('public.booking');
+        $packages = Package::all();
+        return view('public.booking', compact('packages'));
+    }
+    public function submitBooking(Request $request)
+    {
+        // Google Recaptchat Validation
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+            'response' => $request->get('g-recaptcha-response'),
+        ]);
+
+        if (!$response->json()['success']) {
+            abort('401');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'pick_up_date' => 'required|date|after_or_equal:today',
+            'pick_up_time' => 'required|date_format:H:i',
+            'return_time' => $request->input('active_tab') === "Return" ? 'required|date_format:H:i|after:pick_up_time' : 'nullable|date_format:H:i',
+            'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer' : 'nullable|integer',
+            'pick_up_address' => 'required|string',
+            'drop_off_address' => 'required|string',
+            'no_of_passenger' => 'required|integer',
+            'no_of_wheelchair_pax' => 'required|integer',
+            'package_id' => 'required|exists:packages,id',
+        ],
+    [
+        'return_time.after' => "Return time must be a time after pick up time."
+    ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+            ->withErrors($validator, $request->package_id)
+            ->withInput();
+        }
+
+        $package = Package::find($request->package_id);
+
+        $booking = new Booking([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'pick_up_date' => $request->pick_up_date,
+            'pick_up_time' => $request->pick_up_time,
+            'return_time' => $request->return_time,
+            'no_of_charter_hours' => $request->no_of_charter_hours,
+            'pick_up_address' => $request->pick_up_address,
+            'drop_off_address' => $request->drop_off_address,
+            'no_of_passenger' => $request->no_of_passenger,
+            'no_of_wheelchair_pax' => $request->no_of_wheelchair_pax,
+            'package_name' => $package->name,
+        ]);
+
+        $booking->package()->associate($package);
+
+        $booking->save();
+
+        Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
+
+        return view('public.success-booking');
     }
 
     public function pricing()
@@ -85,11 +149,8 @@ class HomeController extends Controller
             return redirect()->back();
         }
 
-        //TODO - Add Validation
-
         Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\ContactUs\Enquiry($request->all()));
 
-        //TODO - Add Alert
         Session::flash('success', 'Successfully submitted Enquiry.');
         return redirect()->back();
     }

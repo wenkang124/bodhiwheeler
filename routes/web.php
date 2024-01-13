@@ -25,8 +25,12 @@ Route::get('/booking', [HomeController::class, 'booking'])->name('booking');
 Route::get('/pricing', [HomeController::class, 'pricing'])->name('pricing');
 Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
+Route::group(['prefix' => 'booking', 'as' => 'booking'], function () {
+    Route::get('/', [HomeController::class, 'booking']);
+    Route::post('/submit-booking', [HomeController::class, 'submitBooking'])->name('.submit-booking');
+});
+
 Route::group(['prefix' => 'contact', 'as' => 'contact'], function () {
     Route::get('/', [HomeController::class, 'contact']);
     Route::post('/submit-contact', [HomeController::class, 'submitContact'])->name('.submit-contact');
 });
-// Route::get('/contact', [HomeController::class, 'contact'])->name('contact');

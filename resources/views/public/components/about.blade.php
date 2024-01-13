@@ -5,7 +5,7 @@
              <div class="col-xl-6 col-lg-6 col-md-9">
                  <div class="image-box">
                      <div class="part-img">
-                         <img src="assets/images/about-img.jpg" alt="image">
+                         <img src="assets/images/about-img.png" alt="image">
                      </div>
                      <div class="fun-fact-inner">
                          <div class="single-box">
@@ -78,16 +78,16 @@
                      @endif
                      <div class="boxes-2">
                          <div class="single-box">
-                             <div class="txt">
+                             <div class="txt mr-3">
                                  <h3>bodhiwheelers@gmail.com</h3>
                                  <span>For inquiries and more information</span>
                              </div>
                          </div>
-                         <div class="devider"></div>
+                         <div class="devider mr-3"></div>
                          <div class="single-box">
                              <div class="txt">
                                  <h3>+65 93682784</h3>
-                                 <span>Call now to book our services</span>
+                                 <span>WhatsApp now to book our services</span>
                              </div>
                          </div>
                      </div>

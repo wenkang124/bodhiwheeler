@@ -21,21 +21,21 @@
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description">One Way Wheelchair Ride:</span></span>
-                                            <span class="price">$40</span>
+                                                    class="description">One Way Wheelchair Ride <10km:< /span></span>
+                                                <span class="price">$40</span>
                                         </li>
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
                                                     class="description">One Way Wheelchair Ride >11km:</span></span>
-                                            <span class="price">> $45</span>
+                                            <span class="price">$45 onwards</span>
                                         </li>
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
                                                     class="description">Charter/hourly (Min.3 hours applies)
                                                     :</span></span>
-                                            <span class="price">$55/hr</span>
+                                            <span class="price">$55/hr onwards</span>
                                         </li>
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
@@ -50,7 +50,7 @@
                                                     class="description">Urgent booking (Advance booking is encouraged to
                                                     avoid this
                                                     Surcharge):</span></span>
-                                            <span class="price">> $20</span>
+                                            <span class="price">$20 onwards</span>
                                         </li>
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
@@ -74,12 +74,19 @@
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description"> Booking less than 48
+                                                    class="description"> Booking less than 24
                                                     hours starts from:</span></span>
                                             <span class="price">$45</span>
                                         </li>
                                         <li class="list-item">
                                             <span class="description"><b>Terms and conditions</b></span>
+                                        </li>
+
+                                        <li class="list-item">
+                                            <span class="d-flex align-items-baseline"><i
+                                                    class="flaticon-right-arrow-in-a-circle"></i><span
+                                                    class="description">Our package includes 1 wheelchair plus 2
+                                                    caregivers.</span></span>
                                         </li>
 
                                         <li class="list-item">
@@ -93,13 +100,14 @@
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
                                                     class="description">Booking on the same day or making any last
-                                                    minute changes applies.</span></span>
+                                                    minute surchange applies.</span></span>
                                         </li>
 
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description">Complimentary waiting time of 0-10 minutes. Please be punctual.</span></span>
+                                                    class="description">Complimentary waiting time of 5 minutes. Please
+                                                    be punctual.</span></span>
                                         </li>
                                     </ul>
                                     <div class="part-btn">
