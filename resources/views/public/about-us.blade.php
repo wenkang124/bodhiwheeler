@@ -47,7 +47,7 @@
                         <div class="boxes">
                             <div class="single-box">
                                 <div class="img">
-                                    <img src="assets/images/choosing-reason-thumb-1.png" alt="image">
+                                    <img src="{{ asset('assets/images/choosing-reason-thumb-1.png') }}" alt="image">
                                 </div>
                                 <div class="txt">
                                     <h3>Easy Wheelchair On/Offboarding</h3>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="single-box">
                                 <div class="img">
-                                    <img src="assets/images/choosing-reason-thumb-2.png" alt="image">
+                                    <img src="{{ asset('assets/images/choosing-reason-thumb-2.png') }}" alt="image">
                                 </div>
                                 <div class="txt">
                                     <h3>Relieving Caregiver Burden</h3>
@@ -70,9 +70,9 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-9">
                     <div class="part-img">
-                        <img src="assets/images/choosing-reason-img.png" alt="image">
+                        <img src="{{ asset('assets/images/choosing-reason-img.png') }}" alt="image">
                         <div class="video">
-                            <a href="#" id="videoLink" data-toggle="modal" data-target="#videoModal">
+                            <a href="#" id="videoLink" data-toggle="modal" data-target="#videoModal" data-video-src="{{ asset('assets/videos/about-us.mp4') }}">
                                 <i class="flaticon-play"></i>
                             </a>
                         </div>

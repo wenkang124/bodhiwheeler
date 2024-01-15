@@ -31,7 +31,7 @@
             <div class="brand-slider owl-carousel">
                 @for ($i = 1; $i <= 8; $i++)
                     <div class="single-img" data-toggle="modal" data-target="#partnerModal" data-image-number="{{ $i }}">
-                        <img src="assets/images/partner-{{ $i }}.jpg" alt="logo">
+                        <img src="{{ asset('assets/images/partner-' . $i . '.jpg') }}" alt="logo">
                     </div>
                 @endfor
             </div>
@@ -75,7 +75,7 @@
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                     <div class="single-box">
                         <div class="part-icon">
-                            <img src="assets/images/process-icon-1.png" alt="icon">
+                            <img src="{{ asset('assets/images/process-icon-1.png') }}" alt="icon">
                         </div>
                         <div class="part-txt">
                             <h3>Contact Us</h3>
@@ -88,7 +88,7 @@
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                     <div class="single-box">
                         <div class="part-icon">
-                            <img src="assets/images/process-icon-2.png" alt="icon">
+                            <img src="{{ asset('assets/images/process-icon-2.png') }}" alt="icon">
                         </div>
                         <div class="part-txt">
                             <h3>Discuss Requirements</h3>
@@ -100,7 +100,7 @@
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                     <div class="single-box">
                         <div class="part-icon">
-                            <img src="assets/images/process-icon-3.png" alt="icon">
+                            <img src="{{ asset('assets/images/process-icon-3.png') }}" alt="icon">
                         </div>
                         <div class="part-txt">
                             <h3>Schedule Pickup</h3>
@@ -112,7 +112,7 @@
                 <div class="col-xl-3 col-lg-3 col-sm-6">
                     <div class="single-box">
                         <div class="part-icon">
-                            <img src="assets/images/process-icon-4.png" alt="icon">
+                            <img src="{{ asset('assets/images/process-icon-4.png') }}" alt="icon">
                         </div>
                         <div class="part-txt">
                             <h3>Enjoy Your Ride</h3>

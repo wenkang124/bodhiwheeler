@@ -250,7 +250,7 @@
 
         $('#videoLink').on('click', function(e) {
             e.preventDefault();
-            var videoSrc = 'assets/videos/about-us.mp4';
+            var videoSrc = $(this).data('video-src');
             $('#videoModal iframe').attr('src', videoSrc + '?autoplay=1');
             $('#videoModal').modal('show');
         });

@@ -58,7 +58,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicons/favicon-16x16.png').'?v=1' }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-32x32.png').'?v=1' }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-96x96.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicons/android-chrome-192x192.png').'?v=1' }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicons/android-icon-192x192.png').'?v=1' }}">
 
     <!-- animate css old -->
     <link rel="stylesheet" href="{{ asset('assets/css/animate-2.css') }}">

@@ -13,7 +13,7 @@
             <div class="col-xl-3 col-lg-3 col-sm-6">
                 <div class="single-box">
                     <div class="part-icon">
-                        <img src="assets/images/process-icon-1.png" alt="icon">
+                        <img src="{{ asset('assets/images/process-icon-1.png') }}" alt="icon">
                         <span class="no">01</span>
                     </div>
                     <div class="part-txt">
@@ -22,14 +22,14 @@
                             wheelchair services.</p>
                     </div>
                     <div class="arrow">
-                        <img src="assets/images/arrow.png" alt="image">
+                        <img src="{{ asset('assets/images/arrow.png') }}" alt="image">
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-3 col-sm-6">
                 <div class="single-box">
                     <div class="part-icon">
-                        <img src="assets/images/process-icon-2.png" alt="icon">
+                        <img src="{{ asset('assets/images/process-icon-2.png') }}" alt="icon">
                         <span class="no">02</span>
                     </div>
                     <div class="part-txt">
@@ -37,14 +37,14 @@
                         <p>We'll discuss your specific requirements and needs for the wheelchair service.</p>
                     </div>
                     <div class="arrow rotate">
-                        <img src="assets/images/arrow.png" alt="image">
+                        <img src="{{ asset('assets/images/arrow.png') }}" alt="image">
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-3 col-sm-6">
                 <div class="single-box">
                     <div class="part-icon">
-                        <img src="assets/images/process-icon-3.png" alt="icon">
+                        <img src="{{ asset('assets/images/process-icon-3.png') }}" alt="icon">
                         <span class="no">03</span>
                     </div>
                     <div class="part-txt">
@@ -52,14 +52,14 @@
                         <p>We'll work with you to schedule a convenient pickup time for the wheelchair service.</p>
                     </div>
                     <div class="arrow">
-                        <img src="assets/images/arrow.png" alt="image">
+                        <img src="{{ asset('assets/images/arrow.png') }}" alt="image">
                     </div>
                 </div>
             </div>
             <div class="col-xl-3 col-lg-3 col-sm-6">
                 <div class="single-box">
                     <div class="part-icon">
-                        <img src="assets/images/process-icon-4.png" alt="icon">
+                        <img src="{{ asset('assets/images/process-icon-4.png') }}" alt="icon">
                         <span class="no">04</span>
                     </div>
                     <div class="part-txt">

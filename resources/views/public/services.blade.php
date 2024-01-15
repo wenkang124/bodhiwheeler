@@ -39,7 +39,7 @@
                         <div class="boxes">
                             <div class="single-box">
                                 <div class="part-icon">
-                                    <img src="assets/images/service-icon-1.png" alt="icon">
+                                    <img src="{{asset('assets/images/service-icon-1.png') }}" alt="icon">
                                 </div>
                                 <div class="txt">
                                     <h3>Safe Wheelchair Locking: 4-Point Security</h3>
@@ -49,7 +49,7 @@
                             </div>
                             <div class="single-box">
                                 <div class="part-icon">
-                                    <img src="assets/images/service-icon-2.png" alt="icon">
+                                    <img src="{{asset('assets/images/service-icon-2.png') }}" alt="icon">
                                 </div>
                                 <div class="txt">
                                     <h3>Comfortable and Safe Wheelchair Transportation</h3>
@@ -62,7 +62,7 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-9">
                     <div class="part-img">
-                        <img src="assets/images/service-img-1.jpg" alt="image">
+                        <img src="{{ asset('assets/images/service-img-1.jpg') }}" alt="image">
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@
                             aria-labelledby="v-pills-one-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/health-check.png" alt="health check" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/health-check.png') }}" alt="health check" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Medical Appointment</h2>
                                     <p>Our drivers will ensure you are on time for your medical appointment, in addition you
                                         are able to avoid the hassle of getting in/out of a normal taxi.</p>
@@ -129,7 +129,7 @@
                         <div class="tab-pane fade" id="v-pills-two" role="tabpanel" aria-labelledby="v-pills-two-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/dialysis.png" alt="dialysis" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/dialysis.png') }}" alt="dialysis" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Dialysis Center</h2>
                                     <p>Regular Dialysis is taking a toll on your mental and monetarily health, however with
                                         our wheelchair transport you are not paying too much for your regular trips to
@@ -141,7 +141,7 @@
                             aria-labelledby="v-pills-three-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/rehabilitation.png" alt="rehabilitation" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/rehabilitation.png') }}" alt="rehabilitation" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Rehabilitation Center</h2>
                                     <p>Recovery is a long difficult path and for this reason we are here to provide a safe,
                                         comfortable and reliable wheelchair ride to your Singapore rehabilitation center.
@@ -152,7 +152,7 @@
                         <div class="tab-pane fade" id="v-pills-four" role="tabpanel" aria-labelledby="v-pills-four-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/medical-escort.png" alt="medical-escort" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/medical-escort.png') }}" alt="medical-escort" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Medical Escort</h2>
                                     <p>Our Singapore Medical Escorts are able to provide medical care. However, we hope that
                                         you can accompany your loved one as we cannot replace your absence.
@@ -163,7 +163,7 @@
                         <div class="tab-pane fade" id="v-pills-five" role="tabpanel" aria-labelledby="v-pills-five-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/daycare.png" alt="daycare" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/daycare.png') }}" alt="daycare" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Daycare Center</h2>
                                     <p>Our top priority is your loved one's safety, that is to say our drivers have the
                                         right experience making sure the wheelchair user is properly secure even though it
@@ -175,7 +175,7 @@
                         <div class="tab-pane fade" id="v-pills-six" role="tabpanel" aria-labelledby="v-pills-six-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/van.png" alt="van" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/van.png') }}" alt="van" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Charter / Hourly</h2>
                                     <p>Our charter wheelchair transport is available for the duration you book. Not to
                                         mention you can bring five caregivers. At the same time, you may visit as many
@@ -188,7 +188,7 @@
                             aria-labelledby="v-pills-seven-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/social.png" alt="social" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/social.png') }}" alt="social" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Social Event</h2>
                                     <p>To parties, weddings, concerts, special family gathering. Visits to religious
                                         institutions (church, temple & mosque etc.)
@@ -201,7 +201,7 @@
                             aria-labelledby="v-pills-eight-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/airplane.png" alt="airplane" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/airplane.png') }}" alt="airplane" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2> Airport Transfers</h2>
                                     <p>Departure from Hotel to Airport / Cruise Center.
                                         Arrival Pick up from Airport / Cruise Center.
@@ -212,7 +212,7 @@
                         <div class="tab-pane fade" id="v-pills-nine" role="tabpanel" aria-labelledby="v-pills-nine-tab">
                             <div class="main-content">
                                 <div class="part-txt">
-                                    <img src="assets/images/road.png" alt="road" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
+                                    <img src="{{ asset('assets/images/road.png') }}" alt="road" class="mx-auto d-block mb-5 mt-5 mb-md-5 mt-md-5">
                                     <h2>Singapore Day Trips</h2>
                                     <p>Singapore is a city in Southeast Asia that combines the best of the old and the new
                                         with so many exciting things to see. Just need to book a ride with us.

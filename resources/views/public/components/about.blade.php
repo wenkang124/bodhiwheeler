@@ -5,7 +5,7 @@
              <div class="col-xl-6 col-lg-6 col-md-9">
                  <div class="image-box">
                      <div class="part-img">
-                         <img src="assets/images/about-img.png" alt="image">
+                         <img src="{{ asset('assets/images/about-img.png') }}" alt="image">
                      </div>
                      <div class="fun-fact-inner">
                          <div class="single-box">
