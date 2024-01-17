@@ -85,7 +85,7 @@
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description">Our package includes 1 wheelchair plus 2
+                                                    class="description">Our package includes 1 wheelchair pax plus 2
                                                     caregivers.</span></span>
                                         </li>
 
