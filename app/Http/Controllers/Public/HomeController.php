@@ -60,35 +60,36 @@ class HomeController extends Controller
             abort('401');
         }
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
-            'pick_up_date' => 'required|date|after_or_equal:today',
-            'pick_up_time' => 'required|date_format:H:i',
-            'return_time' => $request->input('active_tab') === "Return" ? 'required|date_format:H:i|after:pick_up_time' : 'nullable|date_format:H:i',
-            'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer' : 'nullable|integer',
-            'pick_up_address' => 'required|string',
-            'drop_off_address' => 'required|string',
-            'no_of_passenger' => 'required|integer',
-            'no_of_wheelchair_pax' => 'required|integer',
-            'package_id' => 'required|exists:packages,id',
-        ],
-    [
-        'return_time.after' => "Return time must be a time after pick up time."
-    ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|string',
+                'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+                'pick_up_date' => 'required|date|after_or_equal:today',
+                'pick_up_time' => 'required|date_format:H:i',
+                'return_time' => $request->input('active_tab') === "Return" ? 'required|date_format:H:i|after:pick_up_time' : 'nullable|date_format:H:i',
+                'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer' : 'nullable|integer',
+                'pick_up_address' => 'required|string',
+                'drop_off_address' => 'required|string',
+                'no_of_passenger' => 'required|integer',
+                'no_of_wheelchair_pax' => 'required|integer',
+                'package_id' => 'required|exists:packages,id',
+            ],
+            [
+                'return_time.after' => "Return time must be a time after pick up time."
+            ]
+        );
 
         if ($validator->fails()) {
             return redirect()->back()
-            ->withErrors($validator, $request->package_id)
-            ->withInput();
+                ->withErrors($validator, $request->package_id)
+                ->withInput();
         }
 
         $package = Package::find($request->package_id);
 
         $booking = new Booking([
             'name' => $request->name,
-            'email' => $request->email,
             'phone' => $request->phone,
             'pick_up_date' => $request->pick_up_date,
             'pick_up_time' => $request->pick_up_time,
@@ -105,7 +106,9 @@ class HomeController extends Controller
 
         $booking->save();
 
-        Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
+        if (env('APP_ENV') === 'production') {
+            Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
+        }
 
         return view('public.success-booking');
     }
@@ -149,7 +152,10 @@ class HomeController extends Controller
             return redirect()->back();
         }
 
-        Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\ContactUs\Enquiry($request->all()));
+        if (env('APP_ENV') === 'production') {
+            Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\ContactUs\Enquiry($request->all()));
+        }
+
 
         Session::flash('success', 'Successfully submitted Enquiry.');
         return redirect()->back();
