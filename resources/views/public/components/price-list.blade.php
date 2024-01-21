@@ -21,9 +21,10 @@
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description">One Way Wheelchair Ride <10km:< /span></span>
-                                                <span class="price">$40</span>
+                                                    class="description">{!! 'One Way Wheelchair Ride <10km:' !!}</span></span>
+                                            <span class="price">$40</span>
                                         </li>
+
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
