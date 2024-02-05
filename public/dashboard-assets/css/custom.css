@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+.bg-info {
+    background-color:#0D0925 !important;
+}
+
+#main-wrapper[data-layout=vertical] .topbar .navbar-collapse[data-navbarbg=skin1] {
+    background: linear-gradient(to right,#0D0925 0,#00bdda 100%);
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand {
+    background-color: #0D0925 !important;
+}

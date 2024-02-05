@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//* Comment Auth Login & Register
-// Auth::routes();
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/about-us', [HomeController::class, 'aboutUs'])->name('about-us');

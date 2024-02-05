@@ -28,7 +28,7 @@ return new class extends Migration
             $table->decimal('distance', 8, 2)->default(0.00);
             $table->string('package_name');
             $table->text('remarks')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('new'); // new, submitted, approved, rejected
             $table->foreignUlid('package_id')->constrained();
             $table->foreignUlid('driver_id')->nullable()->constrained();
             $table->timestamps();

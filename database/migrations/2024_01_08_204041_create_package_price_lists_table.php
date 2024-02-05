@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('package_price_lists', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('type');
-            $table->unsignedInteger('min-hours')->nullable();
-            $table->decimal('distance', 8, 2)->nullable();
-            $table->string('distance_type')->nullable();
-            $table->decimal('price', 10, 2)->nullable();
-            $table->unsignedInteger('sequence');
+            $table->unsignedInteger('adjustment');
+            $table->unsignedInteger('value');
+            $table->string('adjustment_type')->nullable();
             $table->foreignUlid('package_id')->constrained();
             $table->timestamps();
         });

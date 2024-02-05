@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use App\Services\BookingPriceCalculation;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -18,9 +19,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    protected $bookingPriceCalculator;
+
+    public function __construct(BookingPriceCalculation $bookingPriceCalculator)
     {
-        // $this->middleware('auth');
+        $this->bookingPriceCalculator = $bookingPriceCalculator;
     }
 
     /**
@@ -28,6 +31,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
     public function index()
     {
         return view('public.home');
