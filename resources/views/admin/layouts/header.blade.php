@@ -49,11 +49,22 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end user-dd animated flipInY">
                         <div class="d-flex no-block align-items-center p-3 bg-info text-white mb-2">
+                            <div class="">
+                                <img src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('/dashboard-assets/images/admin.png') }}" alt="user" class="rounded-circle" width="60" />
+                            </div>
                             <div class="ms-2">
                                 <h4 class="mb-0 text-white">{{Auth::user()->name}}</h4>
                                 <p class="mb-0">{{Auth::user()->email}}</p>
                             </div>
                         </div>
+                        <a class="dropdown-item" href="{{route('admin.me.edit')}}">
+                            <i data-feather="user" class="feather-sm text-info me-1 ms-1"></i>
+                            Edit Profile
+                        </a>
+                        <a class="dropdown-item" href="{{route('admin.me.edit-password')}}">
+                            <span class="mdi mdi-lock text-info me-1 ms-1"></span>
+                            Change Password
+                        </a>
                         <a class="dropdown-item" href="{{route('admin.logout')}}">
                             <i data-feather="log-out" class="feather-sm text-danger me-1 ms-1"></i>
                             Logout

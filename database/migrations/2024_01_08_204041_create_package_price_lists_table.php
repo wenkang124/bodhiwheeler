@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedInteger('adjustment');
             $table->unsignedInteger('value');
             $table->string('adjustment_type')->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->foreignUlid('package_id')->constrained();
             $table->timestamps();
         });

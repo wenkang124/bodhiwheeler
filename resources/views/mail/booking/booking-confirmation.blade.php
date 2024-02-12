@@ -14,6 +14,7 @@
     $noOfPassenger = $data['no_of_passenger'];
     $noOfWheelchairPax = $data['no_of_wheelchair_pax'];
     $packageName = $data['package_name'];
+    $medical_escort = $data['medical_escort'];
     $remarks = $data['remarks'];
 @endphp
 
@@ -39,6 +40,7 @@
         <li><h4>Drop Off Address: {{ $dropOffAddress }}</h4></li>
         <li><h4>No. of Passengers: {{ $noOfPassenger }}</h4></li>
         <li><h4>No. of Wheelchair Pax: {{ $noOfWheelchairPax }}</h4></li>
+        <li><h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4></li>
         <li><h4>Remarks: {{ $remarks }}</h4></li>
     </ul>
 </body>

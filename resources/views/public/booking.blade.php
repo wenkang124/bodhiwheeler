@@ -101,18 +101,39 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-xl-5 col-lg-5 col-md-6">
+                            <div class="col-xl-5 col-lg-5 col-md-4">
                                 {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
                                 @error('no_of_passenger', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-xl-5 col-lg-5 col-md-6">
+                            <div class="col-xl-5 col-lg-5 col-md-4">
                                 {!! Form::number('no_of_wheelchair_pax', null, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
                                 @error('no_of_wheelchair_pax', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
+                            @if ($package->name == 'Return' || $package->name == 'Charter')
+                            <div class="col-xl-10 col-lg-10 text-left">
+                                <div class="form-check form-check-inline medical-escort-form">
+                                    {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
+                                        'class' => 'form-check-label py-0 pr-2 medical-label',
+                                        'style' => 'white-space: nowrap;',
+                                    ]) !!}
+                                    {!! Form::checkbox('medical_escort', '1', false, [
+                                        'class' => 'medical-escort',
+                                        'id' => 'medical_escort_checkbox',
+                                        'data-on-value' => '1',
+                                        'data-off-value' => '0',
+                                        'value' => '0',
+                                    ]) !!}
+                                </div>
+                                @error('medical_escort', $package->id)
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            </div>
+                            @endif
 
                             {!! Form::hidden('package_id', $package->id) !!}
                             {!! Form::hidden('active_tab', $package->name) !!}

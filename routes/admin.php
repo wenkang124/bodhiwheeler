@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\MeController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\BookingController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\ApprovedBookingController;
 use App\Http\Controllers\Admin\PendingApprovalController;
@@ -25,7 +27,24 @@ Route::any('logout', [LoginController::class, 'logout'])->name('.logout')->middl
 
 
 Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
-    Route::get('', [AdminController::class, 'index']);
+    Route::get('', [DashboardController::class, 'index']);
+
+    Route::group(['prefix' => 'me', 'as' => '.me'], function () {
+        Route::get('edit', [MeController::class, 'edit'])->name('.edit');
+        Route::post('update', [MeController::class, 'update'])->name('.update');
+        Route::get('edit-password', [MeController::class, 'editPassword'])->name('.edit-password');
+        Route::post('update-password', [MeController::class, 'updatePassword'])->name('.update-password');
+    });
+
+    Route::prefix('admins')->name('.admin')->group(function () {
+        Route::get('', [AdminController::class, 'index']);
+        Route::post('query', [AdminController::class, 'query'])->name('.query');
+        Route::get('create', [AdminController::class, 'create'])->name('.create');
+        Route::post('', [AdminController::class, 'store'])->name('.store');
+        Route::get('{admin}/edit', [AdminController::class, 'edit'])->name('.edit');
+        Route::post('{admin}', [AdminController::class, 'update'])->name('.update');
+        Route::delete('{admin}', [AdminController::class, 'delete'])->name('.delete');
+    });
 
     Route::prefix('drivers')->name('.driver')->group(function () {
         Route::get('', [DriverController::class, 'index']);

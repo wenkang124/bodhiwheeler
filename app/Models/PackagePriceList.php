@@ -15,6 +15,8 @@ class PackagePriceList extends Model
         'adjustment',
         'value',
         'adjustment_type',
+        'start_time',
+        'end_time',
         'package_id',
     ];
 

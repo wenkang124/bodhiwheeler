@@ -28,6 +28,7 @@ class Booking extends Model
         'package_name',
         'remarks',
         'status',
+        'medical_escort',
         'package_id',
         'driver_id',
     ];

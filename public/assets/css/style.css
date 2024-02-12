@@ -5963,6 +5963,16 @@ input[type=date] {
   color: #fff;
   font-size: 14px;
 }
+
+.medical-escort {
+    margin-top: 30px;
+}
+.medical-label {
+    color: #b3b3b3;
+}
+.medical-escort-form {
+    margin-left: 1.5rem;
+}
 .contact .form input::-webkit-input-placeholder {
   color: rgba(226, 226, 226, 0.7);
 }

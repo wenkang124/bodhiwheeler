@@ -17,6 +17,17 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-devider"></li>
+                <li class="nav-small-cap">
+                    <i class="mdi mdi-dots-horizontal"></i>
+                    <span class="hide-menu">Account Management</span>
+                </li>
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.admin') ? 'active' : '' }}" href="{{route('admin.admin')}}" aria-expanded="false">
+                        <i class="me-2 mdi mdi-account-tie"></i>
+                        <span class="hide-menu">Admins</span>
+                    </a>
+                </li>
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.driver') ? 'active' : '' }}" href="{{route('admin.driver')}}" aria-expanded="false">
                         <i class="me-2 mdi mdi-van-utility"></i>

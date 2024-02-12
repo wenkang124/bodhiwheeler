@@ -118,6 +118,11 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3 col-xs-6">
+                                                    <strong>Medical Escort</strong>
+                                                    <br>
+                                                    <p class="text-muted">{{ $booking->medical_escort ? 'True' : 'False' }}</p>
+                                                </div>
+                                                <div class="col-md-3 col-xs-6">
                                                     <strong>Remarks</strong>
                                                     <br>
                                                     <p class="text-muted">{{ $booking->remarks ?? '-' }}</p>

@@ -6,7 +6,7 @@
             <div class="d-flex align-items-center">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{route('admin')}}">Home</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
                         <li class="breadcrumb-item" aria-current="page">
                             Dashboard
                         </li>
@@ -22,84 +22,80 @@
 
 @section('content')
     <div class="container-fluid">
-        <!-- Row -->
-        <div class="row">
+        <div class="row justify-content-center">
             <!-- Column -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-md-6 col-lg-3 col-xlg-3">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Daily Sales</h4>
-                        <div class="text-end">
-                            <h2 class="fw-light mb-0">
-                                <i class="ti-arrow-up text-success"></i> $120
-                            </h2>
-                        </div>
-                        <span class="text-success">80%</span>
-                        <div class="progress">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 80%; height: 6px"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                    <div class="box p-2 rounded bg-info text-center">
+                        <h1 class="fw-light text-white">${{ $salesData['daily']->total_sales }}</h1>
+                        <h6 class="text-white">Daily Sales</h6>
                     </div>
                 </div>
             </div>
             <!-- Column -->
-            <!-- Column -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-md-6 col-lg-3 col-xlg-3">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Weekly Sales</h4>
-                        <div class="text-end">
-                            <h2 class="fw-light mb-0">
-                                <i class="ti-arrow-up text-info"></i> $5,000
-                            </h2>
-                        </div>
-                        <span class="text-info">30%</span>
-                        <div class="progress">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 30%; height: 6px"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                    <div class="box p-2 rounded bg-primary text-center">
+                        <h1 class="fw-light text-white">${{ $salesData['weekly']->total_sales }}</h1>
+                        <h6 class="text-white">Weekly Sales</h6>
                     </div>
                 </div>
             </div>
             <!-- Column -->
-            <!-- Column -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-md-6 col-lg-3 col-xlg-3">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Monthly Sales</h4>
-                        <div class="text-end">
-                            <h2 class="fw-light mb-0">
-                                <i class="ti-arrow-up text-purple"></i> $8,000
-                            </h2>
-                        </div>
-                        <span class="text-purple">60%</span>
-                        <div class="progress">
-                            <div class="progress-bar bg-purple" role="progressbar" style="width: 60%; height: 6px"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                    <div class="box p-2 rounded bg-success text-center">
+                        <h1 class="fw-light text-white">${{ $salesData['monthly']->total_sales }}</h1>
+                        <h6 class="text-white">Monthly Sales</h6>
                     </div>
                 </div>
             </div>
             <!-- Column -->
-            <!-- Column -->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-md-6 col-lg-3 col-xlg-3">
                 <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Yearly Sales</h4>
-                        <div class="text-end">
-                            <h2 class="fw-light mb-0">
-                                <i class="ti-arrow-down text-danger"></i> $12,000
-                            </h2>
-                        </div>
-                        <span class="text-danger">80%</span>
-                        <div class="progress">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: 80%; height: 6px"
-                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
+                    <div class="box p-2 rounded bg-warning text-center">
+                        <h1 class="fw-light text-white">${{ $salesData['yearly']->total_sales }}</h1>
+                        <h6 class="text-white">Yearly Sales</h6>
                     </div>
                 </div>
             </div>
             <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-secondary text-center">
+                        <h1 class="fw-light text-white">{{ $salesData['daily']->booking_count }}</h1>
+                        <h6 class="text-white">Daily Bookings</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-danger text-center">
+                        <h1 class="fw-light text-white">{{ $salesData['weekly']->booking_count }}</h1>
+                        <h6 class="text-white">Weekly Bookings</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-dark text-center">
+                        <h1 class="fw-light text-white">{{ $salesData['monthly']->booking_count }}</h1>
+                        <h6 class="text-white">Monthly Bookings</h6>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-6 col-lg-3 col-xlg-3">
+                <div class="card">
+                    <div class="box p-2 rounded bg-megna text-center">
+                        <h1 class="fw-light text-white">{{ $salesData['yearly']->booking_count }}</h1>
+                        <h6 class="text-white">Yearly Bookings</h6>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <!-- Row -->
@@ -108,154 +104,48 @@
                 <div class="card w-100">
                     <div class="card-body">
                         <div class="d-md-flex no-block">
-                            <h4 class="card-title">Bookings of the Month</h4>
-                            <div class="ms-auto">
-                                <select class="form-select">
-                                    <option selected>January</option>
-                                    <option value="1">February</option>
-                                    <option value="2">March</option>
-                                    <option value="3">April</option>
-                                </select>
-                            </div>
+                            <h4 class="card-title">On Going Bookings</h4>
                         </div>
                         <div class="table-responsive mt-2">
                             <table class="table stylish-table mb-0 mt-2 no-wrap v-middle">
                                 <thead>
                                     <tr>
-                                        <th class="fw-normal text-muted border-0 border-bottom" colspan="2">
-                                            Assigned
-                                        </th>
                                         <th class="fw-normal text-muted border-0 border-bottom">
                                             Name
                                         </th>
                                         <th class="fw-normal text-muted border-0 border-bottom">
-                                            Status
+                                            Contact
                                         </th>
                                         <th class="fw-normal text-muted border-0 border-bottom">
-                                            Total
+                                            Details
+                                        </th>
+                                        <th class="fw-normal text-muted border-0 border-bottom">
+                                            Package
+                                        </th>
+                                        <th class="fw-normal text-muted border-0 border-bottom">
+                                            Status
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="width: 50px">
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-info">S</span>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Sunil Joshi
-                                            </h6>
-                                            <small class="text-muted no-wrap">Web Designer</small>
-                                        </td>
-                                        <td>Elite Admin</td>
-                                        <td>
-                                            <span class="badge bg-light-success text-success">Low</span>
-                                        </td>
-                                        <td>$3.9K</td>
-                                    </tr>
-                                    <tr class="active">
-                                        <td>
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-info">A</span
-                                                </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Andrew
-                                            </h6>
-                                            <small class="text-muted no-wrap">Project Manager</small>
-                                        </td>
-                                        <td>Real Homes</td>
-                                        <td>
-                                            <span class="badge bg-light-info text-info">Submitted</span>
-                                        </td>
-                                        <td>$23.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-success">B</span>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Bhavesh patel
-                                            </h6>
-                                            <small class="text-muted no-wrap">Developer</small>
-                                        </td>
-                                        <td>MedicalPro Theme</td>
-                                        <td>
-                                            <span class="badge bg-light-danger text-danger">Rejected</span>
-                                        </td>
-                                        <td>$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-primary">N</span>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Nirav Joshi
-                                            </h6>
-                                            <small class="text-muted no-wrap">Frontend Eng</small>
-                                        </td>
-                                        <td>Elite Admin</td>
-                                        <td>
-                                            <span class="badge bg-light-success text-success">Completed</span>
-                                        </td>
-                                        <td>$10.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-warning">M</span>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Micheal Doe
-                                            </h6>
-                                            <small class="text-muted no-wrap">Content Writer</small>
-                                        </td>
-                                        <td>Helping Hands</td>
-                                        <td>
-                                            <span class="badge bg-light-danger text-danger">Rejected</span>
-                                        </td>
-                                        <td>$12.9K</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-danger">N</span>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Johnathan
-                                            </h6>
-                                            <small class="text-muted no-wrap">Graphic</small>
-                                        </td>
-                                        <td>Digital Agency</td>
-                                        <td>
-                                            <span class="badge bg-light-danger text-danger">Rejected</span>
-                                        </td>
-                                        <td>$2.6K</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span
-                                                class="round rounded-circle text-white d-inline-block text-center bg-info">M</span>
-                                        </td>
-                                        <td>
-                                            <h6 class="font-weight-medium mb-0 nowrap">
-                                                Micheal Doe
-                                            </h6>
-                                            <small class="text-muted no-wrap">Content Writer</small>
-                                        </td>
-                                        <td>Helping Hands</td>
-                                        <td>
-                                            <span class="badge bg-light-info text-info">Submitted</span>
-                                        </td>
-                                        <td>$12.9K</td>
-                                    </tr>
+                                    @foreach ($allBookings as $booking)
+                                        <tr>
+                                            <td>
+                                                <h6 class="font-weight-medium mb-0 nowrap">
+                                                    <a href="{{ route('admin.booking.approved-booking.detail', [$booking->id]) }}" target="_blank">{{ $booking->name }}</a>
+                                                </h6>
+                                            </td>
+                                            <td>{{ $booking->phone }}</td>
+                                            <td>
+                                                <strong>Pick-up Address:</strong> {{ $booking->pick_up_address }}<br>
+                                                <strong>Drop Off Address:</strong> {{ $booking->drop_off_address }}<br>
+                                                <strong>Pick-up Time:</strong> {{ $booking->pick_up_time }}<br>
+                                                <strong>Driver Name:</strong> {{ $booking->driver->name }}
+                                            </td>
+                                            <td>{{ $booking->package_name }}</td>
+                                            <td><span class="badge bg-light-success text-success">{{ ucfirst($booking->status) }}</span></td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
