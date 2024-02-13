@@ -90,13 +90,21 @@
                                 @enderror
                             </div>
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('pick_up_address', null, ['placeholder' => 'Pick Up Address', 'required']) !!}
+                                {!! Form::text('pick_up_address', null, [
+                                    'id' => 'pick_up_address',
+                                    'placeholder' => 'Pick Up Address',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_address', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('drop_off_address', null, ['placeholder' => 'Drop Off Address', 'required']) !!}
+                                {!! Form::text('drop_off_address', null, [
+                                    'id' => 'drop_off_address',
+                                    'placeholder' => 'Drop Off Address',
+                                    'required',
+                                ]) !!}
                                 @error('drop_off_address', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -115,34 +123,34 @@
                             </div>
 
                             @if ($package->name == 'Return' || $package->name == 'Charter')
-                            <div class="col-xl-10 col-lg-10 text-left">
-                                <div class="form-check form-check-inline medical-escort-form">
-                                    {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
-                                        'class' => 'form-check-label py-0 pr-2 medical-label',
-                                        'style' => 'white-space: nowrap;',
-                                    ]) !!}
-                                    {!! Form::checkbox('medical_escort', '1', false, [
-                                        'class' => 'medical-escort',
-                                        'id' => 'medical_escort_checkbox',
-                                        'data-on-value' => '1',
-                                        'data-off-value' => '0',
-                                        'value' => '0',
-                                    ]) !!}
+                                <div class="col-xl-10 col-lg-10 text-left">
+                                    <div class="form-check form-check-inline medical-escort-form">
+                                        {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
+                                            'class' => 'form-check-label py-0 pr-2 medical-label',
+                                            'style' => 'white-space: nowrap;',
+                                        ]) !!}
+                                        {!! Form::checkbox('medical_escort', '1', false, [
+                                            'class' => 'medical-escort',
+                                            'id' => 'medical_escort_checkbox',
+                                            'data-on-value' => '1',
+                                            'data-off-value' => '0',
+                                            'value' => '0',
+                                        ]) !!}
+                                    </div>
+                                    @error('medical_escort', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                                @error('medical_escort', $package->id)
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                            </div>
                             @endif
 
                             {!! Form::hidden('package_id', $package->id) !!}
                             {!! Form::hidden('active_tab', $package->name) !!}
+                            {!! Form::hidden('distance', '', ['id' => 'distance']) !!}
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks', 'required']) !!}
-                                <button class="def-btn def-btn-2"
-                                    data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit'
-                                    data-action='submit'>Book Now</button>
+                                <button class="def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"
+                                    data-callback='onSubmit' data-action='submit'>Book Now</button>
                             </div>
                         </div>
                         {!! Form::close() !!}
@@ -176,5 +184,42 @@
                 activeForm.submit();
             }
         }
+
+        function initAutocomplete() {
+            let pickUpInput = document.querySelector('#pick_up_address');
+            let dropOffInput = document.querySelector('#drop_off_address');
+
+            autocompletePickUp = new google.maps.places.Autocomplete(pickUpInput, {
+                fields: ['address_components', 'geometry'],
+            });
+
+            autocompleteDropOff = new google.maps.places.Autocomplete(dropOffInput, {
+                fields: ['address_components', 'geometry'],
+            });
+
+            autocompletePickUp.addListener('place_changed', calculateAndDisplayRoute);
+            autocompleteDropOff.addListener('place_changed', calculateAndDisplayRoute);
+        }
+
+        function calculateAndDisplayRoute() {
+            if (!autocompletePickUp.getPlace() || !autocompleteDropOff.getPlace()) {
+                return;
+            }
+
+            let pickUpCoords = autocompletePickUp.getPlace().geometry.location;
+            let dropOffCoords = autocompleteDropOff.getPlace().geometry.location;
+
+            //Calculate Distance in KM
+            let distance = google.maps.geometry.spherical.computeDistanceBetween(pickUpCoords, dropOffCoords) / 1000;
+
+            document.getElementById('distance').value = distance.toFixed(2);
+        }
+
+        window.onload = function() {
+            let script = document.createElement('script');
+            script.src =
+                "https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry";
+            document.head.appendChild(script);
+        };
     </script>
 @endpush

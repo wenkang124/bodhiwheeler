@@ -37,11 +37,15 @@
                             <li><strong>Number of Passengers:</strong> {{ $booking->no_of_passenger }}</li>
                             <li><strong>Number of Wheelchair Pax:</strong> {{ $booking->no_of_wheelchair_pax }}</li>
                             <li><strong>Package:</strong> {{ $booking->package_name }}</li>
+                            <li><strong>Total Price:</strong> ${{ $booking->total_price }}</li>
                         </ul>
                         <div class="text-center">
                             <!-- Placeholder for QR Code Image -->
                             {{-- <img src="{{ asset('path/qr-code/image.png') }}" alt="Payment QR Code" class="mb-4"> --}}
                             <div style="border: 2px dashed #ccc; width: 200px; height: 200px; margin: 20px auto;"></div>
+
+                            <h6>Payment is required to finalize your booking.</h6>
+                            <h6>Confirm your reservation and enjoy your ride with confidence.</h6>
 
                             <!-- Form to Submit and Change Booking Status -->
                             <form id="booking-confirmation-form" action="{{route('booking.booking-confirmation')}}" method="POST">

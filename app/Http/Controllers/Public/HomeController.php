@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Public;
 
 
+use Carbon\Carbon;
 use App\Models\Booking;
 use App\Models\Package;
 use Illuminate\Http\Request;
@@ -55,35 +56,49 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+        //     'response' => $request->get('g-recaptcha-response'),
+        // ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
+        // if (!$response->json()['success']) {
+        //     abort('401');
+        // }
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
+            'pick_up_date' => 'required|date|after_or_equal:today',
+            'pick_up_time' => 'required|date_format:H:i',
+            'return_time' => $request->input('active_tab') === "Return" ? ['required', 'date_format:H:i', 'after:pick_up_time'] : 'nullable|date_format:H:i',
+            'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer|min:3' : 'nullable|integer',
+            'pick_up_address' => 'required|string',
+            'drop_off_address' => 'required|string',
+            'no_of_passenger' => 'required|integer',
+            'no_of_wheelchair_pax' => 'required|integer',
+            'package_id' => ['required', 'exists:packages,id'],
+            'distance' => ['required'],
+        ], [
+            'return_time.after' => "Return time must be a time after pick up time.",
+            'no_of_charter_hours.min' => 'The number of charter hours must be at least 3.',
+        ])->after(function ($validator) use ($request) {
+            //* Custom Validation
+            if ($request->input('active_tab') === "Return") {
+                    $pickUpDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('pick_up_time'));
+                    $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
+
+                    if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
+                        $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
+                    }
+            }
+
+            else if ($request->input('active_tab') === "Charter") {
+               $charter_hours = $request->no_of_charter_hours;
+                if ($charter_hours < 3) {
+                    $validator->errors()->add('medical_escort', 'For Charter package, charter hours must more than 3 hours');
+                }
         }
-
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|string',
-                'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
-                'pick_up_date' => 'required|date|after_or_equal:today',
-                'pick_up_time' => 'required|date_format:H:i',
-                'return_time' => $request->input('active_tab') === "Return" ? 'required|date_format:H:i|after:pick_up_time' : 'nullable|date_format:H:i',
-                'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer|min:3' : 'nullable|integer',
-                'pick_up_address' => 'required|string',
-                'drop_off_address' => 'required|string',
-                'no_of_passenger' => 'required|integer',
-                'no_of_wheelchair_pax' => 'required|integer',
-                'package_id' => 'required|exists:packages,id',
-            ],
-            [
-                'return_time.after' => "Return time must be a time after pick up time.",
-                 'no_of_charter_hours.min' => 'The number of charter hours must be at least 3.',
-            ]
-        );
+        });
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -106,8 +121,7 @@ class HomeController extends Controller
             'no_of_wheelchair_pax' => $request->no_of_wheelchair_pax,
             'package_name' => $package->name,
             'medical_escort' => $request->has('medical_escort') && $request->input('medical_escort') == '1',
-            //Tempo Variable
-            'distance' => 10,
+            'distance' => $request->distance,
         ]);
 
         $booking->package()->associate($package);
