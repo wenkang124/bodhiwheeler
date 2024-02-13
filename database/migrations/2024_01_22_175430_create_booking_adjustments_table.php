@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('type');
             $table->unsignedInteger('adjustment');
-            $table->unsignedInteger('value');
+            $table->string('value');
             $table->string('adjustment_type')->nullable();
             $table->decimal('total', 10, 2)->nullable();
             $table->foreignUlid('package_id')->constrained();
