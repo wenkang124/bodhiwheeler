@@ -121,7 +121,7 @@ class HomeController extends Controller
             'no_of_wheelchair_pax' => $request->no_of_wheelchair_pax,
             'package_name' => $package->name,
             'medical_escort' => $request->has('medical_escort') && $request->input('medical_escort') == '1',
-            'distance' => $request->distance,
+            'distance' => $request->distance ?? 0,
         ]);
 
         $booking->package()->associate($package);
