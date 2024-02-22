@@ -51,7 +51,8 @@
                             <form id="booking-confirmation-form" action="{{route('booking.booking-confirmation')}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="booking_id" value="{{ $booking->id }}">
-                                <button type="submit" class="g-recaptcha def-btn def-btn-2">Confirm Booking</button>
+                                <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"
+                                    data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
                             </form>
                         </div>
                     </div>
