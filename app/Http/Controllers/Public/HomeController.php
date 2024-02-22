@@ -56,14 +56,14 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-        //     'response' => $request->get('g-recaptcha-response'),
-        // ]);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+            'response' => $request->get('g-recaptcha-response'),
+        ]);
 
-        // if (!$response->json()['success']) {
-        //     abort('401');
-        // }
+        if (!$response->json()['success']) {
+            abort('401');
+        }
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
