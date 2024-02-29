@@ -41,8 +41,7 @@
                         </ul>
                         <div class="text-center">
                             <!-- Placeholder for QR Code Image -->
-                            {{-- <img src="{{ asset('path/qr-code/image.png') }}" alt="Payment QR Code" class="mb-4"> --}}
-                            <div style="border: 2px dashed #ccc; width: 200px; height: 200px; margin: 20px auto;"></div>
+                            <img src="{{asset('assets/images/payment-qr.jpg') }}" alt="Payment QR Code" class="mb-4">
 
                             <h6>Payment is required to finalize your booking.</h6>
                             <h6>Confirm your reservation and enjoy your ride with confidence.</h6>

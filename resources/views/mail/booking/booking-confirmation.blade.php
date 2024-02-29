@@ -44,7 +44,4 @@
         <li><h4>Remarks: {{ $remarks }}</h4></li>
     </ul>
 </body>
-
-
-
 </html>

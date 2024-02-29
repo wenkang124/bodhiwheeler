@@ -109,13 +109,13 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-xl-5 col-lg-5 col-md-4">
+                            <div class="col-xl-5 col-lg-5 col-md-6">
                                 {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
                                 @error('no_of_passenger', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-xl-5 col-lg-5 col-md-4">
+                            <div class="col-xl-5 col-lg-5 col-md-6">
                                 {!! Form::number('no_of_wheelchair_pax', null, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
                                 @error('no_of_wheelchair_pax', $package->id)
                                     <span class="text-danger">{{ $message }}</span>

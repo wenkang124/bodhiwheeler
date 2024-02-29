@@ -2755,6 +2755,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 input[type=time],
 input[type=date] {
+    align-items: center;
+    display: inline-flex;
+
   &[placeholder]:invalid {
     &::-webkit-datetime-edit {
       display: none;
