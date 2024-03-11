@@ -14,7 +14,7 @@ class BookingController extends Controller
     public function edit(Booking $booking)
     {
         // Get all drivers
-        $allDrivers = Driver::all();
+        $allDrivers = Driver::where('status', 'active')->get();
 
         $startTime = Carbon::parse($booking->pick_up_date . ' ' . $booking->pick_up_time);
         $endTime = $booking->return_time

@@ -37,7 +37,7 @@ class RejectedBookingController extends Controller
             })
             ->editColumn('actions', function ($row) {
                 $actions = '<div class="d-flex flex-column gap-3">';
-                $actions .= '<a href="' . route('admin.booking.approved-booking.detail', [$row->id, $row]) . '" class="btn btn-outline-info" style="width: 100%;">Details</a>';
+                $actions .= '<a href="' . route('admin.booking.rejected-booking.detail', [$row->id, $row]) . '" class="btn btn-outline-info" style="width: 100%;">Details</a>';
                 $actions .= '</div>';
 
                 return $actions;

@@ -149,7 +149,7 @@
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks', 'required']) !!}
-                                <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"
+                                <button class="def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"
                                     data-callback='onSubmit' data-action='submit'>Book Now</button>
                             </div>
                         </div>

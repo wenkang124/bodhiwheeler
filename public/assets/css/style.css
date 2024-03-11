@@ -3560,6 +3560,10 @@ input[type=date] {
   color: #E7B03C;
 }
 
+input[type="file"]::-webkit-file-upload-button {
+    display: none;
+}
+
 @keyframes pulse-1 {
   0% {
     width: 100%;

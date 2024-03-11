@@ -56,14 +56,14 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+        //     'response' => $request->get('g-recaptcha-response'),
+        // ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
-        }
+        // if (!$response->json()['success']) {
+        //     abort('401');
+        // }
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
@@ -84,20 +84,24 @@ class HomeController extends Controller
         ])->after(function ($validator) use ($request) {
             //* Custom Validation
             if ($request->input('active_tab') === "Return") {
-                    $pickUpDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('pick_up_time'));
-                    $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
+                $pickUpDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('pick_up_time'));
+                $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
 
-                    if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
-                        $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
-                    }
-            }
-
-            else if ($request->input('active_tab') === "Charter") {
-               $charter_hours = $request->no_of_charter_hours;
+                if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
+                    $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
+                }
+            } else if ($request->input('active_tab') === "Charter") {
+                $charter_hours = $request->no_of_charter_hours;
                 if ($charter_hours < 3) {
                     $validator->errors()->add('medical_escort', 'For Charter package, charter hours must more than 3 hours');
                 }
-        }
+            }
+
+
+            if (empty($request->input('distance'))) {
+                $validator->errors()->add('pick_up_address', 'Please provide a valid pick up address.');
+                $validator->errors()->add('drop_off_address', 'Please provide a valid drop off address.');
+            }
         });
 
         if ($validator->fails()) {
@@ -129,37 +133,52 @@ class HomeController extends Controller
         $booking->save();
 
         //Booking Total Price Calculation
-       $this->bookingPriceCalculator->calculatePrice($package->id, $booking);
+        $this->bookingPriceCalculator->calculatePrice($package->id, $booking);
 
+        return redirect()->route('booking.confirmation', ['booking_id' => $booking->id]);
+    }
+
+    public function bookingConfirmation($booking_id)
+    {
+        $booking = Booking::where(['id' => $booking_id, 'status' => 'pending'])->first();
         return view('public.booking-confirmation', ['booking' => $booking]);
     }
 
-    public function bookingConfirmation(Request $request)
+    public function submitConfirmation(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+        //     'response' => $request->get('g-recaptcha-response'),
+        // ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
-        }
+        // if (!$response->json()['success']) {
+        //     abort('401');
+        // }
 
         $validator = Validator::make(
             $request->all(),
             [
                 'booking_id' => 'required|exists:bookings,id',
+                'payment_receipt' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ],
         );
 
         if ($validator->fails()) {
             Session::flash('error', 'Fail submitted Enquiry. ' . $validator->errors()->first());
+            return redirect()->back();
         }
 
         $booking = Booking::find($request->booking_id);
         $booking->status = "submitted";
-        $booking->update();
+
+        //Upload Payment Receipt
+        if ($request->hasFile('payment_receipt')) {
+            $imagePath = $request->file('payment_receipt')->store('payment_receipts', 'public');
+            $booking->payment_receipt = $imagePath;
+        }
+
+        $booking->save();
 
         if (env('APP_ENV') === 'production') {
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));

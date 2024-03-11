@@ -114,7 +114,8 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Medical Escort</strong>
                                                     <br>
-                                                    <p class="text-muted">{{ $booking->medical_escort ? 'True' : 'False' }}</p>
+                                                    <p class="text-muted">{{ $booking->medical_escort ? 'True' : 'False' }}
+                                                    </p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Remarks</strong>
@@ -131,6 +132,19 @@
                                                     <br>
                                                     <p class="text-muted">{{ $booking->approved_at }}</p>
                                                 </div>
+
+                                                @if ($booking->payment_receipt)
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <strong>Payment Receipt</strong>
+                                                            <br>
+                                                            <button type="button" class="btn btn-primary view-receipt-btn"
+                                                                data-receipt-image="{{ $booking->payment_receipt }}">
+                                                                View Receipt
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -139,7 +153,78 @@
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="mt-5">
+                                <h4>Booking Price Details</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Cost</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $totalCost = 0;
+                                            @endphp
+                                            @foreach ($booking->bookingAdjustments as $adjustment)
+                                                @php
+                                                    // Extract type without underscores
+                                                    $formattedType = str_replace('_', ' ', $adjustment->type);
+                                                    // Calculate total cost
+                                                    $totalCost += $adjustment->adjustment;
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ ucwords($formattedType) }}</td>
+                                                    <td>${{ $adjustment->adjustment }}</td>
+                                                </tr>
+                                            @endforeach
+                                            <tr>
+                                                <td><strong>Total</strong></td>
+                                                <td><strong>${{ $totalCost }}</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="paymentReceiptModal" tabindex="-1" role="dialog"
+        aria-labelledby="paymentReceiptModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+            <div class="modal-content border-0 w-auto">
+                <div class="modal-body d-flex flex-column p-0">
+                    <button type="button" class="btn btn-dark position-absolute end-0 m-2" data-bs-dismiss="modal"
+                        aria-label="Close">Close</button>
+                    <img id="paymentReceiptImage" class="modal-image" width="400px" height="600px" alt="Payment Receipt">
+                </div>
             </div>
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewReceiptBtns = document.querySelectorAll('.view-receipt-btn');
+            viewReceiptBtns.forEach(function(btn) {
+                btn.addEventListener('click', function() {
+                    const receiptImageSrc = '/storage/' + this.getAttribute('data-receipt-image');
+                    const paymentReceiptImage = document.getElementById('paymentReceiptImage');
+                    paymentReceiptImage.src = receiptImageSrc;
+                    const modal = new bootstrap.Modal(document.getElementById(
+                        'paymentReceiptModal'));
+                    modal.show();
+                });
+            });
+        });
+    </script>
+@endpush
