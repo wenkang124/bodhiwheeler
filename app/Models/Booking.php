@@ -52,4 +52,9 @@ class Booking extends Model
     {
         return $this->hasMany(BookingAdjustment::class);
     }
+
+    public function scopeIsPendingReview($query)
+    {
+        $query->where('status', 'submitted');
+    }
 }

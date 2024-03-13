@@ -42,6 +42,9 @@
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.pending-approval') ? 'active' : '' }}" href="{{ route('admin.booking.pending-approval') }}" aria-expanded="false">
                         <i class="me-2 mdi mdi-account-clock"></i>
                         <span class="hide-menu">Pending Approval</span>
+                        @if(($pending_booking_count = \App\Models\Booking::isPendingReview()->count()) > 0)
+                        <span class="badge badge-pill bg-success">{{$pending_booking_count}}</span>
+                        @endif
                     </a>
                 </li>
                 <li class="sidebar-item">
