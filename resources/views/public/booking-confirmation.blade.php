@@ -76,28 +76,32 @@
                     </div>
 
                     <div class="text-center">
-                        <!-- Placeholder for QR Code Image -->
-                        <img src="{{ asset('assets/images/payment-qr.jpg') }}" alt="Payment QR Code" class="mb-4">
+                        @if ($systemConfig->is_active)
+                            @if ($systemConfig->image_path)
+                                <img src="{{ asset('/storage/' . $systemConfig->image_path) }}" alt="Payment QR Code" class="mb-4" width="200" height="200">
+                            @else
+                                <img src="{{ asset('assets/images/payment-qr.jpg') }}" alt="Payment QR Code" class="mb-4" width="200" height="200">
+                            @endif
 
-                        <h6>Payment is required to finalize your booking.</h6>
-                        <h6>Confirm your reservation and enjoy your ride with confidence.</h6>
+                            <h6>Payment is required to finalize your booking.</h6>
+                            <h6>Confirm your reservation and enjoy your ride with confidence.</h6>
+                        @endif
 
                         <!-- Form to Submit and Change Booking Status -->
-                        <form id="booking-confirmation-form" action="{{ route('booking.submit-confirmation') }}"
-                            method="POST" enctype="multipart/form-data">
+                        <form id="booking-confirmation-form" action="{{ route('booking.submit-confirmation') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="booking_id" value="{{ $booking->id }}">
-                            <div class="mb-3 mt-4 text-left">
-                                <label for="formFileMd" class="form-label">Upload Receipt (Only if payment
-                                    made):</label>
-                                <div class="input-group">
-                                    <input type="file" class="form-control" id="payment_receipt" name="payment_receipt"
-                                        accept="image/*"\>
-                                    <label class="input-group-text" for="payment_receipt">Choose file</label>
+                            @if ($systemConfig->is_active)
+                                <div class="mb-3 mt-4 text-left">
+                                    <label for="formFileMd" class="form-label">Upload Receipt (Only if payment
+                                        made):</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="payment_receipt" name="payment_receipt" accept="image/*"\>
+                                        <label class="input-group-text" for="payment_receipt">Choose file</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <button class="def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}"
-                                data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
+                            @endif
+                            <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
                         </form>
                     </div>
                 </div>

@@ -42,9 +42,6 @@
     <div class="col-sm-9">
         {{ Form::hidden('status', 'inactive') }}
         {{ Form::checkbox('status', 'active', true, ['data-toggle' => 'toggle', 'data-on' => 'Active', 'data-off' => 'Inactive', 'data-onstyle' => 'success', 'data-offstyle' => 'danger', 'data-size' => 'sm', 'data-width' => '100']) }}
-        <small class="text-muted">
-            Only active status will be selectable
-        </small>
         @error('status')
             <small class="form-control-feedback">
                 {{ $message }}

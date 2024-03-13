@@ -16,12 +16,12 @@ class DashboardController extends Controller
             'yearly' => $this->getSales('yearly'),
         ];
 
-        $allBookings = Booking::where('status', 'approved')
-            ->whereDate('created_at', '>=', now()->toDateString())
+        $latestApprovedBookings = Booking::where('status', 'approved')
+            ->orderBy('created_at', 'desc')
             ->take(8)
             ->get();
 
-        return view('admin.dashboard', compact('salesData', 'allBookings'));
+        return view('admin.dashboard', compact('salesData', 'latestApprovedBookings'));
     }
 
     private function getSales($interval)

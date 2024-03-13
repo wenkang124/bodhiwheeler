@@ -5,6 +5,11 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\AdminSeeder;
+use Database\Seeders\PackageSeeder;
+use Database\Seeders\SystemConfigSeeder;
+use Database\Seeders\PublicHolidaySeeder;
+use Database\Seeders\PackagePriceListSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +23,7 @@ class DatabaseSeeder extends Seeder
             AdminSeeder::class,
             PublicHolidaySeeder::class,
             PackagePriceListSeeder::class,
+            SystemConfigSeeder::class,
         ]);
     }
 }

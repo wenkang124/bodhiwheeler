@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Public;
 use Carbon\Carbon;
 use App\Models\Booking;
 use App\Models\Package;
+use App\Models\SystemConfig;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
@@ -56,14 +57,14 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-        //     'response' => $request->get('g-recaptcha-response'),
-        // ]);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+            'response' => $request->get('g-recaptcha-response'),
+        ]);
 
-        // if (!$response->json()['success']) {
-        //     abort('401');
-        // }
+        if (!$response->json()['success']) {
+            abort('401');
+        }
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
@@ -140,27 +141,28 @@ class HomeController extends Controller
 
     public function bookingConfirmation($booking_id)
     {
+        $systemConfig = SystemConfig::first();
         $booking = Booking::where(['id' => $booking_id, 'status' => 'pending'])->first();
-        return view('public.booking-confirmation', ['booking' => $booking]);
+        return view('public.booking-confirmation', ['booking' => $booking, 'systemConfig' => $systemConfig]);
     }
 
     public function submitConfirmation(Request $request)
     {
         // Google Recaptchat Validation
-        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-        //     'response' => $request->get('g-recaptcha-response'),
-        // ]);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+            'response' => $request->get('g-recaptcha-response'),
+        ]);
 
-        // if (!$response->json()['success']) {
-        //     abort('401');
-        // }
+        if (!$response->json()['success']) {
+            abort('401');
+        }
 
         $validator = Validator::make(
             $request->all(),
             [
                 'booking_id' => 'required|exists:bookings,id',
-                'payment_receipt' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'payment_receipt' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             ],
         );
 

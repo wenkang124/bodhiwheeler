@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\SystemConfigController;
 use App\Http\Controllers\Admin\ApprovedBookingController;
 use App\Http\Controllers\Admin\PendingApprovalController;
 use App\Http\Controllers\Admin\RejectedBookingController;
@@ -78,5 +79,10 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
 
         Route::get('{booking}/edit', [BookingController::class, 'edit'])->name('.edit');
         Route::post('{booking}', [BookingController::class, 'update'])->name('.update');
+    });
+
+    Route::prefix('system-configs')->name('.system-config')->group(function () {
+        Route::get('', [SystemConfigController::class, 'index']);
+        Route::post('update', [SystemConfigController::class, 'update'])->name('.update');
     });
 });
