@@ -24,7 +24,9 @@ Route::get('/faq', [HomeController::class, 'faq'])->name('faq');
 
 Route::group(['prefix' => 'booking', 'as' => 'booking'], function () {
     Route::get('/', [HomeController::class, 'booking']);
+    Route::get('/edit/{booking_id}', [HomeController::class, 'editBooking'])->name('.edit');
     Route::post('/submit-booking', [HomeController::class, 'submitBooking'])->name('.submit-booking');
+    Route::post('/update-booking', [HomeController::class, 'updateBooking'])->name('.update-booking');
     Route::get('/confirmation/{booking_id}', [HomeController::class, 'bookingConfirmation'])->name('.confirmation');
     Route::post('/submit-confirmation', [HomeController::class, 'submitConfirmation'])->name('.submit-confirmation');
 });

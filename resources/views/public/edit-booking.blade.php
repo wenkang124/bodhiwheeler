@@ -1,6 +1,6 @@
 @extends('public.layouts.index')
 @push('meta')
-    <title>Booking | Affordable Wheelchair Transport Singapore | BodhiWheeler</title>
+    <title>Edit Booking | Affordable Wheelchair Transport Singapore | BodhiWheeler</title>
 @endpush
 @section('content')
     <!-- breadcrumb begin -->
@@ -9,7 +9,7 @@
             <div class="row justify-content-center">
                 <div class="col-xl-4 col-lg-5">
                     <div class="part-txt">
-                        <h1>Booking</h1>
+                        <h1>Edit Booking</h1>
                     </div>
                 </div>
             </div>
@@ -21,13 +21,13 @@
     <div class="contact">
         <div class="container">
             @php
-                $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $packages[0]->name))); // Assuming $packages is not empty
+                $transformedActiveTab = strtolower(str_replace(' ', '_', $booking->package_name));
             @endphp
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
                 @foreach ($packages as $package)
                     <li class="nav-item col">
-                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
-                            aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'true' : 'false' }}">
+                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
+                            aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'true' : 'false' }}">
                             {{ $package->name }}
                         </a>
                     </li>
@@ -36,24 +36,24 @@
 
             <div class="tab-content">
                 @foreach ($packages as $package)
-                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
-                        {!! Form::open(['route' => 'booking.submit-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
+                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
+                        {!! Form::open(['route' => 'booking.update-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
                         @csrf
                         <div class="row justify-content-center">
                             <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::text('name', null, ['placeholder' => 'Name*', 'required']) !!}
+                                {!! Form::text('name', $booking->name, ['placeholder' => 'Name*', 'required']) !!}
                                 @error('name', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::tel('phone', null, ['placeholder' => 'Phone Number*', 'required']) !!}
+                                {!! Form::tel('phone', $booking->phone, ['placeholder' => 'Phone Number*', 'required']) !!}
                                 @error('phone', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time('pick_up_time', null, ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
+                                {!! Form::time('pick_up_time', isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '', ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -61,7 +61,7 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    <input type="text" placeholder="Return Time" id="returnTimeInput" class="time-input">
+                                    {!! Form::time('return_time', isset($booking) ? \Carbon\Carbon::parse($booking->return_time)->format('H:i') : '', ['placeholder' => 'Return Time']) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -70,7 +70,7 @@
 
                             @if ($package->name == 'Charter')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::number('no_of_charter_hours', null, ['placeholder' => 'No of Charter Hours', 'required']) !!}
+                                    {!! Form::number('no_of_charter_hours', $booking->no_of_charter_hours, ['placeholder' => 'No of Charter Hours', 'required']) !!}
                                     @error('no_of_charter_hours', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -78,13 +78,13 @@
                             @endif
 
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::date('pick_up_date', null, ['placeholder' => 'Pick Up Date*', 'required']) !!}
+                                {!! Form::date('pick_up_date', $booking->pick_up_date, ['placeholder' => 'Pick Up Date*', 'required']) !!}
                                 @error('pick_up_date', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('pick_up_address', null, [
+                                {!! Form::text('pick_up_address', $booking->pick_up_address, [
                                     'id' => 'pick_up_address',
                                     'placeholder' => 'Pick Up Address*',
                                     'required',
@@ -94,7 +94,7 @@
                                 @enderror
                             </div>
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('drop_off_address', null, [
+                                {!! Form::text('drop_off_address', $booking->drop_off_address, [
                                     'id' => 'drop_off_address',
                                     'placeholder' => 'Drop Off Address*',
                                     'required',
@@ -104,13 +104,13 @@
                                 @enderror
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
+                                {!! Form::number('no_of_passenger', $booking->no_of_passenger, ['placeholder' => 'No of Passengers*', 'required']) !!}
                                 @error('no_of_passenger', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::number('no_of_wheelchair_pax', null, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
+                                {!! Form::number('no_of_wheelchair_pax', $booking->no_of_wheelchair_pax, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
                                 @error('no_of_wheelchair_pax', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -123,12 +123,13 @@
                                             'class' => 'form-check-label py-0 pr-2 medical-label',
                                             'style' => 'white-space: nowrap;',
                                         ]) !!}
-                                        {!! Form::checkbox('medical_escort', '1', false, [
+                                        {!! Form::checkbox('medical_escort', '1', $booking->medical_escort ?? false, [
                                             'class' => 'medical-escort',
                                             'id' => 'medical_escort_checkbox',
                                             'data-on-value' => '1',
                                             'data-off-value' => '0',
                                             'value' => '0',
+                                            'checked' => isset($booking->medical_escort) && $booking->medical_escort,
                                         ]) !!}
                                     </div>
                                     @error('medical_escort', $package->id)
@@ -138,11 +139,13 @@
                             @endif
 
                             {!! Form::hidden('package_id', $package->id) !!}
+                            {!! Form::hidden('booking_id', $booking->id) !!}
                             {!! Form::hidden('active_tab', $package->name) !!}
-                            {!! Form::hidden('distance', '', ['id' => 'distance']) !!}
+                            {!! Form::hidden('distance', $booking->distance ?? '', ['id' => 'distance']) !!}
 
                             <div class="col-xl-10 col-lg-10 text-right">
-                                {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
+                                {!! Form::textarea('remarks', $booking->remarks, ['placeholder' => 'Remarks']) !!}
+                                <button class="def-btn def-btn-3 m-2" onclick="window.history.back();">Back</button>
                                 <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
                             </div>
                         </div>
@@ -169,18 +172,6 @@
 
 @push('scripts')
     <script>
-        const returnTimeInput = document.getElementById('returnTimeInput');
-
-        returnTimeInput.addEventListener('focus', function() {
-            this.type = 'time';
-        });
-
-        returnTimeInput.addEventListener('blur', function() {
-            if (!this.value) {
-                this.type = 'text';
-            }
-        });
-
         function onSubmit(token) {
             var activeForm = $('.tab-pane.active form');
 

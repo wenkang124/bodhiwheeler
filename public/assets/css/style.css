@@ -212,6 +212,13 @@ span {
   background: #E7B03C;
   color: #fff;
 }
+.def-btn.def-btn-3 {
+    background: #6699ff;
+    border: 1px solid #6699ff !important;
+  }
+  .def-btn.def-btn-3:hover, .def-btn.def-btn-2:focus {
+    background: #8080ff;
+  }
 
 .heading {
   text-align: center;
