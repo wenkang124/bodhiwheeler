@@ -53,7 +53,7 @@
                                 @enderror
                             </div>
                             <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time('pick_up_time', null, ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
+                                {!! Form::time('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
