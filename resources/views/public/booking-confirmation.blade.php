@@ -101,7 +101,7 @@
                                     </div>
                                 </div>
                             @endif
-                            <a class="def-btn def-btn-3" href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}" class="btn btn-primary">Edit Booking</a>
+                            <a class="def-btn def-btn-3 m-3" href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}" class="btn btn-primary">Edit Booking</a>
                             <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
                         </form>
                     </div>

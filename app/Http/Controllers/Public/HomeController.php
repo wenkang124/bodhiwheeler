@@ -136,7 +136,7 @@ class HomeController extends Controller
             'distance' => $request->distance ?? 0,
         ]);
 
-        if ($request->filled('pick_up_time') && $request->missing('return_time')) {
+        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
             $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
             $returnTime = $pickUpTime->copy()->addHours(3);
             $booking->return_time = $returnTime->format('H:i');
@@ -242,12 +242,12 @@ class HomeController extends Controller
             'drop_off_address' => $request->drop_off_address,
             'no_of_passenger' => $request->no_of_passenger,
             'no_of_wheelchair_pax' => $request->no_of_wheelchair_pax,
-            'package_name' => $package->name,
+             'package_name' => $package->name,
             'medical_escort' => $request->has('medical_escort') && $request->input('medical_escort') == '1',
             'distance' => $request->distance ?? 0,
         ]);
 
-        if ($request->filled('pick_up_time') && $request->missing('return_time')) {
+        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
             $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
             $returnTime = $pickUpTime->copy()->addHours(3);
             $booking->return_time = $returnTime->format('H:i');
