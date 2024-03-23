@@ -49,12 +49,9 @@
                          <h3>Qualified In</h3>
                          <p><img src="{{ asset('assets/images/bizsafe.png') }}" alt="Bizsafe Icon"></p>
                          <div class="social">
-                             <a href="https://www.facebook.com/bodhi.wheeler.96" class="fb" target="_blank"><i
-                                     class="flaticon-facebook"></i></a>
-                             <a href="mailto:bodhiwheelers@gmail.com" class="tw" target="_blank"><i
-                                     class="flaticon-message"></i></a>
-                             <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?"
-                                 target="_blank">
+                             <a href="https://www.facebook.com/bodhi.wheeler.96" class="fb" target="_blank"><i class="flaticon-facebook"></i></a>
+                             <a href="mailto:bodhiwheelers@gmail.com" class="tw" target="_blank"><i class="flaticon-message"></i></a>
+                             <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank" onclick="gtag_report_conversion('http://web.whatsapp.com/send?phone=+6593682784');">
                                  <img class="whatsapp" src="{{ asset('assets/flaticon/whatsapp.png') }}" alt="WhatsApp">
                              </a>
                          </div>

@@ -7,6 +7,20 @@
     <meta name="robots" content="noindex, nofollow">
     @endenv
 
+    @env('production')
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9MJ4T7GKHR"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-9MJ4T7GKHR');
+    </script>
+    @endenv
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -16,20 +30,14 @@
     {{-- <title>Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler</title>
     <meta name="description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"> --}}
     <meta name="keywords" content="cheap wheelchair transport, wheelchair taxi, wheelchair transport service Singapore" />
-    <meta property="og:title"
-        content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
-    <meta property="og:description"
-        content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
-    <meta name="facebook:title"
-        content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
-    <meta name="facebook:description"
-        content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta property="og:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta name="facebook:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
     <meta property="og:site_name" content="Bodhiwheeler Wheelchair Transport" />
-    <meta name="classification"
-        content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Bicycle Transport, Charter Service" />
+    <meta name="classification" content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Bicycle Transport, Charter Service" />
     <meta name="distribution" content="Global" />
-    <meta name="generator"
-        content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
+    <meta name="generator" content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
     <meta name="rating" content="General" />
     <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="general" />
@@ -45,20 +53,20 @@
     @stack('meta')
 
 
-   <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicons/apple-icon-57x57.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('assets/favicons/apple-icon-60x60.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('assets/favicons/apple-icon-72x72.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/favicons/apple-icon-76x76.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('assets/favicons/apple-icon-114x114.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/favicons/apple-icon-120x120.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/favicons/apple-icon-144x144.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/favicons/apple-icon-152x152.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicons/apple-icon-180x180.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicons/favicon-16x16.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-32x32.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-96x96.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicons/android-icon-192x192.png').'?v=1' }}">
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicons/apple-icon-57x57.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('assets/favicons/apple-icon-60x60.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('assets/favicons/apple-icon-72x72.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/favicons/apple-icon-76x76.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('assets/favicons/apple-icon-114x114.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/favicons/apple-icon-120x120.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/favicons/apple-icon-144x144.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/favicons/apple-icon-152x152.png') . '?v=1' }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicons/apple-icon-180x180.png') . '?v=1' }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicons/favicon-16x16.png') . '?v=1' }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-32x32.png') . '?v=1' }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-96x96.png') . '?v=1' }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicons/android-icon-192x192.png') . '?v=1' }}">
 
     <!-- animate css old -->
     <link rel="stylesheet" href="{{ asset('assets/css/animate-2.css') }}">
@@ -74,9 +82,71 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <!-- custom stylesheet -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    <!-- Global site tag (gtag.js) - Google Ads: 481469850 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-481469850"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'AW-481469850');
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-223922423-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-223922423-1');
+    </script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJ430R7Y2E"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-QJ430R7Y2E');
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KHFZ2DP');
+    </script>
+    <!-- End Google Tag Manager -->
 </head>
 
 <body>
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KHFZ2DP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="app">
 
         @include('public.layouts.preloader')
@@ -90,6 +160,20 @@
         @include('public.layouts.footer')
     </div>
 
+    <script>
+        function gtag_report_conversion(url) {
+            var callback = function() {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-481469850/S_BRCLq405kDEJrLyuUB',
+                'event_callback': callback
+            });
+            return false;
+        }
+    </script>
 
     <!-- jquery -->
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
