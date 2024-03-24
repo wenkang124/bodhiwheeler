@@ -18,6 +18,7 @@ class Booking extends Model
         'pick_up_date',
         'pick_up_time',
         'return_time',
+        'is_estimated_return_time',
         'no_of_charter_hours',
         'pick_up_address',
         'drop_off_address',

@@ -19,7 +19,7 @@ class PackagePriceListSeeder extends Seeder
             // One way
             [
                 'type' => 'less_than_10_distance',
-                'description' => 'One Way Wheelchair Ride < 10km',
+                'description' => 'One Way Wheelchair Ride',
                 'adjustment' => 40,
                 'value' => 10,
                 'adjustment_type' => 'base_price',
@@ -176,7 +176,7 @@ class PackagePriceListSeeder extends Seeder
             //Return
              [
                 'type' => 'less_than_10_distance',
-                'description' => 'Return Wheelchair Ride < 10km',
+                'description' => 'Return Wheelchair Ride',
                 'adjustment' => 40,
                 'value' => 10,
                 'adjustment_type' => 'base_price',
@@ -341,7 +341,7 @@ class PackagePriceListSeeder extends Seeder
             //Charter
             [
                 'type' => 'less_than_10_distance',
-                'description' => 'Charter Wheelchair Ride < 10km',
+                'description' => 'Charter Wheelchair Ride',
                 'adjustment' => 40,
                 'value' => 10,
                 'adjustment_type' => 'base_price',

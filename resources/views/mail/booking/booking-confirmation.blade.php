@@ -56,11 +56,11 @@
         <li>
             <h4>No. of Wheelchair Pax: {{ $noOfWheelchairPax }}</h4>
         </li>
-        <@if ($packageName === 'Return' || $packageName === 'Charter')
+        {{-- <@if ($packageName === 'Return' || $packageName === 'Charter')
             <li>
                 <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
             </li>
-            @endif
+            @endif --}}
             <li>
                 <h4>Remarks: {{ $remarks }}</h4>
             </li>

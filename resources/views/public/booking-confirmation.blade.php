@@ -30,19 +30,23 @@
                             <li><strong>Phone Number:</strong> {{ $booking->phone }}</li>
                             <li><strong>Pick-up Date and Time:</strong> {{ $booking->pick_up_date }} at
                                 {{ $booking->pick_up_time }}</li>
-                            @if ($booking->return_time)
+                            @if ($booking->return_time && !$booking->is_estimated_return_time)
                                 <li><strong>Return Time:</strong> {{ $booking->return_time }}</li>
+                            @elseif ($booking->is_estimated_return_time)
+                                <li><strong>Estimated Return Time:</strong> {{ $booking->return_time }} (Estimated 3 hours from Pick-up Time)
+                                </li>
+                                <span class="text-danger m-1">(This is estimated, you can edit to change the return time)</span>
                             @endif
                             <li><strong>Pick-up Address:</strong> {{ $booking->pick_up_address }}</li>
                             <li><strong>Drop-off Address:</strong> {{ $booking->drop_off_address }}</li>
                             <li><strong>Distance:</strong> {{ $booking->distance }}KM</li>
                             <li><strong>Number of Passengers:</strong> {{ $booking->no_of_passenger }}</li>
                             <li><strong>Number of Wheelchair Pax:</strong> {{ $booking->no_of_wheelchair_pax }}</li>
-                            @if ($booking->package_name === 'Return' || $booking->package_name === 'Charter')
+                            {{-- @if ($booking->package_name === 'Return' || $booking->package_name === 'Charter')
                                 <li>
                                     <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
                                 </li>
-                            @endif
+                            @endif --}}
                             <li><strong>Package:</strong> {{ $booking->package_name }}</li>
                             <li><strong>Total Price:</strong> ${{ $booking->total_price }}</li>
                         </ul>
@@ -106,7 +110,7 @@
                                 </div>
                             @endif
                             <a class="def-btn def-btn-3 m-3" href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}" class="btn btn-primary">Edit Booking</a>
-                            <button class="def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
+                            <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
                         </form>
                     </div>
                 </div>

@@ -58,14 +58,14 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-        //     'response' => $request->get('g-recaptcha-response'),
-        // ]);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+            'response' => $request->get('g-recaptcha-response'),
+        ]);
 
-        // if (!$response->json()['success']) {
-        //     abort('401');
-        // }
+        if (!$response->json()['success']) {
+            abort('401');
+        }
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
@@ -162,6 +162,7 @@ class HomeController extends Controller
         ]);
 
         if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
+            $booking->is_estimated_return_time = empty($request->return_time);
             $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
             $returnTime = $pickUpTime->copy()->addHours(3);
             $booking->return_time = $returnTime->format('H:i');
@@ -262,6 +263,7 @@ class HomeController extends Controller
             'pick_up_date' => $request->pick_up_date,
             'pick_up_time' => $request->pick_up_time,
             'return_time' => $request->return_time,
+            'is_estimated_return_time' => false,
             'no_of_charter_hours' => $request->no_of_charter_hours,
             'pick_up_address' => $request->pick_up_address,
             'drop_off_address' => $request->drop_off_address,
@@ -271,12 +273,6 @@ class HomeController extends Controller
             // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
         ]);
-
-        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
-            $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
-            $returnTime = $pickUpTime->copy()->addHours(3);
-            $booking->return_time = $returnTime->format('H:i');
-        }
 
         $booking->package()->associate($package);
 
@@ -304,14 +300,14 @@ class HomeController extends Controller
     public function submitConfirmation(Request $request)
     {
         // Google Recaptchat Validation
-        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-        //     'response' => $request->get('g-recaptcha-response'),
-        // ]);
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+            'response' => $request->get('g-recaptcha-response'),
+        ]);
 
-        // if (!$response->json()['success']) {
-        //     abort('401');
-        // }
+        if (!$response->json()['success']) {
+            abort('401');
+        }
 
         $validator = Validator::make(
             $request->all(),

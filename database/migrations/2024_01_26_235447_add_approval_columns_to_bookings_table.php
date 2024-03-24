@@ -15,6 +15,7 @@ return new class extends Migration
             $table->foreignUlid('approved_by')->after('driver_id')->nullable()->constrained('admins');
             $table->timestamp('approved_at')->after('approved_by')->nullable();
             $table->boolean('medical_escort')->after('approved_at')->nullable();
+            $table->boolean('is_estimated_return_time')->after('return_time')->nullable();
         });
     }
 
