@@ -58,21 +58,46 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        // $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+        //     'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+        //     'response' => $request->get('g-recaptcha-response'),
+        // ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
-        }
+        // if (!$response->json()['success']) {
+        //     abort('401');
+        // }
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'pick_up_date' => 'required|date|after_or_equal:today',
-            'pick_up_time' => 'required|date_format:H:i',
-            'return_time' => ['nullable', 'date_format:H:i', 'after:pick_up_time'],
+            'pick_up_time' => [
+                'required',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) {
+                    $pickupTime = Carbon::createFromFormat('H:i', $value);
+
+                    if ($pickupTime->hour < 7 || ($pickupTime->hour === 21 && $pickupTime->minute !== 0) || $pickupTime->hour >= 22) {
+                        $fail('The pick-up time must be between 07:00 and 21:00.');
+                    }
+                },
+            ],
+            'return_time' => [
+                'nullable',
+                'date_format:H:i',
+                'after:pick_up_time',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) {
+                        return;
+                    }
+
+                    $returnTime = Carbon::createFromFormat('H:i', $value);
+
+                    if ($returnTime->hour < 7 || ($returnTime->hour === 21 && $returnTime->minute !== 0) || $returnTime->hour >= 22) {
+                        $fail('The return time must be between 07:00 and 21:00.');
+                    }
+                },
+            ],
             'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer|min:3' : 'nullable|integer',
             'pick_up_address' => 'required|string',
             'drop_off_address' => 'required|string',
@@ -132,7 +157,7 @@ class HomeController extends Controller
             'no_of_passenger' => $request->no_of_passenger,
             'no_of_wheelchair_pax' => $request->no_of_wheelchair_pax,
             'package_name' => $package->name,
-            'medical_escort' => $request->has('medical_escort') && $request->input('medical_escort') == '1',
+            // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
         ]);
 
@@ -242,8 +267,8 @@ class HomeController extends Controller
             'drop_off_address' => $request->drop_off_address,
             'no_of_passenger' => $request->no_of_passenger,
             'no_of_wheelchair_pax' => $request->no_of_wheelchair_pax,
-             'package_name' => $package->name,
-            'medical_escort' => $request->has('medical_escort') && $request->input('medical_escort') == '1',
+            'package_name' => $package->name,
+            // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
         ]);
 

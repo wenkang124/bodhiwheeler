@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$name}} - Booking Confirmation</title>
+    <title>{{ $name }} - Booking Confirmation</title>
 </head>
 
 <body>
@@ -32,16 +32,39 @@
     <h4>Package Name: {{ $packageName }}</h4>
     <h4>Additional Booking Details:</h4>
     <ul>
-        <li><h4>Pick Up Date: {{ $pickUpDate }}</h4></li>
-        <li><h4>Pick Up Time: {{ $pickUpTime }}</h4></li>
-        <li><h4>Return Time: {{ $returnTime }}</h4></li>
-        <li><h4>No. of Charter Hours: {{ $noOfCharterHours }}</h4></li>
-        <li><h4>Pick Up Address: {{ $pickUpAddress }}</h4></li>
-        <li><h4>Drop Off Address: {{ $dropOffAddress }}</h4></li>
-        <li><h4>No. of Passengers: {{ $noOfPassenger }}</h4></li>
-        <li><h4>No. of Wheelchair Pax: {{ $noOfWheelchairPax }}</h4></li>
-        <li><h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4></li>
-        <li><h4>Remarks: {{ $remarks }}</h4></li>
+        <li>
+            <h4>Pick Up Date: {{ $pickUpDate }}</h4>
+        </li>
+        <li>
+            <h4>Pick Up Time: {{ $pickUpTime }}</h4>
+        </li>
+        <li>
+            <h4>Return Time: {{ $returnTime }}</h4>
+        </li>
+        <li>
+            <h4>No. of Charter Hours: {{ $noOfCharterHours }}</h4>
+        </li>
+        <li>
+            <h4>Pick Up Address: {{ $pickUpAddress }}</h4>
+        </li>
+        <li>
+            <h4>Drop Off Address: {{ $dropOffAddress }}</h4>
+        </li>
+        <li>
+            <h4>No. of Passengers: {{ $noOfPassenger }}</h4>
+        </li>
+        <li>
+            <h4>No. of Wheelchair Pax: {{ $noOfWheelchairPax }}</h4>
+        </li>
+        <@if ($packageName === 'Return' || $packageName === 'Charter')
+            <li>
+                <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
+            </li>
+            @endif
+            <li>
+                <h4>Remarks: {{ $remarks }}</h4>
+            </li>
     </ul>
 </body>
+
 </html>

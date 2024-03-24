@@ -35,8 +35,14 @@
                             @endif
                             <li><strong>Pick-up Address:</strong> {{ $booking->pick_up_address }}</li>
                             <li><strong>Drop-off Address:</strong> {{ $booking->drop_off_address }}</li>
+                            <li><strong>Distance:</strong> {{ $booking->distance }}KM</li>
                             <li><strong>Number of Passengers:</strong> {{ $booking->no_of_passenger }}</li>
                             <li><strong>Number of Wheelchair Pax:</strong> {{ $booking->no_of_wheelchair_pax }}</li>
+                            @if ($booking->package_name === 'Return' || $booking->package_name === 'Charter')
+                                <li>
+                                    <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
+                                </li>
+                            @endif
                             <li><strong>Package:</strong> {{ $booking->package_name }}</li>
                             <li><strong>Total Price:</strong> ${{ $booking->total_price }}</li>
                         </ul>
@@ -56,14 +62,12 @@
                                     @endphp
                                     @foreach ($booking->bookingAdjustments as $adjustment)
                                         @php
-                                            // Extract type without underscores
-                                            $formattedType = str_replace('_', ' ', $adjustment->type);
                                             // Calculate total cost
-                                            $totalCost += $adjustment->adjustment;
+                                            $totalCost += $adjustment->total;
                                         @endphp
                                         <tr>
-                                            <td>{{ ucwords($formattedType) }}</td>
-                                            <td>${{ $adjustment->adjustment }}</td>
+                                            <td>{{ $adjustment->description }}</td>
+                                            <td>${{ $adjustment->total }}</td>
                                         </tr>
                                     @endforeach
                                     <tr>
@@ -102,7 +106,7 @@
                                 </div>
                             @endif
                             <a class="def-btn def-btn-3 m-3" href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}" class="btn btn-primary">Edit Booking</a>
-                            <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
+                            <button class="def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
                         </form>
                     </div>
                 </div>

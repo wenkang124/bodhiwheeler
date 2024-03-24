@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('booking_adjustments', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('type');
+            $table->string('description');
             $table->unsignedInteger('adjustment');
             $table->string('value');
             $table->string('adjustment_type')->nullable();

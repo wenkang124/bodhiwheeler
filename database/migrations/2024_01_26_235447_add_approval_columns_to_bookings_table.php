@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-            $table->foreignUlid('approved_by')->nullable()->constrained('admins')->after('driver_id');
-            $table->timestamp('approved_at')->nullable()->after('approved_by');
-            $table->boolean('medical_escort')->nullable()->after('approved_at');
+            $table->foreignUlid('approved_by')->after('driver_id')->nullable()->constrained('admins');
+            $table->timestamp('approved_at')->after('approved_by')->nullable();
+            $table->boolean('medical_escort')->after('approved_at')->nullable();
         });
     }
 

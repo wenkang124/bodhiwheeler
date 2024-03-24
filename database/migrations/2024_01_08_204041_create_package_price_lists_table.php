@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('package_price_lists', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('type');
+            $table->string('description');
             $table->unsignedInteger('adjustment');
             $table->unsignedInteger('value');
             $table->string('adjustment_type')->nullable();

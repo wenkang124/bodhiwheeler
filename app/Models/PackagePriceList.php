@@ -12,6 +12,7 @@ class PackagePriceList extends Model
 
     protected $fillable = [
         'type',
+        'description',
         'adjustment',
         'value',
         'adjustment_type',

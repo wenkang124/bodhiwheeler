@@ -61,7 +61,7 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    <input type="text" placeholder="Return Time" id="returnTimeInput" class="time-input">
+                                    <input type="text" placeholder="Return Time (3 hours from Pick Up Time if blank)" id="returnTimeInput" class="time-input">
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -116,7 +116,7 @@
                                 @enderror
                             </div>
 
-                            @if ($package->name == 'Return' || $package->name == 'Charter')
+                            {{-- @if ($package->name == 'Return' || $package->name == 'Charter')
                                 <div class="col-xl-10 col-lg-10 text-left">
                                     <div class="form-check form-check-inline medical-escort-form">
                                         {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
@@ -135,7 +135,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            @endif
+                            @endif --}}
 
                             {!! Form::hidden('package_id', $package->id) !!}
                             {!! Form::hidden('active_tab', $package->name) !!}
@@ -143,7 +143,7 @@
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
-                                <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
+                                <button class="def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
                             </div>
                         </div>
                         {!! Form::close() !!}
