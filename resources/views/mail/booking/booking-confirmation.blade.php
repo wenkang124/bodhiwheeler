@@ -8,6 +8,7 @@
     $pickUpDate = $data['pick_up_date'];
     $pickUpTime = $data['pick_up_time'];
     $returnTime = $data['return_time'];
+    $isEstimatedReturnTime = $data['is_estimated_return_time'];
     $noOfCharterHours = $data['no_of_charter_hours'];
     $pickUpAddress = $data['pick_up_address'];
     $dropOffAddress = $data['drop_off_address'];
@@ -39,7 +40,7 @@
             <h4>Pick Up Time: {{ $pickUpTime }}</h4>
         </li>
         <li>
-            <h4>Return Time: {{ $returnTime }}</h4>
+            <h4>Return Time: {{ $isEstimatedReturnTime ? 'Customer will whatsapp once ready to return' : $returnTime }}
         </li>
         <li>
             <h4>No. of Charter Hours: {{ $noOfCharterHours }}</h4>

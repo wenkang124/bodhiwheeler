@@ -30,12 +30,16 @@
                             <li><strong>Phone Number:</strong> {{ $booking->phone }}</li>
                             <li><strong>Pick-up Date and Time:</strong> {{ $booking->pick_up_date }} at
                                 {{ $booking->pick_up_time }}</li>
-                            @if ($booking->return_time && !$booking->is_estimated_return_time)
+                            @if (!$booking->is_estimated_return_time)
                                 <li><strong>Return Time:</strong> {{ $booking->return_time }}</li>
                             @elseif ($booking->is_estimated_return_time)
-                                <li><strong>Estimated Return Time:</strong> {{ $booking->return_time }} (Estimated 3 hours from Pick-up Time)
+                                <li>
+                                    <span>
+                                        <strong>Estimated Return Time:</strong><span class="ml-2" style="color: #dc3545"> (Please
+                                            <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank" onclick="gtag_report_conversion('http://web.whatsapp.com/send?phone=+6593682784');">
+                                                whatsapp us</a> once you are ready to return) </span>
+                                    </span>
                                 </li>
-                                <span class="text-danger m-1">(This is estimated, you can edit to change the return time)</span>
                             @endif
                             <li><strong>Pick-up Address:</strong> {{ $booking->pick_up_address }}</li>
                             <li><strong>Drop-off Address:</strong> {{ $booking->drop_off_address }}</li>
@@ -110,7 +114,11 @@
                                 </div>
                             @endif
                             <a class="def-btn def-btn-3 m-3" href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}" class="btn btn-primary">Edit Booking</a>
+                            @if (env('APP_ENV') === 'local')
+                            <button class="def-btn def-btn-2">Book Now</button>
+                            @else
                             <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
+                            @endif
                         </form>
                     </div>
                 </div>

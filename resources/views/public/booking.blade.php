@@ -61,7 +61,7 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    <input type="text" placeholder="Return Time (3 hours from Pick Up Time if blank)" id="returnTimeInput" class="time-input">
+                                    <input type="text" placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" id="returnTimeInput" class="time-input">
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -143,7 +143,11 @@
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
+                                @if (env('APP_ENV') === 'local')
+                                <button class="def-btn def-btn-2">Book Now</button>
+                                @else
                                 <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
+                                @endif
                             </div>
                         </div>
                         {!! Form::close() !!}

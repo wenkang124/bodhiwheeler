@@ -61,7 +61,7 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::time('return_time', isset($booking) ? \Carbon\Carbon::parse($booking->return_time)->format('H:i') : '', ['placeholder' => 'Return Time']) !!}
+                                    {!! Form::time('return_time', isset($booking) && !$booking->is_estimated_return_time ? \Carbon\Carbon::parse($booking->return_time)->format('H:i') : '', ['placeholder' => 'Return Time']) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -145,7 +145,11 @@
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', $booking->remarks, ['placeholder' => 'Remarks']) !!}
+                                @if (env('APP_ENV') === 'local')
+                                <button class="def-btn def-btn-2">Book Now</button>
+                                @else
                                 <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm</button>
+                                @endif
                             </div>
                         </div>
                         {!! Form::close() !!}

@@ -140,6 +140,7 @@
                                                 <strong>Pick-up Address:</strong> {{ $latestApprovedBooking->pick_up_address }}<br>
                                                 <strong>Drop Off Address:</strong> {{ $latestApprovedBooking->drop_off_address }}<br>
                                                 <strong>Pick-up Time:</strong> {{ $latestApprovedBooking->pick_up_time }}<br>
+                                                <strong>Return Time:</strong> {{ $latestApprovedBooking->is_estimated_return_time ? 'Customer will whatsapp once ready to return' : $latestApprovedBooking->return_time }}<br>
                                                 <strong>Driver Name:</strong> {{ $latestApprovedBooking->driver->name }}
                                             </td>
                                             <td>{{ $latestApprovedBooking->package_name }}</td>

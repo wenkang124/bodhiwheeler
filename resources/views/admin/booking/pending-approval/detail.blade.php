@@ -67,7 +67,7 @@
                                                     <div class="col-md-3 col-xs-6">
                                                         <strong>Return Time</strong>
                                                         <br>
-                                                        <p class="text-muted">{{ $booking->return_time }}</p>
+                                                        <p class="text-muted">{{$booking->is_estimated_return_time ? 'Customer will whatsapp once ready to return' : $booking->return_time}}</p> 
                                                     </div>
                                                 @endif
 

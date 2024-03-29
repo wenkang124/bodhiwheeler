@@ -58,13 +58,15 @@ class HomeController extends Controller
     public function submitBooking(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        if (env('APP_ENV') === 'production') {
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+                'response' => $request->get('g-recaptcha-response'),
+            ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
+            if (!$response->json()['success']) {
+                abort('401');
+            }
         }
 
         $validator = Validator::make($request->all(), [
@@ -192,13 +194,15 @@ class HomeController extends Controller
     public function updateBooking(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        if (env('APP_ENV') === 'production') {
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+                'response' => $request->get('g-recaptcha-response'),
+            ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
+            if (!$response->json()['success']) {
+                abort('401');
+            }
         }
 
         $validator = Validator::make($request->all(), [
@@ -278,6 +282,13 @@ class HomeController extends Controller
 
         $booking->save();
 
+        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && ($request->missing('return_time') || empty($request->return_time))) {
+            $booking->is_estimated_return_time = empty($request->return_time);
+            $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
+            $returnTime = $pickUpTime->copy()->addHours(3);
+            $booking->return_time = $returnTime->format('H:i');
+        }
+
         //Delete Booking Adjustments
         $booking->bookingAdjustments()->delete();
 
@@ -300,13 +311,15 @@ class HomeController extends Controller
     public function submitConfirmation(Request $request)
     {
         // Google Recaptchat Validation
-        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-            'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
-            'response' => $request->get('g-recaptcha-response'),
-        ]);
+        if (env('APP_ENV') === 'production') {
+            $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+                'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
+                'response' => $request->get('g-recaptcha-response'),
+            ]);
 
-        if (!$response->json()['success']) {
-            abort('401');
+            if (!$response->json()['success']) {
+                abort('401');
+            }
         }
 
         $validator = Validator::make(
