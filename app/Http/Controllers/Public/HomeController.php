@@ -161,6 +161,7 @@ class HomeController extends Controller
             'package_name' => $package->name,
             // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
+            'remarks' => $request->remarks,
         ]);
 
         if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
@@ -276,6 +277,7 @@ class HomeController extends Controller
             'package_name' => $package->name,
             // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
+            'remarks' => $request->remarks,
         ]);
 
         $booking->package()->associate($package);
@@ -349,6 +351,8 @@ class HomeController extends Controller
         if (env('APP_ENV') === 'production') {
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
         }
+
+        Mail::to('jolow39497@abnovel.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
 
         return view('public.success-booking');
     }
