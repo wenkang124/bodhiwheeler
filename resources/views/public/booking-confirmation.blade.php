@@ -28,6 +28,7 @@
                             <li><strong>Booking ID:</strong> {{ $booking->id }}</li>
                             <li><strong>Name:</strong> {{ $booking->name }}</li>
                             <li><strong>Phone Number:</strong> {{ $booking->phone }}</li>
+                            <li><strong>Package:</strong> {{ $booking->package_name }}</li>
                             <li><strong>Pick-up Date and Time:</strong> {{ $booking->pick_up_date }} at
                                 {{ $booking->pick_up_time }}</li>
                             @if (!$booking->is_estimated_return_time)
@@ -46,12 +47,12 @@
                             <li><strong>Distance:</strong> {{ $booking->distance }}KM</li>
                             <li><strong>Number of Passengers:</strong> {{ $booking->no_of_passenger }}</li>
                             <li><strong>Number of Wheelchair Pax:</strong> {{ $booking->no_of_wheelchair_pax }}</li>
+                            <li><strong>Remarks:</strong> {{ $booking->remarks }}</li>
                             {{-- @if ($booking->package_name === 'Return' || $booking->package_name === 'Charter')
                                 <li>
                                     <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
                                 </li>
                             @endif --}}
-                            <li><strong>Package:</strong> {{ $booking->package_name }}</li>
                             <li><strong>Total Price:</strong> ${{ $booking->total_price }}</li>
                         </ul>
 
