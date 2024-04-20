@@ -3,7 +3,6 @@
 
 @php
     $name = $data['name'];
-    $email = $data['email'];
     $phone = $data['phone'] ? ' Phone: ' . $data['phone'] : '';
     $pickUpDate = $data['pick_up_date'];
     $pickUpTime = $data['pick_up_time'];
@@ -17,6 +16,7 @@
     $packageName = $data['package_name'];
     $medical_escort = $data['medical_escort'];
     $remarks = $data['remarks'];
+    $total_price = $data['total_price'];
 @endphp
 
 <head>
@@ -24,48 +24,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $name }} - Booking Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 50%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #201947;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 20px;
+            max-width: 100%;
+        }
+
+        h4,
+        span
+        {
+        display: inline-block;
+        margin: 5px;
+        color: white;
+        }
+
+        h3,
+        h4,
+        span,
+        li
+        {
+        color: white;
+        }
+
+        .details {
+            margin-left: 20px;
+        }
+
+        .table-content {
+            border: 1px solid white;
+            padding: 8px;
+            color: white;
+        }
+
+        .additional-detail {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <h4>Customer Name: {{ $name }}</h4>
-    <h4>Customer Email: {{ $email }}</h4>
-    <h4>Customer Phone: {{ $phone }}</h4>
-    <h4>Package Name: {{ $packageName }}</h4>
-    <h4>Additional Booking Details:</h4>
-    <ul>
-        <li>
-            <h4>Pick Up Date: {{ $pickUpDate }}</h4>
-        </li>
-        <li>
-            <h4>Pick Up Time: {{ $pickUpTime }}</h4>
-        </li>
-        <li>
-            <h4>Return Time: {{ $isEstimatedReturnTime ? 'Customer will whatsapp once ready to return' : $returnTime }}
-        </li>
-        <li>
-            <h4>No. of Charter Hours: {{ $noOfCharterHours }}</h4>
-        </li>
-        <li>
-            <h4>Pick Up Address: {{ $pickUpAddress }}</h4>
-        </li>
-        <li>
-            <h4>Drop Off Address: {{ $dropOffAddress }}</h4>
-        </li>
-        <li>
-            <h4>No. of Passengers: {{ $noOfPassenger }}</h4>
-        </li>
-        <li>
-            <h4>No. of Wheelchair Pax: {{ $noOfWheelchairPax }}</h4>
-        </li>
-        {{-- <@if ($packageName === 'Return' || $packageName === 'Charter')
+    <div class="card">
+        <img src="{{ asset('assets/images/footer-logo.png') }}" alt="Company Logo" class="logo" width="200">
+        <h3>New Booking</h3>
+        <div>
+            <h4>Customer Name: </h4><span>{{ $name }}</span>
+        </div>
+        <div>
+            <h4>Customer Phone: </h4><span>{{ $phone }}</span>
+        </div>
+
+        <div>
+            <h4>Package Name:</h4><span>{{ $packageName }}</span>
+        </div>
+        <div class="additional-detail">
+            <h4>Additional Booking Details:</h4>
+        </div>
+
+        <ul>
             <li>
-                <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
+                <h4>Pick Up Date: </h4><span>{{ $pickUpDate }}</span>
             </li>
-            @endif --}}
             <li>
-                <h4>Remarks: {{ $remarks }}</h4>
+                <h4>Pick Up Time: </h4><span>{{ $pickUpTime }}</span>
             </li>
-    </ul>
+            <li>
+                <h4>Return Time: </h4><span>{{ $isEstimatedReturnTime ? 'Customer will whatsapp once ready to return' : $returnTime }}</span>
+            </li>
+            <li>
+                <h4>No. of Charter Hours: </h4><span>{{ $noOfCharterHours }}</span>
+            </li>
+            <li>
+                <h4>Pick Up Address: </h4><span>{{ $pickUpAddress }}</span>
+            </li>
+            <li>
+                <h4>Drop Off Address: </h4><span>{{ $pickUpAddress }}</span>
+            </li>
+            <li>
+                <h4>No. of Passengers: </h4><span>{{ $noOfPassenger }}</span>
+            </li>
+            <li>
+                <h4>No. of Wheelchair Pax: </h4><span>{{ $noOfWheelchairPax }}</span>
+            </li>
+            <li>
+                <h4>Remarks: </h4><span>{{ $remarks }}</span>
+            </li>
+            <li>
+                <h4>Total Price: </h4><span>${{ $total_price }}</span>
+            </li>
+        </ul>
+
+        <div style="margin-top: 20px;">
+            <h4 style="margin-bottom: 10px;">Booking Price Details</h4>
+            <table style="border-collapse: collapse; width: 100%;">
+                <thead>
+                    <tr>
+                        <th class="table-content">Type</th>
+                        <th class="table-content">Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $totalCost = 0;
+                    @endphp
+                    @foreach ($data['bookingAdjustments'] as $adjustment)
+                        @php
+                            // Calculate total cost
+                            $totalCost += $adjustment['total'];
+                        @endphp
+                        <tr>
+                            <td class="table-content">{{ $adjustment['description'] }}</td>
+                            <td class="table-content">${{ $adjustment['total'] }}</td>
+                        </tr>
+                    @endforeach
+                    <tr>
+                        <td class="table-content"><strong>Total</strong></td>
+                        <td class="table-content"><strong>${{ number_format($totalCost, 2) }}</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 
 </html>
