@@ -352,6 +352,8 @@ class HomeController extends Controller
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
         }
 
+        Mail::to('jolow39497@abnovel.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
+
         return view('public.success-booking');
     }
 
