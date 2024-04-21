@@ -81,7 +81,7 @@
                                     @endforeach
                                     <tr>
                                         <td><strong>Total</strong></td>
-                                        <td><strong>${{ $totalCost }}</strong></td>
+                                        <td><strong>${{ number_format($totalCost, 2) }}</strong></td>
                                     </tr>
                                 </tbody>
                             </table>
