@@ -4,7 +4,10 @@ namespace App\Mail\Booking;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\App;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class BookingConfirmation extends Mailable
 {
@@ -30,9 +33,24 @@ class BookingConfirmation extends Mailable
     {
         $submissionDate = $this->data['created_at']->format('Y-m-d H:i:s');
 
+        $name = $this->data['name'];
+
         $subject = $this->data['name'] . ' - booking on ' . $submissionDate;
 
+        $htmlContent = view('mail.booking.booking-confirmation', ['data' => $this->data])->render();
+
+        $pdf = PDF::loadHTML($htmlContent);
+
+        $pdfFileName = $name . '_' . $submissionDate . '_booking_confirmation.pdf';
+
+        $pdfPath = 'booking_confirmations/' . now()->format('YmdHis') . '_' . $pdfFileName;
+        Storage::put($pdfPath, $pdf->output());
+
         return $this->subject($subject)
-            ->view('mail.booking.booking-confirmation');
+            ->view('mail.booking.booking-confirmation')
+            ->attach(storage_path('app/' . $pdfPath), [
+                'as' => $pdfFileName,
+                'mime' => 'application/pdf',
+            ]);
     }
 }

@@ -81,7 +81,7 @@
 
 <body>
     <div class="card">
-        <img src="{{ asset('assets/images/footer-logo.png') }}" alt="Company Logo" class="logo" width="200">
+        <img src="{{ public_path('assets/images/footer-logo.png') }}" alt="Company Logo" class="logo" width="200">
         <h3>New Booking</h3>
         <div>
             <h4>Customer Name: </h4><span>{{ $name }}</span>
