@@ -16,7 +16,7 @@
     $packageName = $data['package_name'];
     $medical_escort = $data['medical_escort'];
     $remarks = $data['remarks'];
-    $total_price = $data['total_price'];
+    $total_price = $data['total_price'] * ($data['package_name'] === 'Return' ? 2 : 1);
 @endphp
 
 <head>
@@ -48,19 +48,17 @@
         }
 
         h4,
-        span
-        {
-        display: inline-block;
-        margin: 5px;
-        color: white;
+        span {
+            display: inline-block;
+            margin: 5px;
+            color: white;
         }
 
         h3,
         h4,
         span,
-        li
-        {
-        color: white;
+        li {
+            color: white;
         }
 
         .details {
@@ -105,7 +103,8 @@
                 <h4>Pick Up Time: </h4><span>{{ $pickUpTime }}</span>
             </li>
             <li>
-                <h4>Return Time: </h4><span>{{ $isEstimatedReturnTime ? 'Customer will whatsapp once ready to return' : $returnTime }}</span>
+                <h4>Return Time: </h4>
+                <span>{{ $isEstimatedReturnTime ? 'Customer will whatsapp once ready to return' : $returnTime }}</span>
             </li>
             <li>
                 <h4>No. of Charter Hours: </h4><span>{{ $noOfCharterHours }}</span>
@@ -126,7 +125,10 @@
                 <h4>Remarks: </h4><span>{{ $remarks }}</span>
             </li>
             <li>
-                <h4>Total Price: </h4><span>${{ $total_price }}</span>
+                <h4>Total Price: </h4><span>${{ number_format($total_price, 2) }}</span>
+                @if ($data['package_name'] === 'Return')
+                    <span class="text-muted">(Includes fare for outbound and return trips)</span>
+                @endif
             </li>
         </ul>
 

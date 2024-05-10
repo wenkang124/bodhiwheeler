@@ -44,7 +44,6 @@ class BookingPriceCalculation
                 case 'less_than_10_distance':
 
                     $caseTotal = $booking['distance'] <= $priceListItem->value ? $priceListItem->adjustment : 0;
-                    $caseTotal = $this->calculateReturnTotal($caseTotal);
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -61,7 +60,6 @@ class BookingPriceCalculation
 
                 case 'greater_than_11_distance':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 16) ? $priceListItem->adjustment : 0;
-                    $caseTotal = $this->calculateReturnTotal($caseTotal);
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -77,7 +75,6 @@ class BookingPriceCalculation
                     break;
                 case 'greater_than_16_distance':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 25) ? $priceListItem->adjustment : 0;
-                    $caseTotal = $this->calculateReturnTotal($caseTotal);
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -93,7 +90,6 @@ class BookingPriceCalculation
                     break;
                 case 'greater_than_25_distance':
                     $caseTotal = $booking['distance'] >= $priceListItem->value ? $priceListItem->adjustment : 0;
-                    $caseTotal = $this->calculateReturnTotal($caseTotal);
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -112,7 +108,6 @@ class BookingPriceCalculation
                     $pickupDateTime = Carbon::parse($booking['pick_up_date'] . ' ' . $booking['pick_up_time']);
                     $timeDifferenceInHours = Carbon::now()->diffInHours($pickupDateTime);
                     $caseTotal = $timeDifferenceInHours < $priceListItem->value ? $priceListItem->adjustment : 0;
-                    $caseTotal = $this->calculateReturnTotal($caseTotal);
 
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -133,7 +128,6 @@ class BookingPriceCalculation
 
                     if ($caregivers > 0) {
                         $caseTotal = $caregivers * $priceListItem->adjustment;
-                        $caseTotal = $this->calculateReturnTotal($caseTotal);
 
                         if ($caseTotal > 0) {
                             BookingAdjustment::create([
@@ -156,7 +150,6 @@ class BookingPriceCalculation
 
                     if ($excessWheelchairPax > 0) {
                         $caseTotal = $excessWheelchairPax * $priceListItem->adjustment;
-                        $caseTotal = $this->calculateReturnTotal($caseTotal);
 
                         if ($caseTotal > 0) {
                             BookingAdjustment::create([
@@ -179,7 +172,6 @@ class BookingPriceCalculation
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
                     )) {
                         $caseTotal = $priceListItem->adjustment;
-                        $caseTotal = $this->calculateReturnTotal($caseTotal);
 
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -199,7 +191,6 @@ class BookingPriceCalculation
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
                     )) {
                         $caseTotal = $priceListItem->adjustment;
-                        $caseTotal = $this->calculateReturnTotal($caseTotal);
 
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -216,7 +207,6 @@ class BookingPriceCalculation
                 case 'sunday_or_public_holiday':
                     if ($isSundayOrPublicHoliday) {
                         $caseTotal = $priceListItem->adjustment;
-                        $caseTotal = $this->calculateReturnTotal($caseTotal);
 
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -237,7 +227,6 @@ class BookingPriceCalculation
 
                     if ($booking->medical_escort && $effectiveDuration >= $priceListItem->value) {
                         $caseTotal = $effectiveDuration * $priceListItem->adjustment;
-                        $caseTotal = $this->calculateReturnTotal($caseTotal);
                         if ($caseTotal > 0) {
                             BookingAdjustment::create([
                                 'type' => $priceListItem->type,
@@ -660,9 +649,4 @@ class BookingPriceCalculation
     {
         return PublicHoliday::whereDate('date', $date)->exists();
     }
-
-    public function calculateReturnTotal($caseTotal)
-{
-    return $caseTotal * 2;
-}
 }

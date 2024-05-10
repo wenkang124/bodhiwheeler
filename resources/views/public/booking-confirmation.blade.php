@@ -1,7 +1,8 @@
 @extends('public.layouts.index')
 
 @push('meta')
-    <title>Booking Confirmation | Affordable Wheelchair Transport Singapore | BodhiWheeler</title>
+    <title>
+        Booking Confirmation | Affordable Wheelchair Transport Singapore | BodhiWheeler</title>
 @endpush
 
 @section('content')
@@ -36,8 +37,11 @@
                             @elseif ($booking->is_estimated_return_time)
                                 <li>
                                     <span>
-                                        <strong>Estimated Return Time:</strong><span class="ml-2" style="color: #dc3545"> (Please
-                                            <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank" onclick="gtag_report_conversion('http://web.whatsapp.com/send?phone=+6593682784');">
+                                        <strong>Estimated Return Time:</strong><span class="ml-2" style="color: #dc3545">
+                                            (Please
+                                            <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?"
+                                                target="_blank"
+                                                onclick="gtag_report_conversion('http://web.whatsapp.com/send?phone=+6593682784');">
                                                 whatsapp us</a> once you are ready to return) </span>
                                     </span>
                                 </li>
@@ -53,7 +57,12 @@
                                     <h4>Medical Escort: {{ $medical_escort == 1 ? 'True' : 'False' }}</h4>
                                 </li>
                             @endif --}}
-                            <li><strong>Total Price:</strong> ${{ $booking->total_price }}</li>
+                            <li><strong>Total Price:</strong>
+                                ${{ number_format($booking->package_name === 'Return' ? $booking->total_price * 2 : $booking->total_price, 2) }}
+                                @if ($booking->package_name === 'Return')
+                                    <span class="text-muted">(Includes fare for outbound and return trips)</span>
+                                @endif
+                            </li>
                         </ul>
 
                         <div class="mt-5">
@@ -81,7 +90,8 @@
                                     @endforeach
                                     <tr>
                                         <td><strong>Total</strong></td>
-                                        <td><strong>${{ number_format($totalCost, 2) }}</strong></td>
+                                        <td><strong>${{ $booking->package_name === 'Return' ? number_format($totalCost * 2, 2) : number_format($totalCost, 2) }}</strong>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -91,9 +101,11 @@
                     <div class="text-center">
                         @if ($systemConfig->is_active)
                             @if ($systemConfig->image_path)
-                                <img src="{{ asset('/storage/' . $systemConfig->image_path) }}" alt="Payment QR Code" class="mb-4" width="200" height="200">
+                                <img src="{{ asset('/storage/' . $systemConfig->image_path) }}" alt="Payment QR Code"
+                                    class="mb-4" width="200" height="200">
                             @else
-                                <img src="{{ asset('assets/images/payment-qr.jpg') }}" alt="Payment QR Code" class="mb-4" width="200" height="200">
+                                <img src="{{ asset('assets/images/payment-qr.jpg') }}" alt="Payment QR Code" class="mb-4"
+                                    width="200" height="200">
                             @endif
 
                             <h6>Payment is required to finalize your booking.</h6>
@@ -101,7 +113,8 @@
                         @endif
 
                         <!-- Form to Submit and Change Booking Status -->
-                        <form id="booking-confirmation-form" action="{{ route('booking.submit-confirmation') }}" method="POST" enctype="multipart/form-data">
+                        <form id="booking-confirmation-form" action="{{ route('booking.submit-confirmation') }}"
+                            method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="booking_id" value="{{ $booking->id }}">
                             @if ($systemConfig->is_active)
@@ -109,16 +122,21 @@
                                     <label for="formFileMd" class="form-label">Upload Receipt (Only if payment
                                         made):</label>
                                     <div class="input-group">
-                                        <input type="file" class="form-control" id="payment_receipt" name="payment_receipt" accept="image/*"\>
+                                        <input type="file" class="form-control" id="payment_receipt"
+                                            name="payment_receipt" accept="image/*"\>
                                         <label class="input-group-text" for="payment_receipt">Choose file</label>
                                     </div>
                                 </div>
                             @endif
-                            <a class="def-btn def-btn-3 m-3" href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}" class="btn btn-primary">Edit Booking</a>
+                            <a class="def-btn def-btn-3 m-3"
+                                href="{{ route('booking.edit', ['booking_id' => $booking->id]) }}"
+                                class="btn btn-primary">Edit Booking</a>
                             @if (env('APP_ENV') === 'local')
-                            <button class="def-btn def-btn-2">Book Now</button>
+                                <button class="def-btn def-btn-2">Book Now</button>
                             @else
-                            <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm Booking</button>
+                                <button class="g-recaptcha def-btn def-btn-2"
+                                    data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit'
+                                    data-action='submit'>Confirm Booking</button>
                             @endif
                         </form>
                     </div>

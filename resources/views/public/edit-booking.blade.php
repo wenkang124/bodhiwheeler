@@ -116,7 +116,7 @@
                                 @enderror
                             </div>
 
-                            @if ($package->name == 'Return' || $package->name == 'Charter')
+                            {{-- @if ($package->name == 'Return' || $package->name == 'Charter')
                                 <div class="col-xl-10 col-lg-10 text-left">
                                     <div class="form-check form-check-inline medical-escort-form">
                                         {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
@@ -136,7 +136,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            @endif
+                            @endif --}}
 
                             {!! Form::hidden('package_id', $package->id) !!}
                             {!! Form::hidden('booking_id', $booking->id) !!}
