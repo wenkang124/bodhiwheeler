@@ -2,10 +2,8 @@
 <html lang="en">
 
 @php
-    $bookingId = $data['id'];
     $name = $data['name'];
     $phone = $data['phone'] ? ' Phone: ' . $data['phone'] : '';
-    $packageName = $data['package_name'];
     $pickUpDate = $data['pick_up_date'];
     $pickUpTime = $data['pick_up_time'];
     $returnTime = $data['return_time'];
@@ -13,9 +11,9 @@
     $noOfCharterHours = $data['no_of_charter_hours'];
     $pickUpAddress = $data['pick_up_address'];
     $dropOffAddress = $data['drop_off_address'];
-    $distance = $data['distance'];
     $noOfPassenger = $data['no_of_passenger'];
     $noOfWheelchairPax = $data['no_of_wheelchair_pax'];
+    $packageName = $data['package_name'];
     $medical_escort = $data['medical_escort'];
     $remarks = $data['remarks'];
     $total_price = $data['total_price'] * ($data['package_name'] === 'Return' ? 2 : 1);
@@ -81,11 +79,8 @@
 
 <body>
     <div class="card">
-        <img src="{{ asset('assets/images/footer-logo.png') }}" alt="Company Logo" class="logo" width="200">
+        <img src="{{ public_path('assets/images/footer-logo.png') }}" alt="Company Logo" class="logo" width="200">
         <h3>New Booking</h3>
-        <div>
-            <h4>Booking ID: </h4><span>{{ $bookingId }}</span>
-        </div>
         <div>
             <h4>Customer Name: </h4><span>{{ $name }}</span>
         </div>
@@ -102,7 +97,10 @@
 
         <ul>
             <li>
-                <h4>Pick Up Date: </h4><span>{{ $pickUpDate }} at {{ $pickUpTime }}</span>
+                <h4>Pick Up Date: </h4><span>{{ $pickUpDate }}</span>
+            </li>
+            <li>
+                <h4>Pick Up Time: </h4><span>{{ $pickUpTime }}</span>
             </li>
             <li>
                 <h4>Return Time: </h4>
@@ -116,9 +114,6 @@
             </li>
             <li>
                 <h4>Drop Off Address: </h4><span>{{ $pickUpAddress }}</span>
-            </li>
-            <li>
-                <h4>Distance: </h4><span>{{ $distance }}</span>
             </li>
             <li>
                 <h4>No. of Passengers: </h4><span>{{ $noOfPassenger }}</span>
