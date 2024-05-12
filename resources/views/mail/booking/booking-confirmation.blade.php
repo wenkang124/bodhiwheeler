@@ -14,7 +14,7 @@
     $noOfPassenger = $data['no_of_passenger'];
     $noOfWheelchairPax = $data['no_of_wheelchair_pax'];
     $packageName = $data['package_name'];
-    $medical_escort = $data['medical_escort'];
+    // $medical_escort = $data['medical_escort'];
     $remarks = $data['remarks'];
     $total_price = $data['total_price'] * ($data['package_name'] === 'Return' ? 2 : 1);
 @endphp
