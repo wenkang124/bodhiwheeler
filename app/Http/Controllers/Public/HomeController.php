@@ -153,6 +153,7 @@ class HomeController extends Controller
             'pick_up_date' => $request->pick_up_date,
             'pick_up_time' => $request->pick_up_time,
             'return_time' => $request->return_time,
+            'is_estimated_return_time' => $request->return_time ? false : true,
             'no_of_charter_hours' => $request->no_of_charter_hours,
             'pick_up_address' => $request->pick_up_address,
             'drop_off_address' => $request->drop_off_address,
@@ -163,13 +164,6 @@ class HomeController extends Controller
             'distance' => $request->distance ?? 0,
             'remarks' => $request->remarks,
         ]);
-
-        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
-            $booking->is_estimated_return_time = empty($request->return_time);
-            $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
-            $returnTime = $pickUpTime->copy()->addHours(3);
-            $booking->return_time = $returnTime->format('H:i');
-        }
 
         $booking->package()->associate($package);
 
@@ -283,13 +277,6 @@ class HomeController extends Controller
         $booking->package()->associate($package);
 
         $booking->save();
-
-        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && ($request->missing('return_time') || empty($request->return_time))) {
-            $booking->is_estimated_return_time = empty($request->return_time);
-            $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
-            $returnTime = $pickUpTime->copy()->addHours(3);
-            $booking->return_time = $returnTime->format('H:i');
-        }
 
         //Delete Booking Adjustments
         $booking->bookingAdjustments()->delete();

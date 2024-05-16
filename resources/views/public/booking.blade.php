@@ -61,7 +61,7 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    <input type="text" placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" id="returnTimeInput" class="time-input">
+                                    <input type="time" name="return_time" placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" id="returnTimeInput" class="time-input">
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -173,17 +173,6 @@
 
 @push('scripts')
     <script>
-        const returnTimeInput = document.getElementById('returnTimeInput');
-
-        returnTimeInput.addEventListener('focus', function() {
-            this.type = 'time';
-        });
-
-        returnTimeInput.addEventListener('blur', function() {
-            if (!this.value) {
-                this.type = 'text';
-            }
-        });
 
         function onSubmit(token) {
             var activeForm = $('.tab-pane.active form');
