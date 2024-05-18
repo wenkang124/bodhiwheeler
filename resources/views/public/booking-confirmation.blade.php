@@ -20,11 +20,12 @@
 
     <div class="contact">
         <div class="container">
-            <div class="row justify-content-center">
+            <div class="row flex-column align-items-center">
                 <div class="col-md-8">
                     <div class="confirmation-detail">
                         <h2 class="text-center">Thank You for Your Booking!</h2>
-                        <p class="confirmation-msg">Your booking details are confirmed as below:</p>
+                        <p class="confirmation-msg">Your booking details are as below:</p>
+                    </div>
                         <ul class="booking-details">
                             <li><strong>Booking ID:</strong> {{ $booking->id }}</li>
                             <li><strong>Name:</strong> {{ $booking->name }}</li>
@@ -96,6 +97,9 @@
                                 </tbody>
                             </table>
                         </div>
+
+                        <hr>
+                        <p class="text-danger mt-2"><strong>Note:</strong> Your booking will only be confirmed once payment has been made.</p>
                     </div>
 
                     <div class="text-center">
