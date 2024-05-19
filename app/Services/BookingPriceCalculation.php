@@ -128,7 +128,8 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'greater_than_caregiver':
+                case 'greater_than_caregiver_pick_up_time':
+                case 'greater_than_caregiver_return_time':
                     $caregivers = $booking['no_of_passenger'] - $priceListItem->value;
 
                     if ($caregivers > 0) {
@@ -150,7 +151,8 @@ class BookingPriceCalculation
 
                     break;
 
-                case 'greater_than_wheelchair':
+                case 'greater_than_wheelchair_pick_up_time':
+                case 'greater_than_wheelchair_return_time':
                     $excessWheelchairPax = max(0, $booking['no_of_wheelchair_pax'] - $priceListItem->value);
 
                     if ($excessWheelchairPax > 0) {
