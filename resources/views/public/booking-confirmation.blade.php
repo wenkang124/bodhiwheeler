@@ -33,20 +33,12 @@
                         <li><strong>Package:</strong> {{ $booking->package_name }}</li>
                         <li><strong>Pick-up Date and Time:</strong> {{ $booking->pick_up_date }} at
                             {{ $booking->pick_up_time }}</li>
-                        <li><strong>Return Time:</strong>
-                            @if ($booking->return_time)
-                                {{ $booking->return_time }}
-                            @else
-                                <span class="ml-2" style="color: #dc3545">
-                                    (Fare excludes return time and will be charged later. Contact admin:
-                                    <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?"
-                                        target="_blank"
-                                        onclick="gtag_report_conversion('http://web.whatsapp.com/send?phone=+6593682784');">
-                                        WhatsApp us
-                                    </a>)
-                                </span>
-                            @endif
-                        </li>
+                        @if ($booking->package_name == 'Return')
+                            <li>
+                                <strong>Return Time:</strong>
+                                {{ $booking->return_time ?? '<span class="ml-2" style="color: #dc3545">(Fare excludes return time and will be charged later. Contact admin: <a href="https://wa.me/6593682784?text=Hi%20there!%20I\'m%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank" onclick="gtag_report_conversion(\'http://web.whatsapp.com/send?phone=+6593682784\');">WhatsApp us</a>)</span>' }}
+                            </li>
+                        @endif
                         <li><strong>Pick-up Address:</strong> {{ $booking->pick_up_address }}</li>
                         <li><strong>Drop-off Address:</strong> {{ $booking->drop_off_address }}</li>
                         <li><strong>Distance:</strong> {{ $booking->distance }}KM</li>
