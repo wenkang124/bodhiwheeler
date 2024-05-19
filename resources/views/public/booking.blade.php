@@ -61,7 +61,7 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    <input type="time" name="return_time" placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" id="returnTimeInput" class="time-input">
+                                    {!! Form::time('return_time', null, ['placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*', 'required', 'id' => 'returnTimeInput', 'class' => 'time-input']) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
