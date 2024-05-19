@@ -182,12 +182,9 @@
                     <li>
                         <strong>Remarks:</strong> {{ $data['remarks'] }}
                     </li>
-                    @php
-                        $total_price = $data['total_price'] * ($data['package_name'] === 'Return' ? 2 : 1);
-                    @endphp
                     <li>
                         <strong>Total Price:</strong>
-                        ${{ number_format($total_price, 2) }}{{ $data['package_name'] === 'Return' ? ' (Includes fare for outbound and return trips)' : '' }}
+                        ${{ number_format($data['total_price'], 2) }}
                     </li>
                 </ul>
 
@@ -211,7 +208,7 @@
                     @endforeach
                     <tr class="total">
                         <th>Total</th>
-                        <th>${{ $data['package_name'] === 'Return' ? number_format($totalCost * 2, 2) : number_format($totalCost, 2) }}</th>
+                        <th>${{ number_format($totalCost, 2) }}</th>
                     </tr>
                 </table>
             </div>

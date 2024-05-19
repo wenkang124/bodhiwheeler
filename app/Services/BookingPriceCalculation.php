@@ -34,7 +34,7 @@ class BookingPriceCalculation
     public function calculateReturnPackagePrice($packagePriceList, $booking)
     {
         $bookingDateTime = Carbon::parse($booking['pick_up_date'] . ' ' . $booking['pick_up_time']);
-        $returnDateTime = isset($booking['return_time']) ? Carbon::parse($booking['pick_up_date'] . ' ' . $booking['return_time']) : null;
+        $bookingReturnTime = isset($booking['return_time']) ? Carbon::parse($booking['pick_up_date'] . ' ' . $booking['return_time']) : null;
         $weekday = $bookingDateTime->isWeekday();
         $isSundayOrPublicHoliday = $bookingDateTime->dayOfWeek === Carbon::SUNDAY || $this->isPublicHoliday($booking['pick_up_date']);
         $isSaturday = $bookingDateTime->isSaturday();
@@ -42,7 +42,8 @@ class BookingPriceCalculation
 
         foreach ($packagePriceList as $priceListItem) {
             switch ($priceListItem->type) {
-                case 'less_than_10_distance':
+                case 'less_than_10_distance_pick_up_time':
+                case 'less_than_10_distance_return_time':
 
                     $caseTotal = $booking['distance'] <= $priceListItem->value ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
@@ -59,7 +60,8 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'greater_than_11_distance':
+                case 'greater_than_11_distance_pick_up_time':
+                case 'greater_than_11_distance_return_time':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 16) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -74,7 +76,8 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'greater_than_16_distance':
+                case 'greater_than_16_distance_pick_up_time':
+                case 'greater_than_16_distance_return_time':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 25) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -89,7 +92,8 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'greater_than_25_distance':
+                case 'greater_than_25_distance_pick_up_time':
+                case 'greater_than_25_distance_return_time':
                     $caseTotal = $booking['distance'] >= $priceListItem->value ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -167,18 +171,11 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'between_time':
-                    $isWithinTimeRange = $bookingDateTime->between(
+                case 'between_time_pick_up_time':
+                    if (!$isSundayOrPublicHoliday && $weekday && $bookingDateTime->between(
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
-                    );
-
-                    $isReturnWithinTimeRange = $returnDateTime && $returnDateTime->between(
-                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
-                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
-                    );
-
-                    if (!$isSundayOrPublicHoliday && $weekday && ($isWithinTimeRange || $isReturnWithinTimeRange)) {
+                    )) {
                         $caseTotal = $priceListItem->adjustment;
 
                         BookingAdjustment::create([
@@ -193,17 +190,12 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'sat_between_time':
-                    $isWithinTimeRange = $bookingDateTime->between(
-                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
-                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
-                    );
 
-                    $isReturnWithinTimeRange = $returnDateTime && $returnDateTime->between(
+                case 'between_time_return_time':
+                    if ($bookingReturnTime !== null && !$isSundayOrPublicHoliday && $weekday && $bookingReturnTime->between(
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
-                    );
-                    if (!$isSundayOrPublicHoliday && $isSaturday && ($isWithinTimeRange || $isReturnWithinTimeRange)) {
+                    )) {
                         $caseTotal = $priceListItem->adjustment;
 
                         BookingAdjustment::create([
@@ -218,8 +210,62 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'sunday_or_public_holiday':
+                case 'sat_between_time_pick_up_time':
+                    if (!$isSundayOrPublicHoliday && $isSaturday && $bookingDateTime->between(
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
+                    )) {
+                        $caseTotal = $priceListItem->adjustment;
+
+                        BookingAdjustment::create([
+                            'type' => $priceListItem->type,
+                            'description' => $priceListItem->description,
+                            'adjustment' => $priceListItem->adjustment,
+                            'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
+                            'adjustment_type' => $priceListItem->adjustment_type,
+                            'total' => $caseTotal,
+                            'package_id' => $booking->package_id,
+                            'booking_id' => $booking->id,
+                        ]);
+                    }
+                    break;
+                case 'sat_between_time_return_time':
+                    if ($bookingReturnTime !== null && !$isSundayOrPublicHoliday && $isSaturday && $bookingDateTime->between(
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
+                    )) {
+                        $caseTotal = $priceListItem->adjustment;
+
+                        BookingAdjustment::create([
+                            'type' => $priceListItem->type,
+                            'description' => $priceListItem->description,
+                            'adjustment' => $priceListItem->adjustment,
+                            'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
+                            'adjustment_type' => $priceListItem->adjustment_type,
+                            'total' => $caseTotal,
+                            'package_id' => $booking->package_id,
+                            'booking_id' => $booking->id,
+                        ]);
+                    }
+                    break;
+                case 'sunday_or_public_holiday_pick_up_time':
                     if ($isSundayOrPublicHoliday) {
+                        $caseTotal = $priceListItem->adjustment;
+
+                        BookingAdjustment::create([
+                            'type' => $priceListItem->type,
+                            'description' => $priceListItem->description,
+                            'adjustment' => $priceListItem->adjustment,
+                            'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
+                            'adjustment_type' => $priceListItem->adjustment_type,
+                            'total' => $caseTotal,
+                            'package_id' => $booking->package_id,
+                            'booking_id' => $booking->id,
+                        ]);
+                    }
+                    break;
+                case 'sunday_or_public_holiday_return_time':
+                    if ($bookingReturnTime !== null && $isSundayOrPublicHoliday) {
                         $caseTotal = $priceListItem->adjustment;
 
                         BookingAdjustment::create([

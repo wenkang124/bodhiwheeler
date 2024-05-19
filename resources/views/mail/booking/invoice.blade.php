@@ -97,7 +97,7 @@
                             <span style="font-size: 16pt;">Total Amount</span>
                         </th>
                         <th align="right" style="border-top: 2px solid #eee; padding: 8px;">
-                            <strong style="font-size: 16pt;">${{ $data['package_name'] === 'Return' ? number_format($totalCost * 2, 2) : number_format($totalCost, 2) }}</strong>
+                            <strong style="font-size: 16pt;">${{ number_format($totalCost, 2) }}</strong>
                         </th>
                     </tr>
                 </tbody>

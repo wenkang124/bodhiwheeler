@@ -59,10 +59,7 @@
                                 </li>
                             @endif --}}
                             <li><strong>Total Price:</strong>
-                                ${{ number_format($booking->package_name === 'Return' ? $booking->total_price * 2 : $booking->total_price, 2) }}
-                                @if ($booking->package_name === 'Return')
-                                    <span class="text-muted">(Includes fare for outbound and return trips)</span>
-                                @endif
+                                ${{ number_format($booking->total_price, 2) }}
                             </li>
                         </ul>
 
@@ -91,7 +88,7 @@
                                     @endforeach
                                     <tr>
                                         <td><strong>Total</strong></td>
-                                        <td><strong>${{ $booking->package_name === 'Return' ? number_format($totalCost * 2, 2) : number_format($totalCost, 2) }}</strong>
+                                        <td><strong>${{ number_format($totalCost, 2) }}</strong>
                                         </td>
                                     </tr>
                                 </tbody>
