@@ -156,7 +156,7 @@
                     @if ($data['package_name'] == 'Return')
                         <li>
                             <strong>Return Time:</strong>
-                            {{ $data['is_estimated_return_time'] ? 'Customer will WhatsApp once ready to return' : $data['return_time'] }}
+                            {{ $data['return_time'] ? $data['return_time'] : 'Customer will WhatsApp once ready to return' }}
                         </li>
                     @endif
                     @if ($data['package_name'] == 'Charter')
@@ -213,7 +213,7 @@
                 </table>
             </div>
             <div class="body-text bottom-text">
-                A new customer booking has been confirmed. The details are above, and an invoice will be attached.
+                A new customer booking has been made. The details are above, and an invoice will be attached.
             </div>
         </div>
         <div class="email-footer">
