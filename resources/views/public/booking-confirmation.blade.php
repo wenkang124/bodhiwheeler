@@ -36,7 +36,7 @@
                         @if ($booking->package_name == 'Return')
                             <li>
                                 <strong>Return Time:</strong>
-                                {{ $booking->return_time ?? '<span class="ml-2" style="color: #dc3545">(Contact admin: <a href="https://wa.me/6593682784?text=Hi%20there!%20I\'m%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank" onclick="gtag_report_conversion(\'http://web.whatsapp.com/send?phone=+6593682784\');">WhatsApp us</a>)</span>' }}
+                                {!! $booking->return_time ?? '<span class="ml-2" style="color: #dc3545">(Contact admin: <a href="https://wa.me/6593682784?text=Hi%20there!%20I\'m%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank" onclick="gtag_report_conversion(\'http://web.whatsapp.com/send?phone=+6593682784\');">WhatsApp us</a>)</span>' !!}
                             </li>
                         @endif
                         <li><strong>Pick-up Address:</strong> {{ $booking->pick_up_address }}</li>
