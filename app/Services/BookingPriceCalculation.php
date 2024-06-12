@@ -428,7 +428,7 @@ class BookingPriceCalculation
             switch ($priceListItem->type) {
                 case 'less_than_10_distance':
 
-                    $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 11) ? $priceListItem->adjustment : 0;
+                    $caseTotal = ($booking['distance'] <= $priceListItem->value && $booking['distance'] < 11) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
