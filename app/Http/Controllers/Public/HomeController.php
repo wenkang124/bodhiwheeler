@@ -208,8 +208,37 @@ class HomeController extends Controller
             'name' => 'required|string',
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'pick_up_date' => 'required|date|after_or_equal:today',
-            'pick_up_time' => 'required|date_format:H:i',
-            'return_time' => ['nullable', 'date_format:H:i', 'after:pick_up_time'],
+            'pick_up_time' => [
+                'required',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) use ($request) {
+                    $pickupTime = Carbon::createFromFormat('H:i', $value);
+
+                    if ($pickupTime->hour < 7 || ($pickupTime->hour === 21 && $pickupTime->minute !== 0) || $pickupTime->hour >= 22) {
+                        $fail('The pick-up time must be between 07:00 and 21:00.');
+                    }
+
+                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 19) {
+                        $fail('For Return package, the pick-up time must be before 19:00 as the operation time is till 21:00.');
+                    }
+                },
+            ],
+            'return_time' => [
+                'nullable',
+                'date_format:H:i',
+                'after:pick_up_time',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) {
+                        return;
+                    }
+
+                    $returnTime = Carbon::createFromFormat('H:i', $value);
+
+                    if ($returnTime->hour < 7 || ($returnTime->hour === 21 && $returnTime->minute !== 0) || $returnTime->hour >= 22) {
+                        $fail('The return time must be between 07:00 and 21:00.');
+                    }
+                },
+            ],
             'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer|min:3' : 'nullable|integer',
             'pick_up_address' => 'required|string',
             'drop_off_address' => 'required|string',
