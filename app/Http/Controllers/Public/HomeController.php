@@ -121,7 +121,7 @@ class HomeController extends Controller
                 $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
 
                 if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
-                    $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
+                    $validator->errors()->add('return_time', 'For Return package, return time must more than 3 hours from pick up time.');
                 }
             } else if ($request->input('active_tab') === "Charter") {
                 $charter_hours = $request->no_of_charter_hours;
@@ -228,7 +228,7 @@ class HomeController extends Controller
                 $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
 
                 if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
-                    $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
+                    $validator->errors()->add('return_time', 'For Return package, return time must more than 3 hours from pick up time.');
                 }
             } else if ($request->input('active_tab') === "Charter") {
                 $charter_hours = $request->no_of_charter_hours;
