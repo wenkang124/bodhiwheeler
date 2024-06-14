@@ -83,8 +83,8 @@ class HomeController extends Controller
                         $fail('The pick-up time must be between 07:00 and 21:00.');
                     }
 
-                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 19) {
-                        $fail('For Return package, the pick-up time must be before 19:00 as the operation time is till 21:00.');
+                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 18) {
+                        $fail('For Return package, the pick-up time must be before 18:00 as the operation time is till 21:00.');
                     }
                 },
             ],
@@ -218,8 +218,8 @@ class HomeController extends Controller
                         $fail('The pick-up time must be between 07:00 and 21:00.');
                     }
 
-                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 19) {
-                        $fail('For Return package, the pick-up time must be before 19:00 as the operation time is till 21:00.');
+                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 18) {
+                        $fail('For Return package, the pick-up time must be before 18:00 as the operation time is till 21:00.');
                     }
                 },
             ],
