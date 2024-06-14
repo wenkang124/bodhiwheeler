@@ -45,7 +45,7 @@ class BookingPriceCalculation
                 case 'less_than_10_distance_pick_up_time':
                 case 'less_than_10_distance_return_time':
 
-                    $caseTotal = $booking['distance'] <= $priceListItem->value ? $priceListItem->adjustment : 0;
+                    $caseTotal = $booking['distance'] < $priceListItem->value ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -428,7 +428,7 @@ class BookingPriceCalculation
             switch ($priceListItem->type) {
                 case 'less_than_10_distance':
 
-                    $caseTotal = ($booking['distance'] <= $priceListItem->value && $booking['distance'] < 11) ? $priceListItem->adjustment : 0;
+                    $caseTotal = ($booking['distance'] < $priceListItem->value) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
