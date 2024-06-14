@@ -232,7 +232,7 @@ class BookingPriceCalculation
                     }
                     break;
                 case 'sat_between_time_return_time':
-                    if ($bookingReturnTime !== null && !$isSundayOrPublicHoliday && $isSaturday && $bookingDateTime->between(
+                    if ($bookingReturnTime !== null && !$isSundayOrPublicHoliday && $isSaturday && $bookingReturnTime->between(
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
                     )) {
