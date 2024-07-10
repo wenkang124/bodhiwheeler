@@ -21,12 +21,15 @@
     <div class="contact">
         <div class="container">
             @php
-                $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $packages[0]->name))); // Assuming $packages is not empty
+                $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $packages[0]->name)));
             @endphp
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
                 @foreach ($packages as $package)
                     <li class="nav-item col">
-                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
+                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'active' : '' }}"
+                            id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab"
+                            href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab"
+                            aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
                             aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'true' : 'false' }}">
                             {{ $package->name }}
                         </a>
@@ -36,7 +39,9 @@
 
             <div class="tab-content">
                 @foreach ($packages as $package)
-                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
+                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'show active' : '' }}"
+                        id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel"
+                        aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
                         {!! Form::open(['route' => 'booking.submit-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
                         @csrf
                         <div class="row justify-content-center">
@@ -52,8 +57,12 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
+                            <div
+                                class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
+                                {!! Form::time('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
+                                    'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -61,7 +70,12 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::time('return_time', null, ['placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*', 'required', 'id' => 'returnTimeInput', 'class' => 'time-input']) !!}
+                                    {!! Form::time('return_time', null, [
+                                        'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
+                                        'required',
+                                        'id' => 'returnTimeInput',
+                                        'class' => 'time-input',
+                                    ]) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -137,16 +151,18 @@
                                 </div>
                             @endif --}}
 
-                            {!! Form::hidden('package_id', $package->id) !!}
-                            {!! Form::hidden('active_tab', $package->name) !!}
+                            <input type="hidden" name="package_id" value="{{ $package->id }}">
+                            <input type="hidden" name="active_tab" value="{{ $package->name }}">
                             {!! Form::hidden('distance', '', ['id' => 'distance']) !!}
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
                                 @if (env('APP_ENV') === 'local')
-                                <button class="def-btn def-btn-2">Book Now</button>
+                                    <button class="def-btn def-btn-2">Book Now</button>
                                 @else
-                                <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
+                                    <button class="g-recaptcha def-btn def-btn-2"
+                                        data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit'
+                                        data-action='submit'>Book Now</button>
                                 @endif
                             </div>
                         </div>
@@ -173,7 +189,6 @@
 
 @push('scripts')
     <script>
-
         function onSubmit(token) {
             var activeForm = $('.tab-pane.active form');
 
@@ -249,7 +264,8 @@
 
         function loadGoogleMapsAPI() {
             let script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry';
+            script.src =
+                'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry';
             script.async = true;
             script.defer = true;
             script.setAttribute('loading', 'async');
