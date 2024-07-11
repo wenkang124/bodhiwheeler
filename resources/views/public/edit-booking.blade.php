@@ -59,10 +59,15 @@
                             </div>
                             <div
                                 class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time(
+                                {!! Form::text(
                                     'pick_up_time',
                                     isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '',
-                                    ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required'],
+                                    [
+                                        'id' => 'pick_up_time',
+                                        'class' => 'time-picker',
+                                        'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
+                                        'required',
+                                    ],
                                 ) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
@@ -71,16 +76,16 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::time(
+                                    {!! Form::text(
                                         'return_time',
                                         isset($booking) && !$booking->is_estimated_return_time
                                             ? \Carbon\Carbon::parse($booking->return_time)->format('H:i')
                                             : '',
                                         [
+                                            'id' => 'return_time',
+                                            'class' => 'time-picker',
                                             'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
                                             'required',
-                                            'id' => 'returnTimeInput',
-                                            'class' => 'time-input',
                                         ],
                                     ) !!}
                                     @error('return_time', $package->id)
@@ -102,7 +107,12 @@
                             @endif
 
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::date('pick_up_date', $booking->pick_up_date, ['placeholder' => 'Pick Up Date*', 'required']) !!}
+                                {!! Form::text('pick_up_date', $booking->pick_up_date, [
+                                    'id' => 'pick_up_date',
+                                    'class' => 'date-picker',
+                                    'placeholder' => 'Pick Up Date*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_date', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -278,6 +288,7 @@
 
         $('#bookingTabs a').on('shown.bs.tab', function(e) {
             initAutocomplete();
+            initializeDateTimePickers();
         });
 
         function loadGoogleMapsAPI() {
@@ -290,6 +301,41 @@
             document.head.appendChild(script);
         }
 
-        window.onload = loadGoogleMapsAPI;
+        function initializeDateTimePickers() {
+            let activeTab = document.querySelector('.tab-pane.active');
+
+            if (activeTab) {
+                let datePickers = activeTab.querySelectorAll('.date-picker');
+                let timePickers = activeTab.querySelectorAll('.time-picker');
+
+                datePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: true,
+                        timepicker: false,
+                        format: 'Y-m-d',
+                        step: 15,
+                        scrollInput: false
+                    });
+                });
+
+                timePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: false,
+                        timepicker: true,
+                        format: 'H:i',
+                        step: 5,
+                        minTime: '07:00',
+                        maxTime: '21:00',
+                        scrollInput: false
+                    });
+                });
+            }
+        }
+
+        //Initialize Google Maps API
+        loadGoogleMapsAPI();
+
+        //Initialize Date Time Picker
+        initializeDateTimePickers();
     </script>
 @endpush

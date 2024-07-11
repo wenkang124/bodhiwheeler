@@ -83,6 +83,8 @@
     <!-- custom stylesheet -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('assets/css/datetimepicker.min.css') }}">
+
     <!-- Global site tag (gtag.js) - Google Ads: 481469850 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-481469850"></script>
     <script>
@@ -197,6 +199,9 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <!-- custom js -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script src="{{ asset('assets/js/datetimepicker.min.js') }}"></script>
+
     <!-- sweetalert -->
     <script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert2@9.js') }}"></script>
 

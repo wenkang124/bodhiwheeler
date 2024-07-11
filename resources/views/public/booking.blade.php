@@ -59,7 +59,9 @@
                             </div>
                             <div
                                 class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
+                                {!! Form::text('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
+                                    'id' => 'pick_up_time',
+                                    'class' => 'time-picker',
                                     'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
                                     'required',
                                 ]) !!}
@@ -70,11 +72,11 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::time('return_time', null, [
+                                    {!! Form::text('return_time', null, [
+                                        'id' => 'return_time',
+                                        'class' => 'time-picker',
                                         'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
                                         'required',
-                                        'id' => 'returnTimeInput',
-                                        'class' => 'time-input',
                                     ]) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
@@ -92,7 +94,12 @@
                             @endif
 
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::date('pick_up_date', null, ['placeholder' => 'Pick Up Date*', 'required']) !!}
+                                {!! Form::text('pick_up_date', null, [
+                                    'id' => 'pick_up_date',
+                                    'class' => 'date-picker',
+                                    'placeholder' => 'Pick Up Date*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_date', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -260,6 +267,7 @@
 
         $('#bookingTabs a').on('shown.bs.tab', function(e) {
             initAutocomplete();
+            initializeDateTimePickers();
         });
 
         function loadGoogleMapsAPI() {
@@ -272,6 +280,41 @@
             document.head.appendChild(script);
         }
 
-        window.onload = loadGoogleMapsAPI;
+        function initializeDateTimePickers() {
+            let activeTab = document.querySelector('.tab-pane.active');
+
+            if (activeTab) {
+                let datePickers = activeTab.querySelectorAll('.date-picker');
+                let timePickers = activeTab.querySelectorAll('.time-picker');
+
+                datePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: true,
+                        timepicker: false,
+                        format: 'Y-m-d',
+                        step: 15,
+                        scrollInput: false
+                    });
+                });
+
+                timePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: false,
+                        timepicker: true,
+                        format: 'H:i',
+                        step: 5,
+                        minTime: '07:00',
+                        maxTime: '21:00',
+                        scrollInput: false
+                    });
+                });
+            }
+        }
+
+        //Initialize Google Maps API
+        loadGoogleMapsAPI();
+
+        //Initialize Date Time Picker
+        initializeDateTimePickers();
     </script>
 @endpush
