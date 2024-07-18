@@ -23,7 +23,7 @@
             <div class="row flex-column align-items-center">
                 <div class="col-md-8">
                     <div class="confirmation-detail">
-                        <h2 class="text-center">Thank You for Your Booking!</h2>
+                        <h2 class="text-center">Please check your booking details below and click confirm booking to submit the booking.</h2>
                         <p class="confirmation-msg">Your booking details are as below:</p>
                     </div>
                     <ul class="booking-details">
