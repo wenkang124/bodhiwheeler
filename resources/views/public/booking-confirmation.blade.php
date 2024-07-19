@@ -88,8 +88,7 @@
                     </div>
 
                     <hr>
-                    <p class="text-danger mt-2"><strong>Note:</strong> Your booking will only be confirmed upon payment
-                        received.</p>
+                    <p class="text-danger mt-2"><strong>Note:</strong> confirmation only upon payment.</p>
                 </div>
 
                 <div class="text-center">
