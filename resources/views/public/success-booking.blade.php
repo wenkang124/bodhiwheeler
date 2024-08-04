@@ -17,6 +17,7 @@
                 <div class="col-xl-9 col-lg-9">
                     <div class="part-txt">
                         <h2>Booking <span>Successful</span></h2>
+                        <h4>Booking will only be confirm upon payment received</h4>
                         <p>Our administrator will contact you shortly.</p>
                         <a href="{{ route('home') }}" class="def-btn">Back to Home</a>
                     </div>
