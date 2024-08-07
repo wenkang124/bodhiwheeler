@@ -30,7 +30,15 @@ class PendingApprovalController extends Controller
                 return $row->package_name;
             })
             ->editColumn('status', function ($row) {
-                return '<span class="text-info">' . ucfirst($row->status) . '</span>';
+                return '<span class="text-primary">' . ucfirst($row->status) . '</span>';
+            })
+            ->addColumn('details', function ($row) {
+                $details = '<td>';
+                $details .= '<strong>Pick-up Address:</strong> ' . $row->pick_up_address . '<br>';
+                $details .= '<strong>Drop Off Address:</strong> ' . $row->drop_off_address . '<br>';
+                $details .= '<strong>Pick-up Time:</strong> ' . $row->pick_up_time . '<br>';
+                $details .= '</td>';
+                return $details;
             })
             ->editColumn('created_at', function ($row) {
                 return $row->created_at;
@@ -58,7 +66,7 @@ class PendingApprovalController extends Controller
 
                 return $actions;
             })
-            ->rawColumns(['name', 'phone', 'package_name', 'status', 'created_at', 'actions'])->make(true);
+            ->rawColumns(['name', 'phone', 'package_name', 'status', 'details', 'created_at', 'actions'])->make(true);
         return $result;
     }
 

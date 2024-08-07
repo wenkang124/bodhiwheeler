@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\DraftBookingController;
 use App\Http\Controllers\Admin\SystemConfigController;
 use App\Http\Controllers\Admin\ApprovedBookingController;
 use App\Http\Controllers\Admin\PendingApprovalController;
@@ -58,6 +59,13 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
     });
 
     Route::prefix('bookings')->name('.booking')->group(function () {
+
+        Route::prefix('draft-bookings')->name('.draft-booking')->group(function () {
+            Route::get('', [DraftBookingController::class, 'index']);
+            Route::post('query', [DraftBookingController::class, 'draftBookingQuery'])->name('.query');
+            Route::get('{booking}/detail', [DraftBookingController::class, 'detail'])->name('.detail');
+        });
+
         Route::prefix('pending-approvals')->name('.pending-approval')->group(function () {
             Route::get('', [PendingApprovalController::class, 'index']);
             Route::post('query', [PendingApprovalController::class, 'pendingReviewQuery'])->name('.query');

@@ -58,4 +58,9 @@ class Booking extends Model
     {
         $query->where('status', 'submitted');
     }
+
+    public function scopeIsDraft($query)
+    {
+        $query->where('status', 'pending');
+    }
 }

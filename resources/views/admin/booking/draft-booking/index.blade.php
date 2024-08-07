@@ -9,7 +9,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
                         <li class="breadcrumb-item" aria-current="page">
-                            Rejected Booking
+                            Draft Booking
                         </li>
                     </ol>
                 </nav>
@@ -28,9 +28,7 @@
                             <table id="dataTable" class="table stylish-table v-middle">
                                 <thead>
                                     <tr>
-                                        <th class="border-bottom">
-                                            Name
-                                        </th>
+                                        <th class="border-bottom">Name</th>
                                         <th class="border-bottom">Contact</th>
                                         <th class="border-bottom">Package</th>
                                         <th class="border-bottom">Status</th>
@@ -59,7 +57,7 @@
 
         var oTable = $('#dataTable').DataTable({
             ajax: {
-                url: "{{ route('admin.booking.rejected-booking.query') }}",
+                url: "{{ route('admin.booking.draft-booking.query') }}",
                 method: "POST",
             },
             serverSide: true,

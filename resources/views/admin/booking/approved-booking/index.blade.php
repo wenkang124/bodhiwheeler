@@ -77,12 +77,12 @@
                     className: "text-center"
                 },
                 {
-                    data: "details",
+                    data: "status",
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: "status",
+                    data: "details",
                     orderable: false,
                     searchable: false
                 },

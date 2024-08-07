@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Form;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Session;
 
-class RejectedBookingController extends Controller
+class DraftBookingController extends Controller
 {
     public function index()
     {
-        return view('admin.booking.rejected-booking.index');
+        return view('admin.booking.draft-booking.index');
     }
 
-    public function rejectedBookingQuery(Request $request)
+    public function draftBookingQuery(Request $request)
     {
-        $result = Booking::where('status', 'rejected');
+        $result = Booking::where('status', 'pending');
 
         return DataTables::of($result)
             ->editColumn('name', function ($row) {
@@ -30,7 +29,7 @@ class RejectedBookingController extends Controller
                 return $row->package_name;
             })
             ->editColumn('status', function ($row) {
-                return '<span class="text-danger">' . ucfirst($row->status) . '</span>';
+                return '<span class="text-secondary">' . ucfirst($row->status) . '</span>';
             })
             ->addColumn('details', function ($row) {
                 $details = '<td>';
@@ -45,7 +44,7 @@ class RejectedBookingController extends Controller
             })
             ->editColumn('actions', function ($row) {
                 $actions = '<div class="d-flex flex-column gap-3">';
-                $actions .= '<a href="' . route('admin.booking.rejected-booking.detail', [$row->id, $row]) . '" class="btn btn-outline-info" style="width: 100%;">Details</a>';
+                $actions .= '<a href="' . route('admin.booking.draft-booking.detail', [$row->id, $row]) . '" class="btn btn-outline-info" style="width: 100px;">Details</a>';
                 $actions .= '</div>';
 
                 return $actions;
@@ -57,6 +56,7 @@ class RejectedBookingController extends Controller
 
     public function detail(Booking $booking)
     {
-        return view('admin.booking.rejected-booking.detail', compact('booking'));
+        return view('admin.booking.draft-booking.detail', compact('booking'));
     }
+
 }
