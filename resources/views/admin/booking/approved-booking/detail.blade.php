@@ -102,7 +102,7 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Total Distance</strong>
                                                     <br>
-                                                    <p class="text-muted">{{ $booking->distance }}</p>
+                                                    <p class="text-muted">{{ $booking->distance }}KM</p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Package Name</strong>
@@ -172,19 +172,17 @@
                                             @endphp
                                             @foreach ($booking->bookingAdjustments as $adjustment)
                                                 @php
-                                                    // Extract type without underscores
-                                                    $formattedType = str_replace('_', ' ', $adjustment->type);
                                                     // Calculate total cost
                                                     $totalCost += $adjustment->adjustment;
                                                 @endphp
                                                 <tr>
-                                                    <td>{{ ucwords($formattedType) }}</td>
-                                                    <td>${{ $adjustment->adjustment }}</td>
+                                                    <td>{{ $adjustment->description }}</td>
+                                                    <td>${{ number_format($adjustment->adjustment,2) }}</td>
                                                 </tr>
                                             @endforeach
                                             <tr>
                                                 <td><strong>Total</strong></td>
-                                                <td><strong>${{ $totalCost }}</strong></td>
+                                                <td><strong>${{ number_format($totalCost,2) }}</strong></td>
                                             </tr>
                                         </tbody>
                                     </table>
