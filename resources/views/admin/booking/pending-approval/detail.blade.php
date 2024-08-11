@@ -35,6 +35,9 @@
                                                 <div class="d-flex">
                                                     <a href="{{ route('admin.booking.edit', ['booking' => $booking->id]) }}"
                                                         class="btn btn-outline-info">Assign Driver</a>
+                                                        <a href="{{ route('admin.booking.pending-approval.send-mail-notification', ['booking' => $booking->id]) }}"
+                                                            class="btn btn-outline-warning ms-2" onclick="return confirm('Are you confirm to send mail notification?')">Send Mail Notification</a>
+                                         
                                                 </div>
                                             </div>
                                         </div>

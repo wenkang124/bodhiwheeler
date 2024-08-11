@@ -69,8 +69,13 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
         Route::prefix('pending-approvals')->name('.pending-approval')->group(function () {
             Route::get('', [PendingApprovalController::class, 'index']);
             Route::post('query', [PendingApprovalController::class, 'pendingReviewQuery'])->name('.query');
+            Route::get('create', [PendingApprovalController::class, 'create'])->name('.create');
+            Route::post('', [PendingApprovalController::class, 'store'])->name('.store');
+            Route::get('{booking}/edit', [PendingApprovalController::class, 'edit'])->name('.edit');
+            Route::post('{booking}', [PendingApprovalController::class, 'update'])->name('.update');
             Route::get('{booking}/detail', [PendingApprovalController::class, 'detail'])->name('.detail');
             Route::post('{booking}/update-status', [PendingApprovalController::class, 'updateStatus'])->name('.update-status');
+            Route::get('{booking}/send-mail-notification', [PendingApprovalController::class, 'sendMailNotification'])->name('.send-mail-notification');
         });
 
         Route::prefix('approved-bookings')->name('.approved-booking')->group(function () {

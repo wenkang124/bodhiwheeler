@@ -15,6 +15,14 @@
                 </nav>
             </div>
         </div>
+        <div class="col-auto mt-3 mt-md-0 align-self-center">
+            <div class="d-flex">
+                <a href="{{route('admin.booking.pending-approval.create')}}" class="btn btn-success">
+                    <i data-feather="plus" class="fill-white feather-sm"></i>
+                    Create
+                </a>
+            </div>
+        </div>
     </div>
 @endpush
 

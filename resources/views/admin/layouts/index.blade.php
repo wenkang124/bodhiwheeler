@@ -32,6 +32,7 @@
     <link rel="stylesheet" href="{{ asset('dashboard-assets/libs/sweetalert2/dist/sweetalert2.min.css') }}">
     <link href="{{ asset('dashboard-assets/css/style.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('dashboard-assets/css/custom.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('assets/css/datetimepicker.min.css') }}">
     @stack('styles')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -112,6 +113,8 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js'></script>
 
     <script src="{{ asset('dashboard-assets/js/custom.min.js') }}"></script>
+
+    <script src="{{ asset('assets/js/datetimepicker.min.js') }}"></script>
     <!-- ############################################################### -->
     <!-- This Page Js Files Here -->
     <!-- ############################################################### -->
