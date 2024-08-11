@@ -167,14 +167,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $totalCost = 0;
-                                            @endphp
                                             @foreach ($booking->bookingAdjustments as $adjustment)
-                                                @php
-                                                    // Calculate total cost
-                                                    $totalCost += $adjustment->adjustment;
-                                                @endphp
                                                 <tr>
                                                     <td>{{ $adjustment->description }}</td>
                                                     <td>${{ number_format($adjustment->adjustment,2) }}</td>
@@ -182,7 +175,7 @@
                                             @endforeach
                                             <tr>
                                                 <td><strong>Total</strong></td>
-                                                <td><strong>${{ number_format($totalCost,2) }}</strong></td>
+                                                <td><strong>${{ number_format($booking->total_price,2) }}</strong></td>
                                             </tr>
                                         </tbody>
                                     </table>

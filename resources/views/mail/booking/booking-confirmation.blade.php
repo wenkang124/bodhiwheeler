@@ -197,10 +197,6 @@
                         $totalCost = 0;
                     @endphp
                     @foreach ($data['bookingAdjustments'] as $adjustment)
-                        @php
-                            // Calculate total cost
-                            $totalCost += $adjustment['total'];
-                        @endphp
                         <tr>
                             <td class="table-content">{{ $adjustment['description'] }}</td>
                             <td class="table-content">${{ $adjustment['total'] }}</td>
@@ -208,7 +204,7 @@
                     @endforeach
                     <tr class="total">
                         <th>Total</th>
-                        <th>${{ number_format($totalCost, 2) }}</th>
+                        <th>${{ number_format($data['total_price'], 2) }}</th>
                     </tr>
                 </table>
             </div>

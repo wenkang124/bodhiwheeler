@@ -360,4 +360,15 @@ class PendingApprovalController extends Controller
 
         return redirect()->route('admin.booking.pending-approval');
     }
+
+    public function adjustPrice(Request $request, Booking $booking)
+    {
+        $booking->total_price = $request->input('total_price');
+
+        $booking->save();
+
+        Session::flash('alert-success', 'Successfully Adjusted Total Price');
+
+        return redirect()->route('admin.booking.pending-approval');
+    }
 }

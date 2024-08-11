@@ -76,6 +76,7 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
             Route::get('{booking}/detail', [PendingApprovalController::class, 'detail'])->name('.detail');
             Route::post('{booking}/update-status', [PendingApprovalController::class, 'updateStatus'])->name('.update-status');
             Route::get('{booking}/send-mail-notification', [PendingApprovalController::class, 'sendMailNotification'])->name('.send-mail-notification');
+            Route::post('{booking}/adjust-price', [PendingApprovalController::class, 'adjustPrice'])->name('.adjust-price');
         });
 
         Route::prefix('approved-bookings')->name('.approved-booking')->group(function () {
