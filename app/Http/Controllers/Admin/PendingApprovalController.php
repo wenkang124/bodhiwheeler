@@ -215,6 +215,7 @@ class PendingApprovalController extends Controller
 
     public function update(Request $request, Booking $booking)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
@@ -292,7 +293,7 @@ class PendingApprovalController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()
-                ->withErrors($validator, $request->package_id)
+                ->withErrors($validator)
                 ->withInput();
         }
 
