@@ -59,6 +59,7 @@ class PendingApprovalController extends Controller
                 $actions = '<div class="d-flex flex-column gap-3">';
                 $actions .= '<a href="' . route('admin.booking.pending-approval.detail', [$row->id, $row]) . '" class="btn btn-outline-info" style="width: 100%;">Details</a>';
                 $actions .= '<a href="' . route('admin.booking.pending-approval.edit', [$row->id]) . '" class="btn btn-outline-primary" style="width: 100%;">Edit</a>';
+                $actions .= Form::open(['route' => ['admin.booking.pending-approval.update-status', [$row->id, $row]]]);
                 $actions .= '<input type="hidden" name="redirect" value="admin.me.task.payment-approval">';
                 $actions .= '<button onclick="return confirm(\'Confirm Approve?\')" class="btn btn-outline-success" name="status" value="approved" style="width: 100%;">
                                 <i class="fas fa-check"></i>
