@@ -340,11 +340,6 @@ class PendingApprovalController extends Controller
             'status' => 'required|in:approved,rejected'
         ]);
 
-        if ($request->get('status') === 'approved' && !$booking->driver_id) {
-            Session::flash('alert-danger', 'Please assign a driver before approving the booking.');
-            return redirect()->route('admin.booking.pending-approval');
-        }
-
         $booking->status = $request->get('status');
         $booking->approved_at = now();
         $booking->approvedBy()->associate(auth()->user());
