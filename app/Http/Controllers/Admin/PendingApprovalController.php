@@ -365,12 +365,21 @@ class PendingApprovalController extends Controller
 
     public function adjustPrice(Request $request, Booking $booking)
     {
-        $booking->total_price = $request->input('total_price');
-
+        foreach ($request->input('adjustments') as $adjustmentId => $newValue) {
+            $adjustment = $booking->bookingAdjustments()->find($adjustmentId);
+    
+            if ($adjustment) {
+                $adjustment->adjustment = $newValue;
+                $adjustment->save();
+            }
+        }
+    
+        $booking->total_price = $booking->bookingAdjustments->sum('adjustment');
         $booking->save();
-
-        Session::flash('alert-success', 'Successfully Adjusted Total Price');
-
+    
+        Session::flash('alert-success', 'Successfully Adjusted Total Price and Adjustments');
+    
         return redirect()->route('admin.booking.pending-approval');
     }
+    
 }

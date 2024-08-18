@@ -202,30 +202,31 @@
     </div>
 
     <!-- Adjust Price Modal -->
-<div class="modal fade" id="adjustPriceModal" tabindex="-1" role="dialog" aria-labelledby="adjustPriceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="adjustPriceModalLabel">Adjust Total Price</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('admin.booking.pending-approval.adjust-price', ['booking' => $booking->id]) }}" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="total_price" class="form-label">Total Price</label>
-                        <input type="number" class="form-control" id="total_price" name="total_price" value="{{ $booking->total_price }}" required>
+    <div class="modal fade" id="adjustPriceModal" tabindex="-1" role="dialog" aria-labelledby="adjustPriceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adjustPriceModalLabel">Adjust Booking Price</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.booking.pending-approval.adjust-price', ['booking' => $booking->id]) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        @foreach ($booking->bookingAdjustments as $adjustment)
+                            <div class="mb-3">
+                                <label for="adjustment_{{ $adjustment->id }}" class="form-label">{{ $adjustment->description }}</label>
+                                <input type="number" step="0.01" class="form-control" id="adjustment_{{ $adjustment->id }}" name="adjustments[{{ $adjustment->id }}]" value="{{ $adjustment->adjustment }}" required>
+                            </div>
+                        @endforeach
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </div>
-            </form>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
 @endsection
 
 @push('scripts')
