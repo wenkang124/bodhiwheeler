@@ -6,7 +6,9 @@ use Form;
 use Carbon\Carbon;
 use App\Models\Booking;
 use App\Models\Package;
+use App\Models\SystemConfig;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -363,23 +365,35 @@ class PendingApprovalController extends Controller
         return redirect()->route('admin.booking.pending-approval');
     }
 
+    public function downloadInvoice(Request $request, Booking $booking)
+    {
+        $systemConfig = SystemConfig::first();
+
+        $pdfContent = view('mail.booking.invoice', ['data' => $booking, 'systemConfig' => $systemConfig])->render();
+        $pdf = Pdf::loadHTML($pdfContent);
+
+        $submissionDate = $booking->created_at->format('Y-m-d_H-i-s');
+        $fileName = $booking->name . '_' . $submissionDate . '_invoice.pdf';
+
+        return $pdf->download($fileName);
+    }
+
     public function adjustPrice(Request $request, Booking $booking)
     {
         foreach ($request->input('adjustments') as $adjustmentId => $newValue) {
             $adjustment = $booking->bookingAdjustments()->find($adjustmentId);
-    
+
             if ($adjustment) {
                 $adjustment->adjustment = $newValue;
                 $adjustment->save();
             }
         }
-    
+
         $booking->total_price = $booking->bookingAdjustments->sum('adjustment');
         $booking->save();
-    
+
         Session::flash('alert-success', 'Successfully Adjusted Total Price and Adjustments');
-    
+
         return redirect()->route('admin.booking.pending-approval');
     }
-    
 }
