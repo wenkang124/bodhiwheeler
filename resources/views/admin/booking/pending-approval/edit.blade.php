@@ -7,11 +7,12 @@
         <div class="d-flex align-items-center">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
                     <li class="breadcrumb-item">
-                        <a href="{{route('admin')}}">Home</a>
+                        <a href="{{route('admin.booking.pending-approval')}}">Pending Approval</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{route('admin.booking.pending-approval')}}">Pending Approval Booking</a>
+                        {{$booking->id}}
                     </li>
                     <li class="breadcrumb-item">
                         Edit

@@ -8,8 +8,14 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
-                        <li class="breadcrumb-item" aria-current="page">
-                            Draft Booking Details
+                        <li class="breadcrumb-item">
+                            <a href="{{route('admin.booking.draft-booking')}}">Draft Booking</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            {{$booking->id}}
+                        </li>
+                        <li class="breadcrumb-item">
+                            Details
                         </li>
                     </ol>
                 </nav>

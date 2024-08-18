@@ -51,7 +51,7 @@ class ApprovedBookingController extends Controller
             ->editColumn('actions', function ($row) {
                 $actions = '<div class="d-flex flex-column gap-3">';
                 $actions .= '<a href="' . route('admin.booking.approved-booking.detail', [$row->id, $row]) . '" class="btn btn-outline-info" style="width: 100px;">Details</a>';
-                $actions .= '<a href="' . route('admin.booking.approved-booking.download-invoice', ['booking' => $row->id]) . '" class="btn btn-outline-primary">Download Invoice</a>';
+                $actions .= '<a href="' . route('admin.booking.approved-booking.download-invoice', ['booking' => $row->id]) . '" class="btn btn-outline-primary" style="width: 100px;">Download Invoice</a>';
                 $actions .= '</div>';
 
                 return $actions;
