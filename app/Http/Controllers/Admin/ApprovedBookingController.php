@@ -36,7 +36,7 @@ class ApprovedBookingController extends Controller
                 $details .= '<strong>Pick-up Address:</strong> ' . $row->pick_up_address . '<br>';
                 $details .= '<strong>Drop Off Address:</strong> ' . $row->drop_off_address . '<br>';
                 $details .= '<strong>Pick-up Time:</strong> ' . $row->pick_up_time . '<br>';
-                $details .= '<strong>Driver Name:</strong> ' . $row->driver?->name;
+                $details .= '<strong>Driver Name:</strong> ' . ($row->driver?->name ?? '-');
                 $details .= '</td>';
                 return $details;
             })
