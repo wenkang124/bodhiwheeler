@@ -84,6 +84,7 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
             Route::get('', [ApprovedBookingController::class, 'index']);
             Route::post('query', [ApprovedBookingController::class, 'approvedBookingQuery'])->name('.query');
             Route::get('{booking}/detail', [ApprovedBookingController::class, 'detail'])->name('.detail');
+            Route::get('{booking}/download-invoice', [ApprovedBookingController::class, 'downloadInvoice'])->name('.download-invoice');
         });
 
         Route::prefix('rejected-bookings')->name('.rejected-booking')->group(function () {

@@ -43,6 +43,9 @@ class PendingApprovalController extends Controller
             ->editColumn('package_name', function ($row) {
                 return $row->package_name;
             })
+            ->editColumn('total_price', function ($row) {
+                return '$' . $row->total_price;
+            })
             ->editColumn('status', function ($row) {
                 return '<span class="text-primary">' . ucfirst($row->status) . '</span>';
             })
@@ -389,6 +392,6 @@ class PendingApprovalController extends Controller
 
         Session::flash('alert-success', 'Successfully Adjusted Total Price and Adjustments');
 
-        return redirect()->route('admin.booking.pending-approval');
+        return redirect()->route('admin.booking.pending-approval.detail', $booking);
     }
 }

@@ -28,6 +28,9 @@ class DraftBookingController extends Controller
             ->editColumn('package_name', function ($row) {
                 return $row->package_name;
             })
+            ->editColumn('total_price', function ($row) {
+                return '$' . $row->total_price;
+            })
             ->editColumn('status', function ($row) {
                 return '<span class="text-secondary">' . ucfirst($row->status) . '</span>';
             })
