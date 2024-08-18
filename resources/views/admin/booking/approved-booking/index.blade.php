@@ -33,6 +33,7 @@
                                         <th class="border-bottom">Package</th>
                                         <th class="border-bottom">Status</th>
                                         <th class="border-bottom">Details</th>
+                                        <th class="border-bottom">Total Price</th>
                                         <th class="border-bottom">Created At</th>
                                         <th class="border-bottom">Action</th>
                                     </tr>
@@ -83,6 +84,11 @@
                 },
                 {
                     data: "details",
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "total_price",
                     orderable: false,
                     searchable: false
                 },
