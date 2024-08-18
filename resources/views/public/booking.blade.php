@@ -26,10 +26,7 @@
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
                 @foreach ($packages as $package)
                     <li class="nav-item col">
-                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'active' : '' }}"
-                            id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab"
-                            href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab"
-                            aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
+                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
                             aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'true' : 'false' }}">
                             {{ $package->name }}
                         </a>
@@ -39,9 +36,7 @@
 
             <div class="tab-content">
                 @foreach ($packages as $package)
-                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'show active' : '' }}"
-                        id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel"
-                        aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
+                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
                         {!! Form::open(['route' => 'booking.submit-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
                         @csrf
                         <div class="row justify-content-center">
@@ -57,8 +52,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div
-                                class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
+                            <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
                                 {!! Form::text('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
                                     'id' => 'pick_up_time',
                                     'class' => 'time-picker',
@@ -123,6 +117,10 @@
                                 @error('drop_off_address', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                                <small class="form-text text-muted mb-4">
+                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via 
+                                    <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
+                                </small>
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
                                 {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
@@ -167,9 +165,7 @@
                                 @if (env('APP_ENV') === 'local')
                                     <button class="def-btn def-btn-2">Book Now</button>
                                 @else
-                                    <button class="g-recaptcha def-btn def-btn-2"
-                                        data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit'
-                                        data-action='submit'>Book Now</button>
+                                    <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
                                 @endif
                             </div>
                         </div>
@@ -218,6 +214,9 @@
                 pickUpInputs.forEach(function(input) {
                     autocompletePickUp = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompletePickUp.addListener('place_changed', calculateAndDisplayRoute);
@@ -226,6 +225,9 @@
                 dropOffInputs.forEach(function(input) {
                     autocompleteDropOff = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompleteDropOff.addListener('place_changed', calculateAndDisplayRoute);

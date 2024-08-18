@@ -26,11 +26,7 @@
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
                 @foreach ($packages as $package)
                     <li class="nav-item col">
-                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'active' : '' }}"
-                            id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab"
-                            href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab"
-                            aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
-                            aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'true' : 'false' }}">
+                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'true' : 'false' }}">
                             {{ $package->name }}
                         </a>
                     </li>
@@ -39,9 +35,7 @@
 
             <div class="tab-content">
                 @foreach ($packages as $package)
-                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'show active' : '' }}"
-                        id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel"
-                        aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
+                    <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
                         {!! Form::open(['route' => 'booking.update-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
                         @csrf
                         <div class="row justify-content-center">
@@ -57,18 +51,13 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div
-                                class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::text(
-                                    'pick_up_time',
-                                    isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '',
-                                    [
-                                        'id' => 'pick_up_time',
-                                        'class' => 'time-picker',
-                                        'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
-                                        'required',
-                                    ],
-                                ) !!}
+                            <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
+                                {!! Form::text('pick_up_time', isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '', [
+                                    'id' => 'pick_up_time',
+                                    'class' => 'time-picker',
+                                    'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -76,18 +65,12 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::text(
-                                        'return_time',
-                                        isset($booking) && !$booking->is_estimated_return_time
-                                            ? \Carbon\Carbon::parse($booking->return_time)->format('H:i')
-                                            : '',
-                                        [
-                                            'id' => 'return_time',
-                                            'class' => 'time-picker',
-                                            'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
-                                            'required',
-                                        ],
-                                    ) !!}
+                                    {!! Form::text('return_time', isset($booking) && !$booking->is_estimated_return_time ? \Carbon\Carbon::parse($booking->return_time)->format('H:i') : '', [
+                                        'id' => 'return_time',
+                                        'class' => 'time-picker',
+                                        'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
+                                        'required',
+                                    ]) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -136,6 +119,10 @@
                                 @error('drop_off_address', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                                <small class="form-text text-muted mb-4">
+                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via 
+                                    <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
+                                </small>
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
                                 {!! Form::number('no_of_passenger', $booking->no_of_passenger, [
@@ -188,9 +175,7 @@
                                 @if (env('APP_ENV') === 'local')
                                     <button class="def-btn def-btn-2">Book Now</button>
                                 @else
-                                    <button class="g-recaptcha def-btn def-btn-2"
-                                        data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit'
-                                        data-action='submit'>Confirm</button>
+                                    <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm</button>
                                 @endif
                             </div>
                         </div>
@@ -239,6 +224,9 @@
                 pickUpInputs.forEach(function(input) {
                     autocompletePickUp = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompletePickUp.addListener('place_changed', calculateAndDisplayRoute);
@@ -247,6 +235,9 @@
                 dropOffInputs.forEach(function(input) {
                     autocompleteDropOff = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompleteDropOff.addListener('place_changed', calculateAndDisplayRoute);
