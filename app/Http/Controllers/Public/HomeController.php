@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\Package;
 use App\Models\SystemConfig;
 use Illuminate\Http\Request;
+use App\Services\WatiService;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -22,10 +23,12 @@ class HomeController extends Controller
      * @return void
      */
     protected $bookingPriceCalculator;
+    protected $watiService;
 
-    public function __construct(BookingPriceCalculation $bookingPriceCalculator)
+    public function __construct(BookingPriceCalculation $bookingPriceCalculator, WatiService $watiService)
     {
         $this->bookingPriceCalculator = $bookingPriceCalculator;
+        $this->watiService = $watiService;
     }
 
     /**
@@ -332,7 +335,6 @@ class HomeController extends Controller
 
     public function submitConfirmation(Request $request)
     {
-        // Google Recaptchat Validation
         if (env('APP_ENV') === 'production') {
             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
                 'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
@@ -340,7 +342,7 @@ class HomeController extends Controller
             ]);
 
             if (!$response->json()['success']) {
-                abort('401');
+                abort(401);
             }
         }
 
@@ -349,18 +351,17 @@ class HomeController extends Controller
             [
                 'booking_id' => 'required|exists:bookings,id',
                 'payment_receipt' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            ],
+            ]
         );
 
         if ($validator->fails()) {
-            Session::flash('error', 'Fail submitted Enquiry. ' . $validator->errors()->first());
+            Session::flash('error', 'Failed to submit Enquiry. ' . $validator->errors()->first());
             return redirect()->back();
         }
 
         $booking = Booking::find($request->booking_id);
-        $booking->status = "submitted";
+        $booking->status = 'submitted';
 
-        //Upload Payment Receipt
         if ($request->hasFile('payment_receipt')) {
             $imagePath = $request->file('payment_receipt')->store('payment_receipts', 'public');
             $booking->payment_receipt = $imagePath;
@@ -370,6 +371,17 @@ class HomeController extends Controller
 
         if (env('APP_ENV') === 'production') {
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
+        }
+
+        if (env('APP_ENV') === 'local') {
+            $phoneNumber = env('WHATSAPP_RECEIVER');
+            $templateName = 'woocommerce_default_follow_up_v1';
+            $parameters = [
+                ['name' => 'name', 'value' => 'John Doe'],
+                ['name' => 'shop_name', 'value' => "Bodhi Wheeler"],
+            ];
+
+            $this->watiService->sendTemplateMessage($phoneNumber, $templateName, $parameters);
         }
 
         return view('public.success-booking');
