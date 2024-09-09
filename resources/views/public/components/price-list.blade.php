@@ -21,14 +21,14 @@
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description">{!! 'One Way Wheelchair Ride <10km:' !!}</span></span>
+                                                    class="description">{!! 'One Way Wheelchair Ride <5km:' !!}</span></span>
                                             <span class="price">$40</span>
                                         </li>
 
                                         <li class="list-item">
                                             <span class="d-flex align-items-baseline"><i
                                                     class="flaticon-right-arrow-in-a-circle"></i><span
-                                                    class="description">One Way Wheelchair Ride >11km:</span></span>
+                                                    class="description">One Way Wheelchair Ride >5km:</span></span>
                                             <span class="price">$45 onwards</span>
                                         </li>
                                         <li class="list-item">
