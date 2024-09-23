@@ -9,6 +9,8 @@ use App\Models\Package;
 use App\Models\SystemConfig;
 use Illuminate\Http\Request;
 use App\Services\WatiService;
+use App\Models\PackagePriceList;
+use App\Models\BookingAdjustment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -360,15 +362,66 @@ class HomeController extends Controller
         }
 
         $booking = Booking::find($request->booking_id);
+
+        //* Check for existing urgent booking adjustment
+        $existingUrgentAdjustment = BookingAdjustment::where('booking_id', $booking->id)
+            ->where('type', 'urgent_booking')
+            ->exists();
+
+        if (!$existingUrgentAdjustment) {
+            $packagePriceList = PackagePriceList::where('package_id', $booking->package_id)->get();
+            $totalAdjustments = 0;
+
+            foreach ($packagePriceList as $priceListItem) {
+                switch ($priceListItem->type) {
+                    case 'urgent_booking':
+                        $pickupDateTime = Carbon::parse($booking->pick_up_date . ' ' . $booking->pick_up_time);
+                        $timeDifferenceInHours = Carbon::now()->diffInHours($pickupDateTime);
+                        $caseTotal = $timeDifferenceInHours < $priceListItem->value ? $priceListItem->adjustment : 0;
+
+                        if ($caseTotal > 0) {
+                            BookingAdjustment::create([
+                                'type' => $priceListItem->type,
+                                'description' => $priceListItem->description,
+                                'adjustment' => $priceListItem->adjustment,
+                                'value' => $timeDifferenceInHours, // Comparison Value
+                                'adjustment_type' => $priceListItem->adjustment_type,
+                                'total' => $caseTotal,
+                                'package_id' => $booking->package_id,
+                                'booking_id' => $booking->id,
+                            ]);
+
+                            $totalAdjustments += $caseTotal;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if ($totalAdjustments > 0) {
+                $booking->total_price = $booking->total_price + $totalAdjustments;
+                $booking->save();
+
+                Session::flash('error', 'Urgent booking detected, total price updated.');
+                return redirect()->route('booking.confirmation', ['booking_id' => $booking->id]);
+            }
+        }
+
+        // Update booking status to 'submitted'
         $booking->status = 'submitted';
 
+        // Handle payment receipt upload
         if ($request->hasFile('payment_receipt')) {
             $imagePath = $request->file('payment_receipt')->store('payment_receipts', 'public');
             $booking->payment_receipt = $imagePath;
         }
 
+        // Save booking data
         $booking->save();
 
+        // Send notification based on environment
         if (env('APP_ENV') === 'production') {
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
         }
@@ -384,8 +437,10 @@ class HomeController extends Controller
             $this->watiService->sendTemplateMessage($phoneNumber, $templateName, $parameters);
         }
 
+        // Redirect to the success booking page
         return view('public.success-booking');
     }
+
 
     public function pricing()
     {
