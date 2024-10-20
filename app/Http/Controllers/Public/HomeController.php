@@ -8,7 +8,7 @@ use App\Models\Booking;
 use App\Models\Package;
 use App\Models\SystemConfig;
 use Illuminate\Http\Request;
-use App\Services\WatiService;
+use App\Services\OnsendService;
 use App\Models\PackagePriceList;
 use App\Models\BookingAdjustment;
 use Illuminate\Support\Facades\Http;
@@ -25,12 +25,12 @@ class HomeController extends Controller
      * @return void
      */
     protected $bookingPriceCalculator;
-    protected $watiService;
+    protected $onsendService;
 
-    public function __construct(BookingPriceCalculation $bookingPriceCalculator, WatiService $watiService)
+    public function __construct(BookingPriceCalculation $bookingPriceCalculator, OnsendService $onsendService)
     {
         $this->bookingPriceCalculator = $bookingPriceCalculator;
-        $this->watiService = $watiService;
+        $this->onsendService = $onsendService;
     }
 
     /**
@@ -409,35 +409,60 @@ class HomeController extends Controller
             }
         }
 
-        // Update booking status to 'submitted'
         $booking->status = 'submitted';
 
-        // Handle payment receipt upload
         if ($request->hasFile('payment_receipt')) {
             $imagePath = $request->file('payment_receipt')->store('payment_receipts', 'public');
             $booking->payment_receipt = $imagePath;
         }
 
-        // Save booking data
         $booking->save();
 
-        // Send notification based on environment
         if (env('APP_ENV') === 'production') {
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
         }
 
         if (env('APP_ENV') === 'local') {
-            $phoneNumber = env('WHATSAPP_RECEIVER');
-            $templateName = 'woocommerce_default_follow_up_v1';
-            $parameters = [
-                ['name' => 'name', 'value' => 'John Doe'],
-                ['name' => 'shop_name', 'value' => "Bodhi Wheeler"],
-            ];
+            $messageContent = "🚐 *New Booking Confirmation* 🚐\n\n";
+            $messageContent .= "A new booking has been confirmed. Please check the details below and the email for more information:\n\n";
 
-            $this->watiService->sendTemplateMessage($phoneNumber, $templateName, $parameters);
+            $messageContent .= "*Booking ID:* {$booking->id}\n";
+            $messageContent .= "*Customer Name:* {$booking->name}\n";
+            $messageContent .= "*Customer Phone:* {$booking->phone}\n";
+            $messageContent .= "*Package Name:* {$booking->package->name}\n";
+            $messageContent .= "*Pick Up Date & Time:* {$booking->pick_up_date} at {$booking->pick_up_time}\n";
+
+            if ($booking->package->name === 'Return') {
+                $messageContent .= "*Return Time:* " . ($booking->return_time ? $booking->return_time : "Customer will WhatsApp once ready to return") . "\n";
+            }
+
+            if ($booking->package->name === 'Charter') {
+                $messageContent .= "*No. of Charter Hours:* {$booking->no_of_charter_hours}\n";
+            }
+
+            $messageContent .= "*Pick Up Address:* {$booking->pick_up_address}\n";
+            $messageContent .= "*Drop Off Address:* {$booking->drop_off_address}\n";
+            $messageContent .= "*Distance:* {$booking->distance} KM\n";
+            $messageContent .= "*No. of Passengers:* {$booking->no_of_passenger}\n";
+            $messageContent .= "*No. of Wheelchair Pax:* {$booking->no_of_wheelchair_pax}\n";
+            $messageContent .= "*Remarks:* {$booking->remarks}\n";
+
+            $adjustments = BookingAdjustment::where('booking_id', $booking->id)->get();
+            if ($adjustments->count() > 0) {
+                $messageContent .= "\n*Booking Adjustments:*\n";
+                foreach ($adjustments as $adjustment) {
+                    $messageContent .= "- {$adjustment->description}: $" . number_format($adjustment->total, 2) . "\n";
+                }
+            }
+
+            $messageContent .= "\n*Total Price:* $" . number_format($booking->total_price, 2) . "\n\n";
+
+            $messageContent .= "Powered by *bodhiwheeler.org*";
+
+            $phoneNumber = env('WHATSAPP_RECEIVER');
+            $this->onsendService->sendWhatsAppMessage($phoneNumber, $messageContent, []);
         }
 
-        // Redirect to the success booking page
         return view('public.success-booking');
     }
 

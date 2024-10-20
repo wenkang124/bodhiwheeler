@@ -4,32 +4,34 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 
-class WatiService
+class OnsendService
 {
     protected $apiToken;
     protected $apiBaseUrl;
 
     public function __construct()
     {
-        $this->apiToken = env('WATI_API_TOKEN');
-        $this->apiBaseUrl = env('WATI_API_BASE_URL');
+        $this->apiToken = env('ONSEND_API_TOKEN');
+        $this->apiBaseUrl = env('ONSEND_API_BASE_URL');
     }
 
-    public function sendTemplateMessage($phoneNumber, $templateName, $parameters = [])
+    public function sendWhatsAppMessage($phoneNumber, $messageContent, $bookingDetails = [])
     {
-        $url = "{$this->apiBaseUrl}/api/v1/sendTemplateMessage?whatsappNumber={$phoneNumber}";
+        $url = "{$this->apiBaseUrl}/api/v1/send";
 
         try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $this->apiToken,
-            ])->post($url, [
-                'template_name' => $templateName,
-                'broadcast_name' => 'Booking Confirmation',
-                'parameters' => $parameters,
-            ]);
+            $data = [
+                'phone_number' => $phoneNumber,
+                'message' => $messageContent,
+                'booking_details' => $bookingDetails,
+            ];
+
+            $response = Http::accept('application/json')
+                ->withToken($this->apiToken)
+                ->post($url, $data);
 
             if ($response->failed()) {
-                \Log::error('WATI API Error', [
+                \Log::error('Onsend API Error', [
                     'url' => $url,
                     'status' => $response->status(),
                     'response' => $response->body(),
@@ -39,7 +41,7 @@ class WatiService
 
             return $response->json();
         } catch (\Exception $e) {
-            \Log::error('WATI API Exception', [
+            \Log::error('Onsend API Exception', [
                 'url' => $url,
                 'message' => $e->getMessage(),
             ]);
