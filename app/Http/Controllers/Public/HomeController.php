@@ -422,7 +422,7 @@ class HomeController extends Controller
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
         }
 
-        if (env('APP_ENV') === 'local') {
+        if (env('APP_ENV') === 'production') {
             $messageContent = "🚐 *New Booking Confirmation* 🚐\n\n";
             $messageContent .= "A new booking has been confirmed. Please check the details below and the email for more information:\n\n";
 
