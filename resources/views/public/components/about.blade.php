@@ -38,7 +38,7 @@
                          <h5>Welcome to BodhiWheeler</h5>
                          <h2>Your Prime Choice for Wheelchair-Friendly Travel</h2>
                      </div>
-                     <p>Bodhiwheeler Transport has been serving the needs of clientele in Singapore nearly 7 years. Our
+                     <p>Bodhiwheeler Transport has been serving the needs of clientele in Singapore since 2014. Our
                          mission is to provide mobility assistance to the elderly, mobility impaired and
                          wheelchair-bound
                          residents within the singapore. With this goal in mind, Bodhiwheeler pledges to provide caring,

@@ -9,19 +9,11 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin Panel | {{env('APP_NAME')}}</title>
     <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('dashboard-assets/favicons/apple-icon-57x57.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('dashboard-assets/favicons/apple-icon-60x60.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('dashboard-assets/favicons/apple-icon-72x72.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('dashboard-assets/favicons/apple-icon-76x76.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('dashboard-assets/favicons/apple-icon-114x114.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('dashboard-assets/favicons/apple-icon-120x120.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('dashboard-assets/favicons/apple-icon-144x144.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('dashboard-assets/favicons/apple-icon-152x152.png').'?v=1' }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('dashboard-assets/favicons/apple-icon-180x180.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('dashboard-assets/favicons/favicon-16x16.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('dashboard-assets/favicons/favicon-32x32.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('dashboard-assets/favicons/favicon-96x96.png').'?v=1' }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('dashboard-assets/favicons/android-icon-192x192.png').'?v=1' }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/favicons/favicon-96x96.png') . '?v=1' }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicons/favicon.svg') . '?v=1' }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/favicons/favicon.ico') . '?v=1' }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicons/apple-touch-icon.png') . '?v=1' }}" />
+
     <link href="{{ asset('dashboard-assets/extra-libs/toastr/dist/build/toastr.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('dashboard-assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet" />
     <link href="{{ asset('dashboard-assets/extra-libs/custom-switch/bootstrap4-toggle.min.css') }}" rel="stylesheet" />
