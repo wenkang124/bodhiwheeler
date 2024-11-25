@@ -125,7 +125,7 @@
     <div class="email">
         <div class="email-head">
             <div class="head-img">
-                <img src="{{ asset('assets/images/footer-logo.png') }}" alt="bodhiwheeler-logo">
+                <img src="{{ asset('assets/images/footer-logo.png') }}?v=1" alt="bodhiwheeler-logo">
             </div>
         </div>
         <div class="email-body">

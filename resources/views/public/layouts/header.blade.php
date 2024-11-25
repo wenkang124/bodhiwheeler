@@ -36,8 +36,7 @@
                             <div class="col-xl-2 col-lg-1 col-4 d-flex align-items-center">
                                 <div class="logo">
                                     <a href="{{ route('home') }}">
-                                        <img src={{ asset('assets/images/logo.png') }} alt="LOGO">
-
+                                        <img src="{{ asset('assets/images/logo.png') }}?v=1" alt="LOGO">
                                     </a>
                                 </div>
                             </div>

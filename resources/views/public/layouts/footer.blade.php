@@ -64,7 +64,7 @@
          <div class="container">
              <div class="row">
                  <div class="col-xl-6 col-lg-6 d-flex align-items-center justify-content-center">
-                     <p><img src="{{ asset('assets/images/footer-logo.png') }}" alt="Footer Logo"></p>
+                     <p><img src="{{ asset('assets/images/footer-logo.png') }}?v=1" alt="Footer Logo"></p>
                  </div>
                  <div class="col-xl-6 col-lg-6 d-flex align-items-center justify-content-center">
                      <p>Copyright &copy; {{ now()->year }} BodhiWheeler Reserved</p>
