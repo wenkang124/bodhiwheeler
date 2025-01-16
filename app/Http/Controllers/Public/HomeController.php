@@ -77,7 +77,17 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
-            'pick_up_date' => 'required|date|after_or_equal:today',
+            'pick_up_date' => [
+                'required',
+                'date',
+                'after_or_equal:today',
+                function ($attribute, $value, $fail) {
+                    $date = Carbon::parse($value);
+                    if ($date->year == 2025 && $date->month == 1 && $date->day >= 28 && $date->day <= 31) {
+                        $fail('Bookings are not available from January 28-31, 2025.');
+                    }
+                }
+            ],
             'pick_up_time' => [
                 'required',
                 'date_format:H:i',
@@ -212,7 +222,17 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
-            'pick_up_date' => 'required|date|after_or_equal:today',
+            'pick_up_date' => [
+                'required',
+                'date',
+                'after_or_equal:today',
+                function ($attribute, $value, $fail) {
+                    $date = Carbon::parse($value);
+                    if ($date->year == 2025 && $date->month == 1 && $date->day >= 28 && $date->day <= 31) {
+                        $fail('Bookings are not available from January 28-31, 2025.');
+                    }
+                }
+            ],
             'pick_up_time' => [
                 'required',
                 'date_format:H:i',
