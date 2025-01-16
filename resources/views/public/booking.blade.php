@@ -37,139 +37,143 @@
             <div class="tab-content">
                 @foreach ($packages as $package)
                     <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) || ($loop->first && !old('active_tab')) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
-                        {!! Form::open(['route' => 'booking.submit-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
-                        @csrf
-                        <div class="row justify-content-center">
-                            <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::text('name', null, ['placeholder' => 'Name*', 'required']) !!}
-                                @error('name', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::tel('phone', null, ['placeholder' => 'Phone Number*', 'required']) !!}
-                                @error('phone', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::text('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
-                                    'id' => 'pick_up_time',
-                                    'class' => 'time-picker',
-                                    'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
-                                    'required',
-                                ]) !!}
-                                @error('pick_up_time', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            @if ($package->name == 'Return')
+                        <div class="booking-form">
+                            @include('public.components.alert')
+                            {!! Form::open(['route' => 'booking.submit-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
+                            @csrf
+                            <div class="row justify-content-center">
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::text('return_time', null, [
-                                        'id' => 'return_time',
+                                    {!! Form::text('name', null, ['placeholder' => 'Name*', 'required']) !!}
+                                    @error('name', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-xl-5 col-lg-5 col-md-6">
+                                    {!! Form::tel('phone', null, ['placeholder' => 'Phone Number*', 'required']) !!}
+                                    @error('phone', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
+                                    {!! Form::text('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
+                                        'id' => 'pick_up_time',
                                         'class' => 'time-picker',
-                                        'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
+                                        'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
                                         'required',
                                     ]) !!}
-                                    @error('return_time', $package->id)
+                                    @error('pick_up_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            @endif
 
-                            @if ($package->name == 'Charter')
-                                <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::number('no_of_charter_hours', null, ['placeholder' => 'No of Charter Hours', 'required']) !!}
-                                    @error('no_of_charter_hours', $package->id)
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            @endif
-
-                            <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('pick_up_date', null, [
-                                    'id' => 'pick_up_date',
-                                    'class' => 'date-picker',
-                                    'placeholder' => 'Pick Up Date*',
-                                    'required',
-                                ]) !!}
-                                @error('pick_up_date', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('pick_up_address', null, [
-                                    'id' => 'pick_up_address',
-                                    'placeholder' => 'Pick Up Address*',
-                                    'required',
-                                ]) !!}
-                                @error('pick_up_address', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-xl-10 col-lg-10">
-                                {!! Form::text('drop_off_address', null, [
-                                    'id' => 'drop_off_address',
-                                    'placeholder' => 'Drop Off Address*',
-                                    'required',
-                                ]) !!}
-                                @error('drop_off_address', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                                <small class="form-text text-muted mb-4">
-                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via 
-                                    <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
-                                </small>
-                            </div>
-                            <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
-                                @error('no_of_passenger', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::number('no_of_wheelchair_pax', null, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
-                                @error('no_of_wheelchair_pax', $package->id)
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            {{-- @if ($package->name == 'Return' || $package->name == 'Charter')
-                                <div class="col-xl-10 col-lg-10 text-left">
-                                    <div class="form-check form-check-inline medical-escort-form">
-                                        {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
-                                            'class' => 'form-check-label py-0 pr-2 medical-label',
-                                            'style' => 'white-space: nowrap;',
+                                @if ($package->name == 'Return')
+                                    <div class="col-xl-5 col-lg-5 col-md-6">
+                                        {!! Form::text('return_time', null, [
+                                            'id' => 'return_time',
+                                            'class' => 'time-picker',
+                                            'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
+                                            'required',
                                         ]) !!}
-                                        {!! Form::checkbox('medical_escort', '1', false, [
-                                            'class' => 'medical-escort',
-                                            'id' => 'medical_escort_checkbox',
-                                            'data-on-value' => '1',
-                                            'data-off-value' => '0',
-                                            'value' => '0',
-                                        ]) !!}
+                                        @error('return_time', $package->id)
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
-                                    @error('medical_escort', $package->id)
+                                @endif
+
+                                @if ($package->name == 'Charter')
+                                    <div class="col-xl-5 col-lg-5 col-md-6">
+                                        {!! Form::number('no_of_charter_hours', null, ['placeholder' => 'No of Charter Hours', 'required']) !!}
+                                        @error('no_of_charter_hours', $package->id)
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif
+
+                                <div class="col-xl-10 col-lg-10">
+                                    {!! Form::text('pick_up_date', null, [
+                                        'id' => 'pick_up_date',
+                                        'class' => 'date-picker',
+                                        'placeholder' => 'Pick Up Date*',
+                                        'required',
+                                        'autocomplete' => 'off',
+                                    ]) !!}
+                                    @error('pick_up_date', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            @endif --}}
+                                <div class="col-xl-10 col-lg-10">
+                                    {!! Form::text('pick_up_address', null, [
+                                        'id' => 'pick_up_address',
+                                        'placeholder' => 'Pick Up Address*',
+                                        'required',
+                                    ]) !!}
+                                    @error('pick_up_address', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-xl-10 col-lg-10">
+                                    {!! Form::text('drop_off_address', null, [
+                                        'id' => 'drop_off_address',
+                                        'placeholder' => 'Drop Off Address*',
+                                        'required',
+                                    ]) !!}
+                                    @error('drop_off_address', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    <small class="form-text text-muted mb-4">
+                                        Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via
+                                        <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
+                                    </small>
+                                </div>
+                                <div class="col-xl-5 col-lg-5 col-md-6">
+                                    {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
+                                    @error('no_of_passenger', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="col-xl-5 col-lg-5 col-md-6">
+                                    {!! Form::number('no_of_wheelchair_pax', null, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
+                                    @error('no_of_wheelchair_pax', $package->id)
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
-                            <input type="hidden" name="package_id" value="{{ $package->id }}">
-                            <input type="hidden" name="active_tab" value="{{ $package->name }}">
-                            {!! Form::hidden('distance', '', ['id' => 'distance']) !!}
+                                {{-- @if ($package->name == 'Return' || $package->name == 'Charter')
+                                    <div class="col-xl-10 col-lg-10 text-left">
+                                        <div class="form-check form-check-inline medical-escort-form">
+                                            {!! Form::label('medical_escort_checkbox', 'Medical Escort', [
+                                                'class' => 'form-check-label py-0 pr-2 medical-label',
+                                                'style' => 'white-space: nowrap;',
+                                            ]) !!}
+                                            {!! Form::checkbox('medical_escort', '1', false, [
+                                                'class' => 'medical-escort',
+                                                'id' => 'medical_escort_checkbox',
+                                                'data-on-value' => '1',
+                                                'data-off-value' => '0',
+                                                'value' => '0',
+                                            ]) !!}
+                                        </div>
+                                        @error('medical_escort', $package->id)
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                @endif --}}
 
-                            <div class="col-xl-10 col-lg-10 text-right">
-                                {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
-                                @if (env('APP_ENV') === 'local')
-                                    <button class="def-btn def-btn-2">Book Now</button>
-                                @else
-                                    <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
-                                @endif
+                                <input type="hidden" name="package_id" value="{{ $package->id }}">
+                                <input type="hidden" name="active_tab" value="{{ $package->name }}">
+                                {!! Form::hidden('distance', '', ['id' => 'distance']) !!}
+
+                                <div class="col-xl-10 col-lg-10 text-right">
+                                    {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
+                                    @if (env('APP_ENV') === 'local')
+                                        <button class="def-btn def-btn-2">Book Now</button>
+                                    @else
+                                        <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
+                                    @endif
+                                </div>
                             </div>
+                            {!! Form::close() !!}
                         </div>
-                        {!! Form::close() !!}
                     </div>
                 @endforeach
             </div>
@@ -295,7 +299,20 @@
                         timepicker: false,
                         format: 'Y-m-d',
                         step: 15,
-                        scrollInput: false
+                        scrollInput: false,
+                        disabledDates: ['2025-01-28', '2025-01-29', '2025-01-30', '2025-01-31'],
+                        formatDate: 'Y-m-d',
+                    });
+
+                    $(picker).on('input', function() {
+                        let inputDate = new Date(this.value);
+                        let startDisabled = new Date('2025-01-28');
+                        let endDisabled = new Date('2025-01-31');
+
+                        if (inputDate >= startDisabled && inputDate <= endDisabled) {
+                            this.value = '';
+                            alert('This date is not available for booking.');
+                        }
                     });
                 });
 

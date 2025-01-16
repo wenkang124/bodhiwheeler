@@ -36,6 +36,7 @@
             <div class="tab-content">
                 @foreach ($packages as $package)
                     <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
+                        @include('public.components.alert')
                         {!! Form::open(['route' => 'booking.update-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
                         @csrf
                         <div class="row justify-content-center">
@@ -120,7 +121,7 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                                 <small class="form-text text-muted mb-4">
-                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via 
+                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via
                                     <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
                                 </small>
                             </div>
@@ -305,7 +306,20 @@
                         timepicker: false,
                         format: 'Y-m-d',
                         step: 15,
-                        scrollInput: false
+                        scrollInput: false,
+                        disabledDates: ['2025-01-28', '2025-01-29', '2025-01-30', '2025-01-31'],
+                        formatDate: 'Y-m-d',
+                    });
+
+                    $(picker).on('input', function() {
+                        let inputDate = new Date(this.value);
+                        let startDisabled = new Date('2025-01-28');
+                        let endDisabled = new Date('2025-01-31');
+
+                        if (inputDate >= startDisabled && inputDate <= endDisabled) {
+                            this.value = '';
+                            alert('This date is not available for booking.');
+                        }
                     });
                 });
 
