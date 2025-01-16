@@ -34,6 +34,7 @@ class BookingPriceCalculation
     public function calculateReturnPackagePrice($packagePriceList, $booking)
     {
         $bookingDateTime = Carbon::parse($booking['pick_up_date'] . ' ' . $booking['pick_up_time']);
+        $bookingReturnTime = isset($booking['return_time']) ? Carbon::parse($booking['pick_up_date'] . ' ' . $booking['return_time']) : null;
         $weekday = $bookingDateTime->isWeekday();
         $isSundayOrPublicHoliday = $bookingDateTime->dayOfWeek === Carbon::SUNDAY || $this->isPublicHoliday($booking['pick_up_date']);
         $isSaturday = $bookingDateTime->isSaturday();
@@ -41,9 +42,10 @@ class BookingPriceCalculation
 
         foreach ($packagePriceList as $priceListItem) {
             switch ($priceListItem->type) {
-                case 'less_than_10_distance':
+                case 'less_than_5_distance_pick_up_time':
+                case 'less_than_5_distance_return_time':
 
-                    $caseTotal = $booking['distance'] <= $priceListItem->value ? $priceListItem->adjustment : 0;
+                    $caseTotal = $booking['distance'] < $priceListItem->value ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -58,7 +60,8 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'greater_than_11_distance':
+                case 'greater_than_5_distance_pick_up_time':
+                case 'greater_than_5_distance_return_time':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 16) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -73,7 +76,8 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'greater_than_16_distance':
+                case 'greater_than_16_distance_pick_up_time':
+                case 'greater_than_16_distance_return_time':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 25) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -88,7 +92,8 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'greater_than_25_distance':
+                case 'greater_than_25_distance_pick_up_time':
+                case 'greater_than_25_distance_return_time':
                     $caseTotal = $booking['distance'] >= $priceListItem->value ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
@@ -123,7 +128,8 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'greater_than_caregiver':
+                case 'greater_than_caregiver_pick_up_time':
+                case 'greater_than_caregiver_return_time':
                     $caregivers = $booking['no_of_passenger'] - $priceListItem->value;
 
                     if ($caregivers > 0) {
@@ -145,7 +151,8 @@ class BookingPriceCalculation
 
                     break;
 
-                case 'greater_than_wheelchair':
+                case 'greater_than_wheelchair_pick_up_time':
+                case 'greater_than_wheelchair_return_time':
                     $excessWheelchairPax = max(0, $booking['no_of_wheelchair_pax'] - $priceListItem->value);
 
                     if ($excessWheelchairPax > 0) {
@@ -166,7 +173,7 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'between_time':
+                case 'between_time_pick_up_time':
                     if (!$isSundayOrPublicHoliday && $weekday && $bookingDateTime->between(
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
@@ -185,7 +192,27 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'sat_between_time':
+
+                case 'between_time_return_time':
+                    if ($bookingReturnTime !== null && !$isSundayOrPublicHoliday && $weekday && $bookingReturnTime->between(
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
+                    )) {
+                        $caseTotal = $priceListItem->adjustment;
+
+                        BookingAdjustment::create([
+                            'type' => $priceListItem->type,
+                            'description' => $priceListItem->description,
+                            'adjustment' => $priceListItem->adjustment,
+                            'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
+                            'adjustment_type' => $priceListItem->adjustment_type,
+                            'total' => $caseTotal,
+                            'package_id' => $booking->package_id,
+                            'booking_id' => $booking->id,
+                        ]);
+                    }
+                    break;
+                case 'sat_between_time_pick_up_time':
                     if (!$isSundayOrPublicHoliday && $isSaturday && $bookingDateTime->between(
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
                         Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
@@ -204,7 +231,26 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'sunday_or_public_holiday':
+                case 'sat_between_time_return_time':
+                    if ($bookingReturnTime !== null && !$isSundayOrPublicHoliday && $isSaturday && $bookingReturnTime->between(
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time),
+                        Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->end_time)
+                    )) {
+                        $caseTotal = $priceListItem->adjustment;
+
+                        BookingAdjustment::create([
+                            'type' => $priceListItem->type,
+                            'description' => $priceListItem->description,
+                            'adjustment' => $priceListItem->adjustment,
+                            'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
+                            'adjustment_type' => $priceListItem->adjustment_type,
+                            'total' => $caseTotal,
+                            'package_id' => $booking->package_id,
+                            'booking_id' => $booking->id,
+                        ]);
+                    }
+                    break;
+                case 'sunday_or_public_holiday_pick_up_time':
                     if ($isSundayOrPublicHoliday) {
                         $caseTotal = $priceListItem->adjustment;
 
@@ -220,26 +266,22 @@ class BookingPriceCalculation
                         ]);
                     }
                     break;
-                case 'min_medical_escort':
-                    $pickUpDateTime = Carbon::parse($booking['pick_up_date'] . ' ' . $booking['pick_up_time']);
-                    $returnDateTime = Carbon::parse($booking['pick_up_date'] . ' ' . $booking['return_time']);
-                    $effectiveDuration = $returnDateTime->diffInHours($pickUpDateTime);
+                case 'sunday_or_public_holiday_return_time':
+                    if ($bookingReturnTime !== null && $isSundayOrPublicHoliday) {
+                        $caseTotal = $priceListItem->adjustment;
 
-                    if ($booking->medical_escort && $effectiveDuration >= $priceListItem->value) {
-                        $caseTotal = $effectiveDuration * $priceListItem->adjustment;
-                        if ($caseTotal > 0) {
-                            BookingAdjustment::create([
-                                'type' => $priceListItem->type,
-                                'description' => $priceListItem->description,
-                                'adjustment' => $priceListItem->adjustment,
-                                'value' => $effectiveDuration, //Comparison Value
-                                'adjustment_type' => $priceListItem->adjustment_type,
-                                'total' => $caseTotal,
-                                'package_id' => $booking->package_id,
-                                'booking_id' => $booking->id,
-                            ]);
-                        }
+                        BookingAdjustment::create([
+                            'type' => $priceListItem->type,
+                            'description' => $priceListItem->description,
+                            'adjustment' => $priceListItem->adjustment,
+                            'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
+                            'adjustment_type' => $priceListItem->adjustment_type,
+                            'total' => $caseTotal,
+                            'package_id' => $booking->package_id,
+                            'booking_id' => $booking->id,
+                        ]);
                     }
+                    break;
                 default:
                     //Default
                     break;
@@ -257,69 +299,6 @@ class BookingPriceCalculation
 
         foreach ($packagePriceList as $priceListItem) {
             switch ($priceListItem->type) {
-                case 'less_than_10_distance':
-
-                    $caseTotal = $booking['distance'] <= $priceListItem->value ? $priceListItem->adjustment : 0;
-                    if ($caseTotal > 0) {
-                        BookingAdjustment::create([
-                            'type' => $priceListItem->type,
-                            'description' => $priceListItem->description,
-                            'adjustment' => $priceListItem->adjustment,
-                            'value' => $booking['distance'], //Comparison Value
-                            'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $caseTotal,
-                            'package_id' => $booking->package_id,
-                            'booking_id' => $booking->id,
-                        ]);
-                    }
-                    break;
-
-                case 'greater_than_11_distance':
-                    $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 16) ? $priceListItem->adjustment : 0;
-                    if ($caseTotal > 0) {
-                        BookingAdjustment::create([
-                            'type' => $priceListItem->type,
-                            'description' => $priceListItem->description,
-                            'adjustment' => $priceListItem->adjustment,
-                            'value' => $booking['distance'], //Comparison Value
-                            'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $caseTotal,
-                            'package_id' => $booking->package_id,
-                            'booking_id' => $booking->id,
-                        ]);
-                    }
-                    break;
-                case 'greater_than_16_distance':
-                    $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 25) ? $priceListItem->adjustment : 0;
-                    if ($caseTotal > 0) {
-                        BookingAdjustment::create([
-                            'type' => $priceListItem->type,
-                            'description' => $priceListItem->description,
-                            'adjustment' => $priceListItem->adjustment,
-                            'value' => $booking['distance'], //Comparison Value
-                            'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $caseTotal,
-                            'package_id' => $booking->package_id,
-                            'booking_id' => $booking->id,
-                        ]);
-                    }
-                    break;
-                case 'greater_than_25_distance':
-                    $caseTotal = $booking['distance'] >= $priceListItem->value ? $priceListItem->adjustment : 0;
-                    if ($caseTotal > 0) {
-                        BookingAdjustment::create([
-                            'type' => $priceListItem->type,
-                            'description' => $priceListItem->description,
-                            'adjustment' => $priceListItem->adjustment,
-                            'value' => $booking['distance'], //Comparison Value
-                            'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $caseTotal,
-                            'package_id' => $booking->package_id,
-                            'booking_id' => $booking->id,
-                        ]);
-                    }
-                    break;
-
                 case 'urgent_booking':
                     $pickupDateTime = Carbon::parse($booking['pick_up_date'] . ' ' . $booking['pick_up_time']);
                     $timeDifferenceInHours = Carbon::now()->diffInHours($pickupDateTime);
@@ -393,7 +372,7 @@ class BookingPriceCalculation
                             'adjustment' => $priceListItem->adjustment,
                             'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
                             'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $priceListItem->adjustment,
+                            'total' => $priceListItem->adjustment * $booking->no_of_charter_hours,
                             'package_id' => $booking->package_id,
                             'booking_id' => $booking->id,
                         ]);
@@ -410,7 +389,7 @@ class BookingPriceCalculation
                             'adjustment' => $priceListItem->adjustment,
                             'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
                             'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $priceListItem->adjustment,
+                            'total' => $priceListItem->adjustment * $booking->no_of_charter_hours,
                             'package_id' => $booking->package_id,
                             'booking_id' => $booking->id,
                         ]);
@@ -424,28 +403,10 @@ class BookingPriceCalculation
                             'adjustment' => $priceListItem->adjustment,
                             'value' => Carbon::parse($booking['pick_up_date'] . ' ' . $priceListItem->start_time)->toDateTimeString(), //Comparison Value
                             'adjustment_type' => $priceListItem->adjustment_type,
-                            'total' => $priceListItem->adjustment,
+                            'total' => $priceListItem->adjustment * $booking->no_of_charter_hours,
                             'package_id' => $booking->package_id,
                             'booking_id' => $booking->id,
                         ]);
-                    }
-                    break;
-                case 'min_charter_hour':
-                case 'min_medical_escort':
-                    if ($booking->medical_escort && $booking['no_of_charter_hours'] >= $priceListItem->value) {
-                        $caseTotal = $booking['no_of_charter_hours'] * $priceListItem->adjustment;
-                        if ($caseTotal > 0) {
-                            BookingAdjustment::create([
-                                'type' => $priceListItem->type,
-                                'description' => $priceListItem->description,
-                                'adjustment' => $priceListItem->adjustment,
-                                'value' => $booking['no_of_charter_hours'], //Comparison Value
-                                'adjustment_type' => $priceListItem->adjustment_type,
-                                'total' => $caseTotal,
-                                'package_id' => $booking->package_id,
-                                'booking_id' => $booking->id,
-                            ]);
-                        }
                     }
                     break;
                 default:
@@ -465,9 +426,9 @@ class BookingPriceCalculation
 
         foreach ($packagePriceList as $priceListItem) {
             switch ($priceListItem->type) {
-                case 'less_than_10_distance':
+                case 'less_than_5_distance':
 
-                    $caseTotal = $booking['distance'] <= $priceListItem->value ? $priceListItem->adjustment : 0;
+                    $caseTotal = ($booking['distance'] < $priceListItem->value) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([
                             'type' => $priceListItem->type,
@@ -482,7 +443,7 @@ class BookingPriceCalculation
                     }
                     break;
 
-                case 'greater_than_11_distance':
+                case 'greater_than_5_distance':
                     $caseTotal = ($booking['distance'] >= $priceListItem->value && $booking['distance'] < 16) ? $priceListItem->adjustment : 0;
                     if ($caseTotal > 0) {
                         BookingAdjustment::create([

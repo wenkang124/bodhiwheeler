@@ -32,6 +32,9 @@ class DriverController extends Controller
                 $statusColorClass = $row->status == 'active' ? 'text-success' : 'text-danger';
                 return '<span class="' . $statusColorClass . '">' . $row->status . '</span>';
             })
+            ->editColumn('created_at', function ($row) {
+                return $row->created_at;
+            })
             ->addColumn('actions', function ($row) {
                 $actions = ' <a href="' . route('admin.driver.edit', [$row->id]) . '" class="btn btn-icon btn-sm btn-outline-success">Edit</a>';
                 return $actions;

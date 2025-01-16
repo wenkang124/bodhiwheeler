@@ -9,18 +9,10 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
                         <li class="breadcrumb-item" aria-current="page">
-                            Pending Approval
+                            Draft Booking
                         </li>
                     </ol>
                 </nav>
-            </div>
-        </div>
-        <div class="col-auto mt-3 mt-md-0 align-self-center">
-            <div class="d-flex">
-                <a href="{{route('admin.booking.pending-approval.create')}}" class="btn btn-success">
-                    <i data-feather="plus" class="fill-white feather-sm"></i>
-                    Create
-                </a>
             </div>
         </div>
     </div>
@@ -36,11 +28,11 @@
                             <table id="dataTable" class="table stylish-table v-middle">
                                 <thead>
                                     <tr>
-                                        <th class="border-bottom"> Name</th>
+                                        <th class="border-bottom">Name</th>
                                         <th class="border-bottom">Contact</th>
                                         <th class="border-bottom">Package</th>
                                         <th class="border-bottom">Status</th>
-                                        <th class="border-bottom">Detail</th>
+                                        <th class="border-bottom">Details</th>
                                         <th class="border-bottom">Total Price</th>
                                         <th class="border-bottom">Created At</th>
                                         <th class="border-bottom">Action</th>
@@ -66,7 +58,7 @@
 
         var oTable = $('#dataTable').DataTable({
             ajax: {
-                url: "{{ route('admin.booking.pending-approval.query') }}",
+                url: "{{ route('admin.booking.draft-booking.query') }}",
                 method: "POST",
             },
             serverSide: true,

@@ -31,6 +31,7 @@
     <meta name="description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"> --}}
     <meta name="keywords" content="cheap wheelchair transport, wheelchair taxi, wheelchair transport service Singapore" />
     <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta property="og:image" content="{{ asset('assets/images/meta-logo.png') }}?v=1">
     <meta property="og:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
     <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
     <meta name="facebook:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
@@ -54,19 +55,10 @@
 
 
     <!-- favicon -->
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('assets/favicons/apple-icon-57x57.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('assets/favicons/apple-icon-60x60.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('assets/favicons/apple-icon-72x72.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets/favicons/apple-icon-76x76.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('assets/favicons/apple-icon-114x114.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('assets/favicons/apple-icon-120x120.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('assets/favicons/apple-icon-144x144.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('assets/favicons/apple-icon-152x152.png') . '?v=1' }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicons/apple-icon-180x180.png') . '?v=1' }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/favicons/favicon-16x16.png') . '?v=1' }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-32x32.png') . '?v=1' }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/favicons/favicon-96x96.png') . '?v=1' }}">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/favicons/android-icon-192x192.png') . '?v=1' }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/favicons/favicon-96x96.png') . '?v=1' }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/favicons/favicon.svg') . '?v=1' }}" />
+    <link rel="shortcut icon" href="{{ asset('assets/favicons/favicon.ico') . '?v=1' }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/favicons/apple-touch-icon.png') . '?v=1' }}" />
 
     <!-- animate css old -->
     <link rel="stylesheet" href="{{ asset('assets/css/animate-2.css') }}">
@@ -82,6 +74,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <!-- custom stylesheet -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('assets/css/datetimepicker.min.css') }}">
 
     <!-- Global site tag (gtag.js) - Google Ads: 481469850 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-481469850"></script>
@@ -197,6 +191,9 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <!-- custom js -->
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script src="{{ asset('assets/js/datetimepicker.min.js') }}"></script>
+
     <!-- sweetalert -->
     <script type="text/javascript" src="{{ asset('plugins/sweetalert/sweetalert2@9.js') }}"></script>
 

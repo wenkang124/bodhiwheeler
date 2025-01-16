@@ -8,8 +8,14 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
-                        <li class="breadcrumb-item" aria-current="page">
-                            Pending Approval Details
+                        <li class="breadcrumb-item">
+                            <a href="{{route('admin.booking.pending-approval')}}">Pending Approval</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            {{$booking->id}}
+                        </li>
+                        <li class="breadcrumb-item">
+                            Details
                         </li>
                     </ol>
                 </nav>
@@ -28,13 +34,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card">
-                                        <div
-                                            class="border-bottom title-part-padding d-flex align-items-center justify-content-between">
+                                        <div class="border-bottom title-part-padding d-flex align-items-center justify-content-between">
                                             <h4 class="card-title mb-0">Details</h4>
                                             <div class="col-auto mt-3 mt-md-0 align-self-center">
                                                 <div class="d-flex">
-                                                    <a href="{{ route('admin.booking.edit', ['booking' => $booking->id]) }}"
-                                                        class="btn btn-outline-info">Assign Driver</a>
+                                                    <a href="{{ route('admin.booking.edit', ['booking' => $booking->id]) }}" class="btn btn-outline-info">Assign Driver</a>
+                                                    <a href="{{ route('admin.booking.pending-approval.send-mail-notification', ['booking' => $booking->id]) }}" class="btn btn-outline-warning ms-2" onclick="return confirm('Are you confirm to send mail notification?')">Send Mail Notification</a>
+                                                    <a href="{{ route('admin.booking.pending-approval.download-invoice', ['booking' => $booking->id]) }}" class="btn btn-outline-primary ms-2">
+                                                        Download Invoice
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -67,7 +75,7 @@
                                                     <div class="col-md-3 col-xs-6">
                                                         <strong>Return Time</strong>
                                                         <br>
-                                                        <p class="text-muted">{{$booking->is_estimated_return_time ? 'Customer will whatsapp once ready to return' : $booking->return_time}}</p> 
+                                                        <p class="text-muted">{{ $booking->is_estimated_return_time ? 'Customer will whatsapp once ready to return' : $booking->return_time }}</p>
                                                     </div>
                                                 @endif
 
@@ -110,7 +118,7 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Total Distance</strong>
                                                     <br>
-                                                    <p class="text-muted">{{ $booking->distance }}</p>
+                                                    <p class="text-muted">{{ $booking->distance }}KM</p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Package Name</strong>
@@ -137,8 +145,7 @@
                                                     <div class="col-md-6">
                                                         <strong>Payment Receipt</strong>
                                                         <br>
-                                                        <button type="button" class="btn btn-primary view-receipt-btn"
-                                                            data-receipt-image="{{ $booking->payment_receipt }}">
+                                                        <button type="button" class="btn btn-primary view-receipt-btn" data-receipt-image="{{ $booking->payment_receipt }}">
                                                             View Receipt
                                                         </button>
                                                     </div>
@@ -155,56 +162,76 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="tab-content">
-                            <div class="mt-5">
-                                <h4>Booking Price Details</h4>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped">
-                                        <thead class="thead-dark">
+                            <div class="d-flex justify-content-between align-items-center mt-5">
+                                <h4 class="mb-0">Booking Price Details</h4>
+                                <a href="#" class="btn btn-outline-success ms-auto" data-bs-toggle="modal" data-bs-target="#adjustPriceModal">
+                                    Adjust Price
+                                </a>
+                            </div>
+                            <div class="table-responsive mt-3">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Cost</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($booking->bookingAdjustments as $adjustment)
                                             <tr>
-                                                <th scope="col">Type</th>
-                                                <th scope="col">Cost</th>
+                                                <td>{{ $adjustment->description }}</td>
+                                                <td>${{ number_format($adjustment->adjustment, 2) }}</td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                                $totalCost = 0;
-                                            @endphp
-                                            @foreach ($booking->bookingAdjustments as $adjustment)
-                                                @php
-                                                    // Extract type without underscores
-                                                    $formattedType = str_replace('_', ' ', $adjustment->type);
-                                                    // Calculate total cost
-                                                    $totalCost += $adjustment->adjustment;
-                                                @endphp
-                                                <tr>
-                                                    <td>{{ ucwords($formattedType) }}</td>
-                                                    <td>${{ $adjustment->adjustment }}</td>
-                                                </tr>
-                                            @endforeach
-                                            <tr>
-                                                <td><strong>Total</strong></td>
-                                                <td><strong>${{ $totalCost }}</strong></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        @endforeach
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td><strong>${{ number_format($booking->total_price, 2) }}</strong></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="paymentReceiptModal" tabindex="-1" role="dialog" aria-labelledby="paymentReceiptModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+            <div class="modal-content border-0 w-auto">
+                <div class="modal-body d-flex flex-column p-0">
+                    <button type="button" class="btn btn-dark position-absolute end-0 m-2" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                    <img id="paymentReceiptImage" class="modal-image" width="400px" height="600px" alt="Payment Receipt">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="paymentReceiptModal" tabindex="-1" role="dialog"
-        aria-labelledby="paymentReceiptModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
-            <div class="modal-content border-0 w-auto">
-                <div class="modal-body d-flex flex-column p-0">
-                    <button type="button" class="btn btn-dark position-absolute end-0 m-2" data-bs-dismiss="modal"
-                        aria-label="Close">Close</button>
-                    <img id="paymentReceiptImage" class="modal-image" width="400px" height="600px" alt="Payment Receipt">
+    <!-- Adjust Price Modal -->
+    <div class="modal fade" id="adjustPriceModal" tabindex="-1" role="dialog" aria-labelledby="adjustPriceModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adjustPriceModalLabel">Adjust Booking Price</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <form action="{{ route('admin.booking.pending-approval.adjust-price', ['booking' => $booking->id]) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        @foreach ($booking->bookingAdjustments as $adjustment)
+                            <div class="mb-3">
+                                <label for="adjustment_{{ $adjustment->id }}" class="form-label">{{ $adjustment->description }}</label>
+                                <input type="number" step="0.01" class="form-control" id="adjustment_{{ $adjustment->id }}" name="adjustments[{{ $adjustment->id }}]" value="{{ $adjustment->adjustment }}" required>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

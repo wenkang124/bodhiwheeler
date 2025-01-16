@@ -2,6 +2,7 @@
 
 namespace App\Mail\Booking;
 
+use App\Models\SystemConfig;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -32,17 +33,14 @@ class BookingConfirmation extends Mailable
     public function build()
     {
         $submissionDate = $this->data['created_at']->format('Y-m-d H:i:s');
-
         $name = $this->data['name'];
-
         $subject = $this->data['name'] . ' - booking on ' . $submissionDate;
+        $systemConfig = SystemConfig::first();
 
-        $htmlContent = view('mail.booking.booking-confirmation', ['data' => $this->data])->render();
+        $pdfContent = view('mail.booking.invoice', ['data' => $this->data, 'systemConfig' => $systemConfig])->render();
+        $pdf = PDF::loadHTML($pdfContent);
 
-        $pdf = PDF::loadHTML($htmlContent);
-
-        $pdfFileName = $name . '_' . $submissionDate . '_booking_confirmation.pdf';
-
+        $pdfFileName = $name . '_' . $submissionDate . '_invoice.pdf';
         $pdfPath = 'booking_confirmations/' . now()->format('YmdHis') . '_' . $pdfFileName;
         Storage::put($pdfPath, $pdf->output());
 

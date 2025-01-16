@@ -9,7 +9,7 @@
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
                         <li class="breadcrumb-item">
-                            <a href="{{route('admin.booking.rejected-booking')}}">Rejected Booking</a>
+                            <a href="{{route('admin.booking.draft-booking')}}">Draft Booking</a>
                         </li>
                         <li class="breadcrumb-item">
                             {{$booking->id}}
@@ -127,16 +127,6 @@
                                                     <strong>Remarks</strong>
                                                     <br>
                                                     <p class="text-muted">{{ $booking->remarks ?? '-' }}</p>
-                                                </div>
-                                                <div class="col-md-3 col-xs-6">
-                                                    <strong>Rejected By</strong>
-                                                    <br>
-                                                    <p class="text-muted">{{ $booking->approvedBy->name }}</p>
-                                                </div>
-                                                <div class="col-md-3 col-xs-6">
-                                                    <strong>Rejected Date</strong>
-                                                    <br>
-                                                    <p class="text-muted">{{ $booking->approved_at }}</p>
                                                 </div>
 
                                                 @if ($booking->payment_receipt)

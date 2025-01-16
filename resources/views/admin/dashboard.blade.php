@@ -123,6 +123,9 @@
                                             Package
                                         </th>
                                         <th class="fw-normal text-muted border-0 border-bottom">
+                                            Total Price
+                                        </th>
+                                        <th class="fw-normal text-muted border-0 border-bottom">
                                             Status
                                         </th>
                                     </tr>
@@ -139,11 +142,20 @@
                                             <td>
                                                 <strong>Pick-up Address:</strong> {{ $latestApprovedBooking->pick_up_address }}<br>
                                                 <strong>Drop Off Address:</strong> {{ $latestApprovedBooking->drop_off_address }}<br>
+                                                <strong>Pick-up Date:</strong> {{ $latestApprovedBooking->pick_up_date }}<br>
                                                 <strong>Pick-up Time:</strong> {{ $latestApprovedBooking->pick_up_time }}<br>
+                                                <strong>No of Passengers:</strong> {{ $latestApprovedBooking->no_of_passenger }}<br>
+                                                <strong>No of Wheelchair Pax:</strong> {{ $latestApprovedBooking->no_of_wheelchair_pax }}<br>
+                                                @if($latestApprovedBooking->package_name == 'Return')
                                                 <strong>Return Time:</strong> {{ $latestApprovedBooking->is_estimated_return_time ? 'Customer will whatsapp once ready to return' : $latestApprovedBooking->return_time }}<br>
-                                                <strong>Driver Name:</strong> {{ $latestApprovedBooking->driver->name }}
+                                                @endif
+                                                @if($latestApprovedBooking->package_name == 'Charter')
+                                                <strong>No of Charter Hours:</strong> {{ $latestApprovedBooking->no_of_charter_hours }}<br>
+                                                @endif
+                                                <strong>Driver Name:</strong> {{ $latestApprovedBooking->driver->name ?? '-' }}
                                             </td>
                                             <td>{{ $latestApprovedBooking->package_name }}</td>
+                                            <td>{{ $latestApprovedBooking->total_price }}</td>
                                             <td><span class="badge bg-light-success text-success">{{ ucfirst($latestApprovedBooking->status) }}</span></td>
                                         </tr>
                                     @endforeach

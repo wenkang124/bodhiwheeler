@@ -33,6 +33,7 @@
                                         <th class="border-bottom">Package</th>
                                         <th class="border-bottom">Status</th>
                                         <th class="border-bottom">Details</th>
+                                        <th class="border-bottom">Total Price</th>
                                         <th class="border-bottom">Created At</th>
                                         <th class="border-bottom">Action</th>
                                     </tr>
@@ -62,7 +63,7 @@
             },
             serverSide: true,
             order: [
-                [5, 'desc']
+                [6, 'desc']
             ],
             bFilter: true,
             columns: [{
@@ -77,12 +78,17 @@
                     className: "text-center"
                 },
                 {
+                    data: "status",
+                    orderable: false,
+                    searchable: false
+                },
+                {
                     data: "details",
                     orderable: false,
                     searchable: false
                 },
                 {
-                    data: "status",
+                    data: "total_price",
                     orderable: false,
                     searchable: false
                 },

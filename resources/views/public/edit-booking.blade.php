@@ -21,13 +21,12 @@
     <div class="contact">
         <div class="container">
             @php
-                $transformedActiveTab = strtolower(str_replace(' ', '_', $booking->package_name));
+                $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $booking->package_name)));
             @endphp
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
                 @foreach ($packages as $package)
                     <li class="nav-item col">
-                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form"
-                            aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'true' : 'false' }}">
+                        <a class="nav-link {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab" data-toggle="tab" href="#{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tab" aria-controls="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" aria-selected="{{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'true' : 'false' }}">
                             {{ $package->name }}
                         </a>
                     </li>
@@ -53,7 +52,12 @@
                                 @enderror
                             </div>
                             <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time('pick_up_time', isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '', ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
+                                {!! Form::text('pick_up_time', isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '', [
+                                    'id' => 'pick_up_time',
+                                    'class' => 'time-picker',
+                                    'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -61,7 +65,12 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::time('return_time', isset($booking) && !$booking->is_estimated_return_time ? \Carbon\Carbon::parse($booking->return_time)->format('H:i') : '', ['placeholder' => 'Return Time']) !!}
+                                    {!! Form::text('return_time', isset($booking) && !$booking->is_estimated_return_time ? \Carbon\Carbon::parse($booking->return_time)->format('H:i') : '', [
+                                        'id' => 'return_time',
+                                        'class' => 'time-picker',
+                                        'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
+                                        'required',
+                                    ]) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -70,7 +79,10 @@
 
                             @if ($package->name == 'Charter')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    {!! Form::number('no_of_charter_hours', $booking->no_of_charter_hours, ['placeholder' => 'No of Charter Hours', 'required']) !!}
+                                    {!! Form::number('no_of_charter_hours', $booking->no_of_charter_hours, [
+                                        'placeholder' => 'No of Charter Hours',
+                                        'required',
+                                    ]) !!}
                                     @error('no_of_charter_hours', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -78,7 +90,12 @@
                             @endif
 
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::date('pick_up_date', $booking->pick_up_date, ['placeholder' => 'Pick Up Date*', 'required']) !!}
+                                {!! Form::text('pick_up_date', $booking->pick_up_date, [
+                                    'id' => 'pick_up_date',
+                                    'class' => 'date-picker',
+                                    'placeholder' => 'Pick Up Date*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_date', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -102,15 +119,25 @@
                                 @error('drop_off_address', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                                <small class="form-text text-muted mb-4">
+                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via 
+                                    <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
+                                </small>
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::number('no_of_passenger', $booking->no_of_passenger, ['placeholder' => 'No of Passengers*', 'required']) !!}
+                                {!! Form::number('no_of_passenger', $booking->no_of_passenger, [
+                                    'placeholder' => 'No of Passengers*',
+                                    'required',
+                                ]) !!}
                                 @error('no_of_passenger', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
-                                {!! Form::number('no_of_wheelchair_pax', $booking->no_of_wheelchair_pax, ['placeholder' => 'No of Wheelchair Pax*', 'required']) !!}
+                                {!! Form::number('no_of_wheelchair_pax', $booking->no_of_wheelchair_pax, [
+                                    'placeholder' => 'No of Wheelchair Pax*',
+                                    'required',
+                                ]) !!}
                                 @error('no_of_wheelchair_pax', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -138,17 +165,17 @@
                                 </div>
                             @endif --}}
 
-                            {!! Form::hidden('package_id', $package->id) !!}
                             {!! Form::hidden('booking_id', $booking->id) !!}
-                            {!! Form::hidden('active_tab', $package->name) !!}
                             {!! Form::hidden('distance', $booking->distance ?? '', ['id' => 'distance']) !!}
+                            <input type="hidden" name="package_id" value="{{ $package->id }}">
+                            <input type="hidden" name="active_tab" value="{{ $package->name }}">
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', $booking->remarks, ['placeholder' => 'Remarks']) !!}
                                 @if (env('APP_ENV') === 'local')
-                                <button class="def-btn def-btn-2">Book Now</button>
+                                    <button class="def-btn def-btn-2">Book Now</button>
                                 @else
-                                <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm</button>
+                                    <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Confirm</button>
                                 @endif
                             </div>
                         </div>
@@ -197,6 +224,9 @@
                 pickUpInputs.forEach(function(input) {
                     autocompletePickUp = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompletePickUp.addListener('place_changed', calculateAndDisplayRoute);
@@ -205,6 +235,9 @@
                 dropOffInputs.forEach(function(input) {
                     autocompleteDropOff = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompleteDropOff.addListener('place_changed', calculateAndDisplayRoute);
@@ -246,17 +279,54 @@
 
         $('#bookingTabs a').on('shown.bs.tab', function(e) {
             initAutocomplete();
+            initializeDateTimePickers();
         });
 
         function loadGoogleMapsAPI() {
             let script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry';
+            script.src =
+                'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry';
             script.async = true;
             script.defer = true;
             script.setAttribute('loading', 'async');
             document.head.appendChild(script);
         }
 
-        window.onload = loadGoogleMapsAPI;
+        function initializeDateTimePickers() {
+            let activeTab = document.querySelector('.tab-pane.active');
+
+            if (activeTab) {
+                let datePickers = activeTab.querySelectorAll('.date-picker');
+                let timePickers = activeTab.querySelectorAll('.time-picker');
+
+                datePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: true,
+                        timepicker: false,
+                        format: 'Y-m-d',
+                        step: 15,
+                        scrollInput: false
+                    });
+                });
+
+                timePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: false,
+                        timepicker: true,
+                        format: 'H:i',
+                        step: 5,
+                        minTime: '07:00',
+                        maxTime: '21:00',
+                        scrollInput: false
+                    });
+                });
+            }
+        }
+
+        //Initialize Google Maps API
+        loadGoogleMapsAPI();
+
+        //Initialize Date Time Picker
+        initializeDateTimePickers();
     </script>
 @endpush

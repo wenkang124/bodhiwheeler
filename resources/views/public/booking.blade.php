@@ -21,7 +21,7 @@
     <div class="contact">
         <div class="container">
             @php
-                $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $packages[0]->name))); // Assuming $packages is not empty
+                $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $packages[0]->name)));
             @endphp
             <ul class="nav nav-tabs" id="bookingTabs" role="tablist">
                 @foreach ($packages as $package)
@@ -53,7 +53,12 @@
                                 @enderror
                             </div>
                             <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
-                                {!! Form::time('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), ['placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*', 'required']) !!}
+                                {!! Form::text('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i'), [
+                                    'id' => 'pick_up_time',
+                                    'class' => 'time-picker',
+                                    'placeholder' => 'Pick Up Time (must be at least 45 minutes from now)*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_time', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -61,7 +66,12 @@
 
                             @if ($package->name == 'Return')
                                 <div class="col-xl-5 col-lg-5 col-md-6">
-                                    <input type="text" placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" id="returnTimeInput" class="time-input">
+                                    {!! Form::text('return_time', null, [
+                                        'id' => 'return_time',
+                                        'class' => 'time-picker',
+                                        'placeholder' => 'Return Time (make sure it is at least 3 hours from pick up time)*',
+                                        'required',
+                                    ]) !!}
                                     @error('return_time', $package->id)
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -78,7 +88,12 @@
                             @endif
 
                             <div class="col-xl-10 col-lg-10">
-                                {!! Form::date('pick_up_date', null, ['placeholder' => 'Pick Up Date*', 'required']) !!}
+                                {!! Form::text('pick_up_date', null, [
+                                    'id' => 'pick_up_date',
+                                    'class' => 'date-picker',
+                                    'placeholder' => 'Pick Up Date*',
+                                    'required',
+                                ]) !!}
                                 @error('pick_up_date', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -102,6 +117,10 @@
                                 @error('drop_off_address', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
+                                <small class="form-text text-muted mb-4">
+                                    Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via 
+                                    <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
+                                </small>
                             </div>
                             <div class="col-xl-5 col-lg-5 col-md-6">
                                 {!! Form::number('no_of_passenger', null, ['placeholder' => 'No of Passengers*', 'required']) !!}
@@ -137,16 +156,16 @@
                                 </div>
                             @endif --}}
 
-                            {!! Form::hidden('package_id', $package->id) !!}
-                            {!! Form::hidden('active_tab', $package->name) !!}
+                            <input type="hidden" name="package_id" value="{{ $package->id }}">
+                            <input type="hidden" name="active_tab" value="{{ $package->name }}">
                             {!! Form::hidden('distance', '', ['id' => 'distance']) !!}
 
                             <div class="col-xl-10 col-lg-10 text-right">
                                 {!! Form::textarea('remarks', null, ['placeholder' => 'Remarks']) !!}
                                 @if (env('APP_ENV') === 'local')
-                                <button class="def-btn def-btn-2">Book Now</button>
+                                    <button class="def-btn def-btn-2">Book Now</button>
                                 @else
-                                <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
+                                    <button class="g-recaptcha def-btn def-btn-2" data-sitekey="{{ env('GOOGLE_RECAPTCHA_SITE_KEY') }}" data-callback='onSubmit' data-action='submit'>Book Now</button>
                                 @endif
                             </div>
                         </div>
@@ -173,18 +192,6 @@
 
 @push('scripts')
     <script>
-        const returnTimeInput = document.getElementById('returnTimeInput');
-
-        returnTimeInput.addEventListener('focus', function() {
-            this.type = 'time';
-        });
-
-        returnTimeInput.addEventListener('blur', function() {
-            if (!this.value) {
-                this.type = 'text';
-            }
-        });
-
         function onSubmit(token) {
             var activeForm = $('.tab-pane.active form');
 
@@ -207,6 +214,9 @@
                 pickUpInputs.forEach(function(input) {
                     autocompletePickUp = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompletePickUp.addListener('place_changed', calculateAndDisplayRoute);
@@ -215,6 +225,9 @@
                 dropOffInputs.forEach(function(input) {
                     autocompleteDropOff = new google.maps.places.Autocomplete(input, {
                         fields: ['address_components', 'geometry'],
+                        componentRestrictions: {
+                            country: 'SG'
+                        }
                     });
 
                     autocompleteDropOff.addListener('place_changed', calculateAndDisplayRoute);
@@ -256,17 +269,54 @@
 
         $('#bookingTabs a').on('shown.bs.tab', function(e) {
             initAutocomplete();
+            initializeDateTimePickers();
         });
 
         function loadGoogleMapsAPI() {
             let script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry';
+            script.src =
+                'https://maps.googleapis.com/maps/api/js?v=weekly&key=AIzaSyDyDBj18KcjAEadpGxHkZYJBCo54j4dvro&callback=initAutocomplete&libraries=places,geometry';
             script.async = true;
             script.defer = true;
             script.setAttribute('loading', 'async');
             document.head.appendChild(script);
         }
 
-        window.onload = loadGoogleMapsAPI;
+        function initializeDateTimePickers() {
+            let activeTab = document.querySelector('.tab-pane.active');
+
+            if (activeTab) {
+                let datePickers = activeTab.querySelectorAll('.date-picker');
+                let timePickers = activeTab.querySelectorAll('.time-picker');
+
+                datePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: true,
+                        timepicker: false,
+                        format: 'Y-m-d',
+                        step: 15,
+                        scrollInput: false
+                    });
+                });
+
+                timePickers.forEach(function(picker) {
+                    $(picker).datetimepicker({
+                        datepicker: false,
+                        timepicker: true,
+                        format: 'H:i',
+                        step: 5,
+                        minTime: '07:00',
+                        maxTime: '21:00',
+                        scrollInput: false
+                    });
+                });
+            }
+        }
+
+        //Initialize Google Maps API
+        loadGoogleMapsAPI();
+
+        //Initialize Date Time Picker
+        initializeDateTimePickers();
     </script>
 @endpush

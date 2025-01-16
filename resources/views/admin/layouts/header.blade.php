@@ -12,7 +12,7 @@
             <a class="navbar-brand" href="{{ route('admin') }}">
                 <!-- Logo icon -->
                 <b class="logo-icon">
-                    <img src="/dashboard-assets/images/logo.png" style="width: 200px" alt="homepage" class="dark-logo" />
+                    <img src="/dashboard-assets/images/logo.png?v=1" style="width: 65px" alt="homepage" class="dark-logo" />
                 </b>
                 <!--End Logo icon -->
             </a>

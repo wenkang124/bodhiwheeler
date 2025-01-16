@@ -45,7 +45,7 @@
                     <div class="row justify-content-center text-center">
                         <div class="col-md-7 col-lg-12 col-xl-9">
                             <div>
-                                <img class="img-fluid" src="/dashboard-assets/images/logo.png" alt="logo" />
+                                <img class="img-fluid w-75" src="/dashboard-assets/images/logo.png?v=1" alt="logo" />
                             </div>
                         </div>
                     </div>

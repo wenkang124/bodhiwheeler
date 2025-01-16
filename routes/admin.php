@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DriverController;
 use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Auth\LoginController;
+use App\Http\Controllers\Admin\DraftBookingController;
 use App\Http\Controllers\Admin\SystemConfigController;
 use App\Http\Controllers\Admin\ApprovedBookingController;
 use App\Http\Controllers\Admin\PendingApprovalController;
@@ -58,17 +59,32 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
     });
 
     Route::prefix('bookings')->name('.booking')->group(function () {
+
+        Route::prefix('draft-bookings')->name('.draft-booking')->group(function () {
+            Route::get('', [DraftBookingController::class, 'index']);
+            Route::post('query', [DraftBookingController::class, 'draftBookingQuery'])->name('.query');
+            Route::get('{booking}/detail', [DraftBookingController::class, 'detail'])->name('.detail');
+        });
+
         Route::prefix('pending-approvals')->name('.pending-approval')->group(function () {
             Route::get('', [PendingApprovalController::class, 'index']);
             Route::post('query', [PendingApprovalController::class, 'pendingReviewQuery'])->name('.query');
+            Route::get('create', [PendingApprovalController::class, 'create'])->name('.create');
+            Route::post('', [PendingApprovalController::class, 'store'])->name('.store');
+            Route::get('{booking}/edit', [PendingApprovalController::class, 'edit'])->name('.edit');
+            Route::post('{booking}', [PendingApprovalController::class, 'update'])->name('.update');
             Route::get('{booking}/detail', [PendingApprovalController::class, 'detail'])->name('.detail');
             Route::post('{booking}/update-status', [PendingApprovalController::class, 'updateStatus'])->name('.update-status');
+            Route::get('{booking}/send-mail-notification', [PendingApprovalController::class, 'sendMailNotification'])->name('.send-mail-notification');
+            Route::get('{booking}/download-invoice', [PendingApprovalController::class, 'downloadInvoice'])->name('.download-invoice');
+            Route::post('{booking}/adjust-price', [PendingApprovalController::class, 'adjustPrice'])->name('.adjust-price');
         });
 
         Route::prefix('approved-bookings')->name('.approved-booking')->group(function () {
             Route::get('', [ApprovedBookingController::class, 'index']);
             Route::post('query', [ApprovedBookingController::class, 'approvedBookingQuery'])->name('.query');
             Route::get('{booking}/detail', [ApprovedBookingController::class, 'detail'])->name('.detail');
+            Route::get('{booking}/download-invoice', [ApprovedBookingController::class, 'downloadInvoice'])->name('.download-invoice');
         });
 
         Route::prefix('rejected-bookings')->name('.rejected-booking')->group(function () {

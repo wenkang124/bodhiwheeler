@@ -8,6 +8,9 @@ use App\Models\Booking;
 use App\Models\Package;
 use App\Models\SystemConfig;
 use Illuminate\Http\Request;
+use App\Services\OnsendService;
+use App\Models\PackagePriceList;
+use App\Models\BookingAdjustment;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -22,10 +25,12 @@ class HomeController extends Controller
      * @return void
      */
     protected $bookingPriceCalculator;
+    protected $onsendService;
 
-    public function __construct(BookingPriceCalculation $bookingPriceCalculator)
+    public function __construct(BookingPriceCalculation $bookingPriceCalculator, OnsendService $onsendService)
     {
         $this->bookingPriceCalculator = $bookingPriceCalculator;
+        $this->onsendService = $onsendService;
     }
 
     /**
@@ -76,11 +81,15 @@ class HomeController extends Controller
             'pick_up_time' => [
                 'required',
                 'date_format:H:i',
-                function ($attribute, $value, $fail) {
+                function ($attribute, $value, $fail) use ($request) {
                     $pickupTime = Carbon::createFromFormat('H:i', $value);
 
                     if ($pickupTime->hour < 7 || ($pickupTime->hour === 21 && $pickupTime->minute !== 0) || $pickupTime->hour >= 22) {
                         $fail('The pick-up time must be between 07:00 and 21:00.');
+                    }
+
+                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 18) {
+                        $fail('For Return package, the pick-up time must be before 18:00 as the operation time is till 21:00.');
                     }
                 },
             ],
@@ -117,7 +126,7 @@ class HomeController extends Controller
                 $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
 
                 if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
-                    $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
+                    $validator->errors()->add('return_time', 'For Return package, return time must more than 3 hours from pick up time.');
                 }
             } else if ($request->input('active_tab') === "Charter") {
                 $charter_hours = $request->no_of_charter_hours;
@@ -153,6 +162,7 @@ class HomeController extends Controller
             'pick_up_date' => $request->pick_up_date,
             'pick_up_time' => $request->pick_up_time,
             'return_time' => $request->return_time,
+            'is_estimated_return_time' => $request->return_time ? false : true,
             'no_of_charter_hours' => $request->no_of_charter_hours,
             'pick_up_address' => $request->pick_up_address,
             'drop_off_address' => $request->drop_off_address,
@@ -163,13 +173,6 @@ class HomeController extends Controller
             'distance' => $request->distance ?? 0,
             'remarks' => $request->remarks,
         ]);
-
-        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && $request->missing('return_time')) {
-            $booking->is_estimated_return_time = empty($request->return_time);
-            $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
-            $returnTime = $pickUpTime->copy()->addHours(3);
-            $booking->return_time = $returnTime->format('H:i');
-        }
 
         $booking->package()->associate($package);
 
@@ -210,8 +213,37 @@ class HomeController extends Controller
             'name' => 'required|string',
             'phone' => ['required', 'string', 'max:20', 'regex:/^[0-9]+$/'],
             'pick_up_date' => 'required|date|after_or_equal:today',
-            'pick_up_time' => 'required|date_format:H:i',
-            'return_time' => ['nullable', 'date_format:H:i', 'after:pick_up_time'],
+            'pick_up_time' => [
+                'required',
+                'date_format:H:i',
+                function ($attribute, $value, $fail) use ($request) {
+                    $pickupTime = Carbon::createFromFormat('H:i', $value);
+
+                    if ($pickupTime->hour < 7 || ($pickupTime->hour === 21 && $pickupTime->minute !== 0) || $pickupTime->hour >= 22) {
+                        $fail('The pick-up time must be between 07:00 and 21:00.');
+                    }
+
+                    if ($request->input('active_tab') === "Return" && $pickupTime->hour >= 18) {
+                        $fail('For Return package, the pick-up time must be before 18:00 as the operation time is till 21:00.');
+                    }
+                },
+            ],
+            'return_time' => [
+                'nullable',
+                'date_format:H:i',
+                'after:pick_up_time',
+                function ($attribute, $value, $fail) use ($request) {
+                    if (!$value) {
+                        return;
+                    }
+
+                    $returnTime = Carbon::createFromFormat('H:i', $value);
+
+                    if ($returnTime->hour < 7 || ($returnTime->hour === 21 && $returnTime->minute !== 0) || $returnTime->hour >= 22) {
+                        $fail('The return time must be between 07:00 and 21:00.');
+                    }
+                },
+            ],
             'no_of_charter_hours' => $request->input('active_tab') === "Charter" ? 'required|integer|min:3' : 'nullable|integer',
             'pick_up_address' => 'required|string',
             'drop_off_address' => 'required|string',
@@ -230,7 +262,7 @@ class HomeController extends Controller
                 $returnDateTime = Carbon::createFromFormat('Y-m-d H:i', $request->input('pick_up_date') . ' ' . $request->input('return_time'));
 
                 if ($returnDateTime->diffInHours($pickUpDateTime) < 3) {
-                    $validator->errors()->add('medical_escort', 'For Return package, return time must more than 3 hours from pick up time.');
+                    $validator->errors()->add('return_time', 'For Return package, return time must more than 3 hours from pick up time.');
                 }
             } else if ($request->input('active_tab') === "Charter") {
                 $charter_hours = $request->no_of_charter_hours;
@@ -284,13 +316,6 @@ class HomeController extends Controller
 
         $booking->save();
 
-        if ($request->input('active_tab') === "Return" && $request->filled('pick_up_time') && ($request->missing('return_time') || empty($request->return_time))) {
-            $booking->is_estimated_return_time = empty($request->return_time);
-            $pickUpTime = Carbon::createFromFormat('H:i', $request->input('pick_up_time'));
-            $returnTime = $pickUpTime->copy()->addHours(3);
-            $booking->return_time = $returnTime->format('H:i');
-        }
-
         //Delete Booking Adjustments
         $booking->bookingAdjustments()->delete();
 
@@ -312,7 +337,6 @@ class HomeController extends Controller
 
     public function submitConfirmation(Request $request)
     {
-        // Google Recaptchat Validation
         if (env('APP_ENV') === 'production') {
             $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
                 'secret' => env('GOOGLE_RECAPTCHA_SECRET_KEY'),
@@ -320,7 +344,7 @@ class HomeController extends Controller
             ]);
 
             if (!$response->json()['success']) {
-                abort('401');
+                abort(401);
             }
         }
 
@@ -329,18 +353,64 @@ class HomeController extends Controller
             [
                 'booking_id' => 'required|exists:bookings,id',
                 'payment_receipt' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            ],
+            ]
         );
 
         if ($validator->fails()) {
-            Session::flash('error', 'Fail submitted Enquiry. ' . $validator->errors()->first());
+            Session::flash('error', 'Failed to submit Enquiry. ' . $validator->errors()->first());
             return redirect()->back();
         }
 
         $booking = Booking::find($request->booking_id);
-        $booking->status = "submitted";
 
-        //Upload Payment Receipt
+        //* Check for existing urgent booking adjustment
+        $existingUrgentAdjustment = BookingAdjustment::where('booking_id', $booking->id)
+            ->where('type', 'urgent_booking')
+            ->exists();
+
+        if (!$existingUrgentAdjustment) {
+            $packagePriceList = PackagePriceList::where('package_id', $booking->package_id)->get();
+            $totalAdjustments = 0;
+
+            foreach ($packagePriceList as $priceListItem) {
+                switch ($priceListItem->type) {
+                    case 'urgent_booking':
+                        $pickupDateTime = Carbon::parse($booking->pick_up_date . ' ' . $booking->pick_up_time);
+                        $timeDifferenceInHours = Carbon::now()->diffInHours($pickupDateTime);
+                        $caseTotal = $timeDifferenceInHours < $priceListItem->value ? $priceListItem->adjustment : 0;
+
+                        if ($caseTotal > 0) {
+                            BookingAdjustment::create([
+                                'type' => $priceListItem->type,
+                                'description' => $priceListItem->description,
+                                'adjustment' => $priceListItem->adjustment,
+                                'value' => $timeDifferenceInHours, // Comparison Value
+                                'adjustment_type' => $priceListItem->adjustment_type,
+                                'total' => $caseTotal,
+                                'package_id' => $booking->package_id,
+                                'booking_id' => $booking->id,
+                            ]);
+
+                            $totalAdjustments += $caseTotal;
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if ($totalAdjustments > 0) {
+                $booking->total_price = $booking->total_price + $totalAdjustments;
+                $booking->save();
+
+                Session::flash('error', 'Urgent booking detected, total price updated.');
+                return redirect()->route('booking.confirmation', ['booking_id' => $booking->id]);
+            }
+        }
+
+        $booking->status = 'submitted';
+
         if ($request->hasFile('payment_receipt')) {
             $imagePath = $request->file('payment_receipt')->store('payment_receipts', 'public');
             $booking->payment_receipt = $imagePath;
@@ -352,8 +422,50 @@ class HomeController extends Controller
             Mail::to('bodhiwheelers@gmail.com')->send(new \App\Mail\Booking\BookingConfirmation($booking));
         }
 
+        if (env('APP_ENV') === 'production') {
+            $messageContent = "🚐 *New Booking Confirmation* 🚐\n\n";
+            $messageContent .= "A new booking has been confirmed. Please check the details below and the email for more information:\n\n";
+
+            $messageContent .= "*Booking ID:* {$booking->id}\n";
+            $messageContent .= "*Customer Name:* {$booking->name}\n";
+            $messageContent .= "*Customer Phone:* {$booking->phone}\n";
+            $messageContent .= "*Package Name:* {$booking->package->name}\n";
+            $messageContent .= "*Pick Up Date & Time:* {$booking->pick_up_date} at {$booking->pick_up_time}\n";
+
+            if ($booking->package->name === 'Return') {
+                $messageContent .= "*Return Time:* " . ($booking->return_time ? $booking->return_time : "Customer will WhatsApp once ready to return") . "\n";
+            }
+
+            if ($booking->package->name === 'Charter') {
+                $messageContent .= "*No. of Charter Hours:* {$booking->no_of_charter_hours}\n";
+            }
+
+            $messageContent .= "*Pick Up Address:* {$booking->pick_up_address}\n";
+            $messageContent .= "*Drop Off Address:* {$booking->drop_off_address}\n";
+            $messageContent .= "*Distance:* {$booking->distance} KM\n";
+            $messageContent .= "*No. of Passengers:* {$booking->no_of_passenger}\n";
+            $messageContent .= "*No. of Wheelchair Pax:* {$booking->no_of_wheelchair_pax}\n";
+            $messageContent .= "*Remarks:* {$booking->remarks}\n";
+
+            $adjustments = BookingAdjustment::where('booking_id', $booking->id)->get();
+            if ($adjustments->count() > 0) {
+                $messageContent .= "\n*Booking Adjustments:*\n";
+                foreach ($adjustments as $adjustment) {
+                    $messageContent .= "- {$adjustment->description}: $" . number_format($adjustment->total, 2) . "\n";
+                }
+            }
+
+            $messageContent .= "\n*Total Price:* $" . number_format($booking->total_price, 2) . "\n\n";
+
+            $messageContent .= "Powered by *bodhiwheeler.org*";
+
+            $phoneNumber = env('WHATSAPP_RECEIVER');
+            $this->onsendService->sendWhatsAppMessage($phoneNumber, $messageContent, []);
+        }
+
         return view('public.success-booking');
     }
+
 
     public function pricing()
     {

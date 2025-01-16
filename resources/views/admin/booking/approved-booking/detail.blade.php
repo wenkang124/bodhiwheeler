@@ -8,8 +8,14 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{ route('admin') }}">Home</a></li>
-                        <li class="breadcrumb-item" aria-current="page">
-                            Approved Booking Details
+                        <li class="breadcrumb-item">
+                            <a href="{{route('admin.booking.approved-booking')}}">Approved Booking</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            {{$booking->id}}
+                        </li>
+                        <li class="breadcrumb-item">
+                            Details
                         </li>
                     </ol>
                 </nav>
@@ -102,7 +108,7 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Total Distance</strong>
                                                     <br>
-                                                    <p class="text-muted">{{ $booking->distance }}</p>
+                                                    <p class="text-muted">{{ $booking->distance }}KM</p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Package Name</strong>
@@ -167,24 +173,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @php
-                                                $totalCost = 0;
-                                            @endphp
                                             @foreach ($booking->bookingAdjustments as $adjustment)
-                                                @php
-                                                    // Extract type without underscores
-                                                    $formattedType = str_replace('_', ' ', $adjustment->type);
-                                                    // Calculate total cost
-                                                    $totalCost += $adjustment->adjustment;
-                                                @endphp
                                                 <tr>
-                                                    <td>{{ ucwords($formattedType) }}</td>
-                                                    <td>${{ $adjustment->adjustment }}</td>
+                                                    <td>{{ $adjustment->description }}</td>
+                                                    <td>${{ number_format($adjustment->adjustment,2) }}</td>
                                                 </tr>
                                             @endforeach
                                             <tr>
                                                 <td><strong>Total</strong></td>
-                                                <td><strong>${{ $totalCost }}</strong></td>
+                                                <td><strong>${{ number_format($booking->total_price,2) }}</strong></td>
                                             </tr>
                                         </tbody>
                                     </table>
