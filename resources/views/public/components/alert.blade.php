@@ -5,5 +5,5 @@
             <i class="fab fa-whatsapp"></i> Click here to WhatsApp us
         </a>
     </p>
-    <p><em>Note: Additional surcharges apply during this period.</em></p>
+    <p><em>Note: CNY surcharges apply</em></p>
 </div>
