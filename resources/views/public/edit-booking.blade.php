@@ -36,7 +36,7 @@
             <div class="tab-content">
                 @foreach ($packages as $package)
                     <div class="tab-pane fade {{ $transformedActiveTab === strtolower(str_replace(' ', '_', $package->name)) ? 'show active' : '' }}" id="{{ strtolower(str_replace(' ', '_', $package->name)) }}Form" role="tabpanel" aria-labelledby="{{ strtolower(str_replace(' ', '_', $package->name)) }}Tab">
-                        @include('public.components.alert')
+                        {{-- @include('public.components.alert') --}}
                         {!! Form::open(['route' => 'booking.update-booking', 'method' => 'POST', 'class' => 'form booking-form']) !!}
                         @csrf
                         <div class="row justify-content-center">
