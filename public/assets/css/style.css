@@ -930,7 +930,7 @@ span {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url(../images/banner-img.png) center center no-repeat;
+  background: url(../images/main.jpeg) center center no-repeat;
   background-size: cover;
   z-index: -1;
   opacity:0.4;
@@ -7146,7 +7146,7 @@ input[type="file"]::-webkit-file-upload-button {
   }
 
   .banner:after {
-    background: url(../images/banner-img.png) center left 40% no-repeat;
+    background: url(../images/main.jpeg) center left 40% no-repeat;
     background-size: cover;
   }
 
@@ -9540,7 +9540,7 @@ input[type="file"]::-webkit-file-upload-button {
   }
 
   .banner:after {
-    background: url(../images/banner-img.png) center left 40% no-repeat;
+    background: url(../images/main.jpeg) center left 40% no-repeat;
     background-size: cover;
   }
 
@@ -12029,7 +12029,7 @@ input[type="file"]::-webkit-file-upload-button {
   }
 
   .banner:after {
-    background: url(../images/banner-img.png) center left 40% no-repeat;
+    background: url(../images/main.jpeg) center left 40% no-repeat;
     background-size: cover;
   }
 
@@ -14599,7 +14599,7 @@ input[type="file"]::-webkit-file-upload-button {
   }
 
   .banner:after {
-    background: url(../images/banner-img.png) center left 40% no-repeat;
+    background: url(../images/main.jpeg) center left 40% no-repeat;
     background-size: cover;
   }
 
