@@ -47,7 +47,9 @@
                  <div class="col-xl-3 col-lg-4 col-sm-6">
                      <div class="newsletter">
                          <h3>Qualified In</h3>
-                         <p><img src="{{ asset('assets/images/bizsafe.png') }}" alt="Bizsafe Icon"></p>
+                         <p style="background: rgba(255, 255, 255, 0.1); padding: 10px; border-radius: 5px; display: inline-block;">
+                             <img src="{{ asset('assets/images/bizsafe-logo.png') }}" alt="Bizsafe Icon" style="width: 150px; height: auto;">
+                         </p>
                          <div class="social">
                              <a href="https://www.facebook.com/bodhi.wheeler.96" class="fb" target="_blank"><i class="flaticon-facebook"></i></a>
                              <a href="mailto:bodhiwheelers@gmail.com" class="tw" target="_blank"><i class="flaticon-message"></i></a>
