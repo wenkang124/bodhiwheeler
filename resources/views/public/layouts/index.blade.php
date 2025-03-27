@@ -27,18 +27,16 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {{-- <title>Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler</title>
-    <meta name="description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!"> --}}
     <meta name="keywords" content="cheap wheelchair transport, wheelchair taxi, wheelchair transport service Singapore" />
-    <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
+    <meta property="og:title" content="Cheap Wheelchair Transport | Affordable Taxi Service Singapore | BodhiWheeler" />
     <meta property="og:image" content="{{ asset('assets/images/meta-logo.png') }}?v=1">
-    <meta property="og:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
-    <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Bicycle Transfer Taxi Service Singapore | BodhiWheeler" />
-    <meta name="facebook:description" content="Last 7 Years, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Bicycle Transfer Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta property="og:description" content="Since year 2014, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Taxi Service in Singapore. Call us @ +65 93682784!" />
+    <meta name="facebook:title" content="Cheap Wheelchair Transport | Affordable Taxi Service Singapore | BodhiWheeler" />
+    <meta name="facebook:description" content="Since year 2014, Bodhiwheeler serves the needs of clientele Cheap Wheelchair Transport & Affordable Taxi Service in Singapore. Call us @ +65 93682784!" />
     <meta property="og:site_name" content="Bodhiwheeler Wheelchair Transport" />
-    <meta name="classification" content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Bicycle Transport, Charter Service" />
+    <meta name="classification" content="Bodhiwheeler,Bodhiwheeler Singapore,Wheelchair Transport, Charter Service" />
     <meta name="distribution" content="Global" />
-    <meta name="generator" content="Bodhiwheeler,Wheelchair Transport, Singapore, Bicycle Transport,Charter Service,Hourly Service" />
+    <meta name="generator" content="Bodhiwheeler,Wheelchair Transport, Singapore, Charter Service,Hourly Service" />
     <meta name="rating" content="General" />
     <meta name="revisit-after" content="7 days" />
     <meta name="rating" content="general" />
