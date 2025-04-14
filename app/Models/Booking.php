@@ -29,6 +29,7 @@ class Booking extends Model
         'package_name',
         'remarks',
         'status',
+        'email_reminder_sent',
         'medical_escort',
         'package_id',
         'driver_id',

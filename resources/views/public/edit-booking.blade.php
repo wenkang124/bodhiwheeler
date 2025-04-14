@@ -52,6 +52,12 @@
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+                            <div class="col-xl-10 col-lg-10 col-md-12">
+                                {!! Form::email('email', $booking->email, ['placeholder' => 'Email (for booking reminders)']) !!}
+                                @error('email', $package->id)
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="col-xl-{{ $package->name == 'One Way' ? '10' : '5' }} col-lg-{{ $package->name == 'One Way' ? '10' : '5' }} col-md-{{ $package->name == 'One Way' ? '' : '6' }}">
                                 {!! Form::text('pick_up_time', isset($booking) ? \Carbon\Carbon::parse($booking->pick_up_time)->format('H:i') : '', [
                                     'id' => 'pick_up_time',

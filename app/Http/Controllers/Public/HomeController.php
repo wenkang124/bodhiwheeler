@@ -168,6 +168,7 @@ class HomeController extends Controller
 
         $booking = new Booking([
             'name' => $request->name,
+            'email' => $request->email,
             'phone' => $request->phone,
             'pick_up_date' => $request->pick_up_date,
             'pick_up_time' => $request->pick_up_time,
@@ -182,6 +183,7 @@ class HomeController extends Controller
             // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
             'remarks' => $request->remarks,
+            'email_reminder_sent' => false,
         ]);
 
         $booking->package()->associate($package);
@@ -316,6 +318,7 @@ class HomeController extends Controller
 
         $booking->fill([
             'name' => $request->name,
+            'email' => $request->email,
             'phone' => $request->phone,
             'pick_up_date' => $request->pick_up_date,
             'pick_up_time' => $request->pick_up_time,
@@ -330,6 +333,7 @@ class HomeController extends Controller
             // 'medical_escort' => $request->medical_escort ?? false,
             'distance' => $request->distance ?? 0,
             'remarks' => $request->remarks,
+            'email_reminder_sent' => false,
         ]);
 
         $booking->package()->associate($package);
