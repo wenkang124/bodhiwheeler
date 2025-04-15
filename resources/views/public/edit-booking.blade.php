@@ -53,7 +53,7 @@
                                 @enderror
                             </div>
                             <div class="col-xl-10 col-lg-10 col-md-12">
-                                {!! Form::email('email', $booking->email, ['placeholder' => 'Email (for booking reminders)']) !!}
+                                {!! Form::email('email', $booking->email, ['placeholder' => 'Email']) !!}
                                 @error('email', $package->id)
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
