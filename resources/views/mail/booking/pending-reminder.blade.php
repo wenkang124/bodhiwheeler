@@ -119,7 +119,7 @@
             <div class="body-text">
                 <p>To complete your booking, please click the button below:</p>
                 <a href="{{ route('booking.confirmation', ['booking_id' => $booking->id]) }}" class="action-button">Complete Your Booking</a>
-                <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
+                <p>If you have any questions or need assistance, please don't hesitate to contact us via WhatsApp at <a href="https://wa.me/6593682784?text=Hi%20there!%20I'm%20interested%20in%20your%20services.%20Can%20you%20provide%20more%20information%20about%20booking%20a%20ride?" target="_blank">+65 93682784</a>.</p>
                 <p class="bottom-text">
                     Thank you for choosing BodhiWheeler for your transportation needs.
                 </p>
