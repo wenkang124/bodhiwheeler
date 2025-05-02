@@ -102,6 +102,9 @@
                         <strong>Booking ID:</strong> {{ $booking->id }}
                     </li>
                     <li>
+                        <strong>Email:</strong> {{ $booking->email ?? 'N/A' }}
+                    </li>
+                    <li>
                         <strong>Package:</strong> {{ $booking->package_name }}
                     </li>
                     <li>

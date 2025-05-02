@@ -22,6 +22,9 @@ class DraftBookingController extends Controller
             ->editColumn('name', function ($row) {
                 return $row->name;
             })
+            ->editColumn('email', function ($row) {
+                return $row->email ?? 'N/A';
+            })
             ->editColumn('phone', function ($row) {
                 return $row->phone;
             })
@@ -53,7 +56,7 @@ class DraftBookingController extends Controller
                 return $actions;
             })
 
-            ->rawColumns(['name', 'phone', 'package_name', 'status', 'details', 'created_at', 'actions'])->make(true);
+            ->rawColumns(['name', 'email', 'phone', 'package_name', 'status', 'details', 'created_at', 'actions'])->make(true);
         return $result;
     }
 

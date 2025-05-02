@@ -29,6 +29,7 @@
                     <ul class="booking-details">
                         <li><strong>Booking ID:</strong> {{ $booking->id }}</li>
                         <li><strong>Name:</strong> {{ $booking->name }}</li>
+                        <li><strong>Email:</strong> {{ $booking->email ?? 'N/A' }}</li>
                         <li><strong>Phone Number:</strong> {{ $booking->phone }}</li>
                         <li><strong>Package:</strong> {{ $booking->package_name }}</li>
                         <li><strong>Pick-up Date and Time:</strong> {{ $booking->pick_up_date }} at

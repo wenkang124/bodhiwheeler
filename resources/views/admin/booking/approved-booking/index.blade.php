@@ -29,6 +29,7 @@
                                 <thead>
                                     <tr>
                                         <th class="border-bottom">Name</th>
+                                        <th class="border-bottom">Email</th>
                                         <th class="border-bottom">Contact</th>
                                         <th class="border-bottom">Package</th>
                                         <th class="border-bottom">Status</th>
@@ -68,6 +69,10 @@
             bFilter: true,
             columns: [{
                     data: "name",
+                },
+                {
+                    data: "email",
+                    className: "text-center"
                 },
                 {
                     data: "phone",

@@ -55,6 +55,11 @@
                                                     <p class="text-muted">{{ $booking->name }}</p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
+                                                    <strong>Email</strong>
+                                                    <br>
+                                                    <p class="text-muted">{{ $booking->email ?? 'N/A' }}</p>
+                                                </div>
+                                                <div class="col-md-3 col-xs-6">
                                                     <strong>Contact</strong>
                                                     <br>
                                                     <p class="text-muted">{{ $booking->phone }}</p>

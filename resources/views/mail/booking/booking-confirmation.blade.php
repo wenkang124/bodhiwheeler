@@ -144,6 +144,9 @@
                         <strong>Customer Name:</strong> {{ $data['name'] }}
                     </li>
                     <li>
+                        <strong>Customer Email:</strong> {{ $data['email'] ?? 'N/A' }}
+                    </li>
+                    <li>
                         <strong>Customer Phone:</strong> {{ $data['phone'] }}
                     </li>
                     <li>
