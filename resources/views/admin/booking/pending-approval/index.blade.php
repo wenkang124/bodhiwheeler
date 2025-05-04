@@ -72,7 +72,7 @@
             },
             serverSide: true,
             order: [
-                [6, 'desc']
+                [7, 'desc']
             ],
             bFilter: true,
             columns: [{
