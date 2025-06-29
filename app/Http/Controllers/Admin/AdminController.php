@@ -50,6 +50,11 @@ class AdminController extends Controller
         $password = Str::random(10);
 
         $admin->password = bcrypt($password);
+
+        // Assign admin role to new admins by default
+        $adminRole = \App\Models\AdminRole::where('name', 'admin')->first();
+        $admin->admin_role_id = $adminRole->id;
+
         $admin->save();
 
         Mail::to($admin->email)->send(new \App\Mail\Admin\AdminAccountCreated($admin, $password));

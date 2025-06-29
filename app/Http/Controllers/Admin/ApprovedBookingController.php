@@ -66,6 +66,7 @@ class ApprovedBookingController extends Controller
 
     public function detail(Booking $booking)
     {
+        $booking->load('createdByAdmin', 'approvedBy', 'driver', 'package');
         return view('admin.booking.approved-booking.detail', compact('booking'));
     }
 

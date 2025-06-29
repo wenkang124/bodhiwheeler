@@ -63,6 +63,7 @@ class RejectedBookingController extends Controller
 
     public function detail(Booking $booking)
     {
+        $booking->load('createdByAdmin', 'approvedBy', 'driver', 'package');
         return view('admin.booking.rejected-booking.detail', compact('booking'));
     }
 }

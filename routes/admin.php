@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SystemConfigController;
 use App\Http\Controllers\Admin\ApprovedBookingController;
 use App\Http\Controllers\Admin\PendingApprovalController;
 use App\Http\Controllers\Admin\RejectedBookingController;
+use App\Http\Controllers\Admin\AdminBookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,7 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
         Route::post('update-password', [MeController::class, 'updatePassword'])->name('.update-password');
     });
 
-    Route::prefix('admins')->name('.admin')->group(function () {
+    Route::prefix('admins')->name('.admin')->middleware('admin.role:manage_admins')->group(function () {
         Route::get('', [AdminController::class, 'index']);
         Route::post('query', [AdminController::class, 'query'])->name('.query');
         Route::get('create', [AdminController::class, 'create'])->name('.create');
@@ -48,7 +49,7 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
         Route::delete('{admin}', [AdminController::class, 'delete'])->name('.delete');
     });
 
-    Route::prefix('drivers')->name('.driver')->group(function () {
+    Route::prefix('drivers')->name('.driver')->middleware('admin.role:manage_drivers')->group(function () {
         Route::get('', [DriverController::class, 'index']);
         Route::post('query', [DriverController::class, 'driverQuery'])->name('.query');
         Route::get('create', [DriverController::class, 'create'])->name('.create');
@@ -93,11 +94,15 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
             Route::get('{booking}/detail', [RejectedBookingController::class, 'detail'])->name('.detail');
         });
 
+        // Admin booking creation routes (must come before parameterized routes)
+        Route::get('create', [AdminBookingController::class, 'create'])->name('.create')->middleware('admin.role:create_bookings');
+        Route::post('create', [AdminBookingController::class, 'store'])->name('.store')->middleware('admin.role:create_bookings');
+
         Route::get('{booking}/edit', [BookingController::class, 'edit'])->name('.edit');
         Route::post('{booking}', [BookingController::class, 'update'])->name('.update');
     });
 
-    Route::prefix('system-configs')->name('.system-config')->group(function () {
+    Route::prefix('system-configs')->name('.system-config')->middleware('admin.role:manage_system_config')->group(function () {
         Route::get('', [SystemConfigController::class, 'index']);
         Route::post('update', [SystemConfigController::class, 'update'])->name('.update');
     });

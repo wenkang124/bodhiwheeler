@@ -213,6 +213,7 @@ class PendingApprovalController extends Controller
 
     public function detail(Booking $booking)
     {
+        $booking->load('createdByAdmin', 'approvedBy', 'driver', 'package');
         return view('admin.booking.pending-approval.detail', compact('booking'));
     }
 

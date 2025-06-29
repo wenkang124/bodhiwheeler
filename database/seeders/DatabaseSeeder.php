@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\AdminSeeder;
+use Database\Seeders\AdminRoleSeeder;
 use Database\Seeders\PackageSeeder;
 use Database\Seeders\SystemConfigSeeder;
 use Database\Seeders\PublicHolidaySeeder;
@@ -20,6 +21,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PackageSeeder::class,
+            AdminRoleSeeder::class,
             AdminSeeder::class,
             PublicHolidaySeeder::class,
             PackagePriceListSeeder::class,

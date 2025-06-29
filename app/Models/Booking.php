@@ -33,6 +33,7 @@ class Booking extends Model
         'medical_escort',
         'package_id',
         'driver_id',
+        'created_by_admin',
     ];
 
     public function package()
@@ -48,6 +49,11 @@ class Booking extends Model
     public function approvedBy()
     {
         return $this->belongsTo(Admin::class, 'approved_by');
+    }
+
+    public function createdByAdmin()
+    {
+        return $this->belongsTo(Admin::class, 'created_by_admin');
     }
 
     public function bookingAdjustments()

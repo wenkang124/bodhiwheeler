@@ -54,6 +54,15 @@
                                                     <br>
                                                     <p class="text-muted">{{ $booking->phone }}</p>
                                                 </div>
+                                                @if($booking->createdByAdmin)
+                                                <div class="col-md-3 col-xs-6">
+                                                    <strong>Created by Admin</strong>
+                                                    <br>
+                                                    <p class="text-muted">{{ $booking->createdByAdmin->name }}</p>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Pick Up Date</strong>
                                                     <br>

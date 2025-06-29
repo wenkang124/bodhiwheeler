@@ -18,11 +18,14 @@
                         <span class="hide-menu">Dashboard</span>
                     </a>
                 </li>
+                @if(auth('admin')->user()->hasPermission('manage_admins') || auth('admin')->user()->hasPermission('manage_drivers'))
                 <li class="nav-devider"></li>
                 <li class="nav-small-cap">
                     <i class="mdi mdi-dots-horizontal"></i>
                     <span class="hide-menu">Account Management</span>
                 </li>
+                @endif
+                @if(auth('admin')->user()->hasPermission('manage_admins'))
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.admin') ? 'active' : '' }}"
                         href="{{ route('admin.admin') }}" aria-expanded="false">
@@ -30,6 +33,8 @@
                         <span class="hide-menu">Admins</span>
                     </a>
                 </li>
+                @endif
+                @if(auth('admin')->user()->hasPermission('manage_drivers'))
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.driver') ? 'active' : '' }}"
                         href="{{ route('admin.driver') }}" aria-expanded="false">
@@ -37,10 +42,21 @@
                         <span class="hide-menu">Drivers</span>
                     </a>
                 </li>
+                @endif
                 <li class="nav-devider"></li>
                 <li class="nav-small-cap">
                     <i class="mdi mdi-dots-horizontal"></i>
                     <span class="hide-menu">Bookings</span>
+                </li>
+                @if(auth('admin')->user()->hasPermission('create_bookings'))
+                <li class="sidebar-item">
+                    <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.create') ? 'active' : '' }}"
+                        href="{{ route('admin.booking.create') }}" aria-expanded="false">
+                        <i class="me-2 mdi mdi-plus-circle"></i>
+                        <span class="hide-menu">Create Booking</span>
+                    </a>
+                </li>
+                @endif
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.draft-booking') ? 'active' : '' }}"
                         href="{{ route('admin.booking.draft-booking') }}" aria-expanded="false">
@@ -75,6 +91,7 @@
                         <span class="hide-menu">Rejected Booking</span>
                     </a>
                 </li>
+                @if(auth('admin')->user()->hasPermission('manage_system_config'))
                 <li class="nav-devider"></li>
                 <li class="nav-small-cap">
                     <i class="mdi mdi-dots-horizontal"></i>
@@ -87,6 +104,7 @@
                         <span class="hide-menu">System Configs</span>
                     </a>
                 </li>
+                @endif
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('admin.logout') }}"
                         aria-expanded="false">
