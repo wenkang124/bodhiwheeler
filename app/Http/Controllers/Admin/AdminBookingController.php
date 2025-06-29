@@ -99,10 +99,8 @@ class AdminBookingController extends Controller
             'distance' => $request->distance ?? 0,
             'remarks' => $request->remarks,
             'email_reminder_sent' => false,
-            'status' => 'approved', // Admin bookings are auto-approved
+            'status' => 'submitted', // Admin bookings need super admin approval
             'created_by_admin' => Auth::guard('admin')->id(),
-            'approved_by' => Auth::guard('admin')->id(),
-            'approved_at' => now(),
         ]);
 
         $booking->package()->associate($package);
@@ -115,8 +113,8 @@ class AdminBookingController extends Controller
         // Send WhatsApp notification with admin info
         $this->sendAdminBookingNotification($booking);
 
-        Session::flash('alert-success', 'Booking created successfully');
-        return redirect()->route('admin.booking.approved-booking');
+        Session::flash('alert-success', 'Booking created successfully and submitted for super admin approval');
+        return redirect()->route('admin.booking.pending-approval');
     }
 
     private function sendAdminBookingNotification(Booking $booking)
@@ -124,8 +122,9 @@ class AdminBookingController extends Controller
         if (env('APP_ENV') === 'production') {
             $admin = Auth::guard('admin')->user();
 
-            $messageContent = "*New Booking Created by Admin*\n\n";
-            $messageContent .= "*Created by:* " . $admin->name . " (" . $admin->email . ")\n\n";
+            $messageContent = "*New Booking Created by Admin - Pending Approval*\n\n";
+            $messageContent .= "*Created by:* " . $admin->name . " (" . $admin->email . ")\n";
+            $messageContent .= "*Status:* Pending Super Admin Approval\n\n";
             $messageContent .= "*Customer Details:*\n";
             $messageContent .= "*Name:* " . $booking->name . "\n";
             $messageContent .= "*Email:* " . $booking->email . "\n";

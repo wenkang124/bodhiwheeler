@@ -54,15 +54,6 @@
                                                     <br>
                                                     <p class="text-muted">{{ $booking->phone }}</p>
                                                 </div>
-                                                @if($booking->createdByAdmin)
-                                                <div class="col-md-3 col-xs-6">
-                                                    <strong>Created by Admin</strong>
-                                                    <br>
-                                                    <p class="text-muted">{{ $booking->createdByAdmin->name }}</p>
-                                                </div>
-                                                @endif
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Pick Up Date</strong>
                                                     <br>
@@ -145,7 +136,7 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Rejected By</strong>
                                                     <br>
-                                                    <p class="text-muted">{{ $booking->approvedBy->name }}</p>
+                                                    <p class="text-muted">{{ $booking->approvedBy ? $booking->approvedBy->name : 'System' }}</p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Rejected Date</strong>

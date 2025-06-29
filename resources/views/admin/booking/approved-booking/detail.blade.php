@@ -145,7 +145,7 @@
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Approved By</strong>
                                                     <br>
-                                                    <p class="text-muted">{{ $booking->approvedBy->name }}</p>
+                                                    <p class="text-muted">{{ $booking->approvedBy ? $booking->approvedBy->name : 'System' }}</p>
                                                 </div>
                                                 <div class="col-md-3 col-xs-6">
                                                     <strong>Approved Date</strong>

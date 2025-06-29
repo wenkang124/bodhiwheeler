@@ -66,12 +66,19 @@ class ApprovedBookingController extends Controller
 
     public function detail(Booking $booking)
     {
-        $booking->load('createdByAdmin', 'approvedBy', 'driver', 'package');
         return view('admin.booking.approved-booking.detail', compact('booking'));
     }
 
     public function downloadInvoice(Request $request, Booking $booking)
     {
+        $currentAdmin = auth('admin')->user();
+
+        if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+            if ($booking->created_by_admin !== $currentAdmin->id) {
+                abort(403, 'You do not have permission to download this invoice.');
+            }
+        }
+
         $systemConfig = SystemConfig::first();
 
         $pdfContent = view('mail.booking.invoice', ['data' => $booking, 'systemConfig' => $systemConfig])->render();

@@ -31,6 +31,7 @@ class PendingApprovalController extends Controller
 
     public function pendingReviewQuery(Request $request)
     {
+        // Only super admins can access this, so show all pending bookings
         $result = Booking::where('status', 'submitted');
 
         return DataTables::of($result)
@@ -213,17 +214,20 @@ class PendingApprovalController extends Controller
 
     public function detail(Booking $booking)
     {
+        // Only super admins can access this
         $booking->load('createdByAdmin', 'approvedBy', 'driver', 'package');
         return view('admin.booking.pending-approval.detail', compact('booking'));
     }
 
     public function edit(Booking $booking)
     {
+        // Only super admins can access this
         return view('admin.booking.pending-approval.edit', compact('booking'));
     }
 
     public function update(Request $request, Booking $booking)
     {
+        // Only super admins can access this
         // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
@@ -343,6 +347,7 @@ class PendingApprovalController extends Controller
 
     public function updateStatus(Request $request, Booking $booking)
     {
+        // Only super admins can access this
         $this->validate($request, [
             'status' => 'required|in:approved,rejected'
         ]);
@@ -369,6 +374,7 @@ class PendingApprovalController extends Controller
 
     public function downloadInvoice(Request $request, Booking $booking)
     {
+        // Only super admins can access this
         $systemConfig = SystemConfig::first();
 
         $pdfContent = view('mail.booking.invoice', ['data' => $booking, 'systemConfig' => $systemConfig])->render();

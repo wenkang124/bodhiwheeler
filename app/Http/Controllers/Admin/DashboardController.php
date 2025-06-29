@@ -9,6 +9,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $currentAdmin = auth('admin')->user();
+
         $salesData = [
             'daily' => $this->getSales('daily'),
             'weekly' => $this->getSales('weekly'),
@@ -16,7 +18,14 @@ class DashboardController extends Controller
             'yearly' => $this->getSales('yearly'),
         ];
 
-        $latestApprovedBookings = Booking::where('status', 'approved')
+        $latestApprovedBookingsQuery = Booking::where('status', 'approved');
+
+        // If not super admin, only show bookings created by this admin
+        if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+            $latestApprovedBookingsQuery->where('created_by_admin', $currentAdmin->id);
+        }
+
+        $latestApprovedBookings = $latestApprovedBookingsQuery
             ->orderBy('created_at', 'desc')
             ->take(8)
             ->get();
@@ -26,35 +35,60 @@ class DashboardController extends Controller
 
     private function getSales($interval)
     {
+        $currentAdmin = auth('admin')->user();
         $today = now()->toDateString();
 
         switch ($interval) {
             case 'daily':
-                $dailyData = Booking::where('status', 'approved')
-                    ->whereDate('created_at', $today)
-                    ->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
+                $query = Booking::where('status', 'approved')
+                    ->whereDate('created_at', $today);
+
+                // If not super admin, only count bookings created by this admin
+                if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+                    $query->where('created_by_admin', $currentAdmin->id);
+                }
+
+                $dailyData = $query->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
                     ->first();
                 return $dailyData;
                 break;
             case 'weekly':
-                $weeklyData = Booking::where('status', 'approved')
-                    ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()])
-                    ->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
+                $query = Booking::where('status', 'approved')
+                    ->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+
+                // If not super admin, only count bookings created by this admin
+                if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+                    $query->where('created_by_admin', $currentAdmin->id);
+                }
+
+                $weeklyData = $query->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
                     ->first();
                 return $weeklyData;
                 break;
             case 'monthly':
-                $monthlyData = Booking::where('status', 'approved')
+                $query = Booking::where('status', 'approved')
                     ->whereYear('created_at', now()->year)
-                    ->whereMonth('created_at', now()->month)
-                    ->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
+                    ->whereMonth('created_at', now()->month);
+
+                // If not super admin, only count bookings created by this admin
+                if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+                    $query->where('created_by_admin', $currentAdmin->id);
+                }
+
+                $monthlyData = $query->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
                     ->first();
                 return $monthlyData;
                 break;
             case 'yearly':
-                $yearlyData = Booking::where('status', 'approved')
-                    ->whereYear('created_at', now()->year)
-                    ->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
+                $query = Booking::where('status', 'approved')
+                    ->whereYear('created_at', now()->year);
+
+                // If not super admin, only count bookings created by this admin
+                if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+                    $query->where('created_by_admin', $currentAdmin->id);
+                }
+
+                $yearlyData = $query->select(DB::raw('sum(total_price) as total_sales'), DB::raw('count(*) as booking_count'))
                     ->first();
                 return $yearlyData;
                 break;

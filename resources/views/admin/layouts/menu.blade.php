@@ -62,21 +62,37 @@
                         href="{{ route('admin.booking.draft-booking') }}" aria-expanded="false">
                         <i class="me-2 mdi mdi-file-document-alert"></i>
                         <span class="hide-menu">Draft Booking</span>
-                        @if (($draft_booking_count = \App\Models\Booking::isDraft()->count()) > 0)
+                        @php
+                            $currentAdmin = auth('admin')->user();
+                            $draftQuery = \App\Models\Booking::isDraft();
+
+                            // If not super admin, only count bookings created by this admin
+                            if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+                                $draftQuery->where('created_by_admin', $currentAdmin->id);
+                            }
+
+                            $draft_booking_count = $draftQuery->count();
+                        @endphp
+                        @if ($draft_booking_count > 0)
                             <span class="badge badge-pill bg-success">{{ $draft_booking_count }}</span>
                         @endif
                     </a>
                 </li>
+                @if($currentAdmin->role && $currentAdmin->role->name === 'super_admin')
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.pending-approval') ? 'active' : '' }}"
                         href="{{ route('admin.booking.pending-approval') }}" aria-expanded="false">
                         <i class="me-2 mdi mdi-account-clock"></i>
                         <span class="hide-menu">Pending Approval</span>
-                        @if (($pending_booking_count = \App\Models\Booking::isPendingReview()->count()) > 0)
+                        @php
+                            $pending_booking_count = \App\Models\Booking::isPendingReview()->count();
+                        @endphp
+                        @if ($pending_booking_count > 0)
                             <span class="badge badge-pill bg-success">{{ $pending_booking_count }}</span>
                         @endif
                     </a>
                 </li>
+                @endif
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.approved-booking') ? 'active' : '' }}"
                         href="{{ route('admin.booking.approved-booking') }}" aria-expanded="false">

@@ -17,7 +17,15 @@ class RejectedBookingController extends Controller
 
     public function rejectedBookingQuery(Request $request)
     {
-        $result = Booking::where('status', 'rejected');
+        $currentAdmin = auth('admin')->user();
+
+        $query = Booking::where('status', 'rejected');
+
+        if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+            $query->where('created_by_admin', $currentAdmin->id);
+        }
+
+        $result = $query;
 
         return DataTables::of($result)
             ->editColumn('name', function ($row) {
@@ -63,6 +71,15 @@ class RejectedBookingController extends Controller
 
     public function detail(Booking $booking)
     {
+        $currentAdmin = auth('admin')->user();
+
+        // Check if admin has access to this booking
+        if ($currentAdmin->role && $currentAdmin->role->name !== 'super_admin') {
+            if ($booking->created_by_admin !== $currentAdmin->id) {
+                abort(403, 'You do not have permission to view this booking.');
+            }
+        }
+
         $booking->load('createdByAdmin', 'approvedBy', 'driver', 'package');
         return view('admin.booking.rejected-booking.detail', compact('booking'));
     }
