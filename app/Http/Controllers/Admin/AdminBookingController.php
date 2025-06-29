@@ -34,7 +34,9 @@ class AdminBookingController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $package = Package::find($request->package_id);
+
+        $rules = [
             'name' => 'required|string',
             'email' => 'nullable|email',
             'phone' => 'required|string',
@@ -58,9 +60,27 @@ class AdminBookingController extends Controller
             'no_of_wheelchair_pax' => 'required|integer|min:0',
             'package_id' => 'required|exists:packages,id',
             'distance' => 'required|numeric|min:0',
-        ]);
+            'active_tab' => 'required|string',
+        ];
 
-        $package = Package::find($request->package_id);
+        // Add conditional validation for Charter package
+        if ($request->active_tab === 'Charter') {
+            $rules['no_of_charter_hours'] = 'required|integer|min:3';
+        }
+
+        // Add conditional validation for Return package
+        if ($request->active_tab === 'Return') {
+            $rules['return_time'] = 'required';
+        }
+
+        $validator = \Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('active_tab', $request->active_tab);
+        }
 
         $booking = new Booking([
             'name' => $request->name,

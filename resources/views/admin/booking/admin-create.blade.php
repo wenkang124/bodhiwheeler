@@ -121,6 +121,28 @@
         padding-bottom: 0.5rem;
     }
 
+    /* Error styling */
+    .booking-form .is-invalid {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+
+    .alert {
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+    .alert-danger h5 {
+        color: #721c24 !important;
+        margin-bottom: 0.5rem;
+    }
+
     /* Error message styling */
     .text-danger {
         font-size: 12px;
@@ -182,8 +204,27 @@
                 </div>
                 <div class="card-body">
                     @php
-                        $transformedActiveTab = strtolower(str_replace(' ', '_', old('active_tab', $packages[0]->name)));
+                        // Determine active tab from session, old input, or default to first package
+                        $activeTabName = session('active_tab') ?? old('active_tab') ?? $packages[0]->name;
+                        $transformedActiveTab = strtolower(str_replace(' ', '_', $activeTabName));
                     @endphp
+
+                    <!-- Display Validation Errors -->
+                    @if ($errors->any())
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <h5><i class="mdi mdi-alert-circle-outline me-2"></i>Please fix the following errors before submitting:</h5>
+                            <ul class="mb-2">
+                                @foreach ($errors->all() as $error)
+                                    <li><strong>{{ $error }}</strong></li>
+                                @endforeach
+                            </ul>
+                            <small class="text-muted">
+                                <i class="mdi mdi-information-outline me-1"></i>
+                                Fields with errors are highlighted in red. Please correct them and try again.
+                            </small>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
 
                     <!-- Package Selection Tabs -->
                     <ul class="nav nav-tabs package-tabs mb-4" id="bookingTabs" role="tablist">
@@ -218,24 +259,15 @@
                                         </div>
 
                                         <div class="col-xl-6 col-lg-6 col-md-6">
-                                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Customer Name*" class="form-control" required>
-                                            @error('name', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="text" name="name" value="{{ old('name') }}" placeholder="Customer Name*" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" required>
                                         </div>
 
                                         <div class="col-xl-6 col-lg-6 col-md-6">
-                                            <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone Number*" class="form-control" required>
-                                            @error('phone', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Phone Number*" class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" required>
                                         </div>
 
                                         <div class="col-xl-12 col-lg-12 col-md-12">
-                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="form-control">
-                                            @error('email', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <input type="email" name="email" value="{{ old('email') }}" placeholder="Email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}">
                                         </div>
 
                                         <!-- Trip Details Section -->
@@ -246,41 +278,29 @@
                                         <!-- Date Field -->
                                         <div class="col-xl-12 col-lg-12 col-md-12">
                                             <input type="text" name="pick_up_date" value="{{ old('pick_up_date') }}"
-                                                   id="pick_up_date_{{ $package->id }}" class="form-control date-picker"
+                                                   id="pick_up_date_{{ $package->id }}" class="form-control date-picker {{ $errors->has('pick_up_date') ? 'is-invalid' : '' }}"
                                                    placeholder="Pick Up Date*" required autocomplete="off">
-                                            @error('pick_up_date', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
 
                                         <!-- Time Fields -->
                                         <div class="col-xl-{{ $package->name == 'One Way' ? '12' : '6' }} col-lg-{{ $package->name == 'One Way' ? '12' : '6' }} col-md-{{ $package->name == 'One Way' ? '12' : '6' }}">
-                                            <input type="text" name="pick_up_time" value="{{ \Carbon\Carbon::now()->addMinutes(45)->format('H:i') }}"
-                                                   id="pick_up_time_{{ $package->id }}" class="form-control time-picker"
+                                            <input type="text" name="pick_up_time" value="{{ old('pick_up_time', \Carbon\Carbon::now()->addMinutes(45)->format('H:i')) }}"
+                                                   id="pick_up_time_{{ $package->id }}" class="form-control time-picker {{ $errors->has('pick_up_time') ? 'is-invalid' : '' }}"
                                                    placeholder="Pick Up Time (must be at least 45 minutes from now)*" required>
-                                            @error('pick_up_time', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
 
                                         @if ($package->name == 'Return')
                                             <div class="col-xl-6 col-lg-6 col-md-6">
                                                 <input type="text" name="return_time" value="{{ old('return_time') }}"
-                                                       id="return_time_{{ $package->id }}" class="form-control time-picker"
-                                                       placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" required>
-                                                @error('return_time', $package->id)
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                       id="return_time_{{ $package->id }}" class="form-control time-picker {{ $errors->has('return_time') ? 'is-invalid' : '' }}"
+                                                       placeholder="Return Time (make sure it is at least 3 hours from pick up time)*" {{ $package->name == 'Return' ? 'required' : '' }}>
                                             </div>
                                         @endif
 
                                         @if ($package->name == 'Charter')
                                             <div class="col-xl-6 col-lg-6 col-md-6">
                                                 <input type="number" name="no_of_charter_hours" value="{{ old('no_of_charter_hours') }}"
-                                                       placeholder="No of Charter Hours (minimum 3)*" class="form-control" min="3" required>
-                                                @error('no_of_charter_hours', $package->id)
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                       placeholder="No of Charter Hours (minimum 3)*" class="form-control {{ $errors->has('no_of_charter_hours') ? 'is-invalid' : '' }}" min="3" {{ $package->name == 'Charter' ? 'required' : '' }}>
                                             </div>
                                         @endif
 
@@ -292,20 +312,14 @@
                                         <!-- Address Fields with Google Autocomplete -->
                                         <div class="col-xl-12 col-lg-12 col-md-12">
                                             <input type="text" name="pick_up_address" value="{{ old('pick_up_address') }}"
-                                                   id="pick_up_address_{{ $package->id }}" class="form-control"
+                                                   id="pick_up_address_{{ $package->id }}" class="form-control {{ $errors->has('pick_up_address') ? 'is-invalid' : '' }}"
                                                    placeholder="Pick Up Address*" required>
-                                            @error('pick_up_address', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
 
                                         <div class="col-xl-12 col-lg-12 col-md-12">
                                             <input type="text" name="drop_off_address" value="{{ old('drop_off_address') }}"
-                                                   id="drop_off_address_{{ $package->id }}" class="form-control"
+                                                   id="drop_off_address_{{ $package->id }}" class="form-control {{ $errors->has('drop_off_address') ? 'is-invalid' : '' }}"
                                                    placeholder="Drop Off Address*" required>
-                                            @error('drop_off_address', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                             <small class="form-text text-muted">
                                                 Only Singapore addresses are allowed. For out-of-Singapore locations, please contact us via
                                                 <a href="https://wa.me/6593682784" target="_blank">WhatsApp</a>.
@@ -320,18 +334,12 @@
                                         <!-- Passenger Information -->
                                         <div class="col-xl-6 col-lg-6 col-md-6">
                                             <input type="number" name="no_of_passenger" value="{{ old('no_of_passenger') }}"
-                                                   placeholder="No of Passengers*" class="form-control" min="1" required>
-                                            @error('no_of_passenger', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                                   placeholder="No of Passengers*" class="form-control {{ $errors->has('no_of_passenger') ? 'is-invalid' : '' }}" min="1" required>
                                         </div>
 
                                         <div class="col-xl-6 col-lg-6 col-md-6">
                                             <input type="number" name="no_of_wheelchair_pax" value="{{ old('no_of_wheelchair_pax') }}"
-                                                   placeholder="No of Wheelchair Pax*" class="form-control" min="0" required>
-                                            @error('no_of_wheelchair_pax', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                                   placeholder="No of Wheelchair Pax*" class="form-control {{ $errors->has('no_of_wheelchair_pax') ? 'is-invalid' : '' }}" min="0" required>
                                         </div>
 
                                         <!-- Admin Options Section -->
@@ -341,28 +349,22 @@
 
                                         <!-- Driver Assignment (Admin Only) -->
                                         <div class="col-xl-12 col-lg-12 col-md-12">
-                                            <select name="driver_id" class="form-control">
+                                            <select name="driver_id" class="form-control {{ $errors->has('driver_id') ? 'is-invalid' : '' }}">
                                                 <option value="">Assign Driver (Optional)</option>
                                                 @foreach($drivers as $driver)
                                                     <option value="{{ $driver->id }}" {{ old('driver_id') == $driver->id ? 'selected' : '' }}>{{ $driver->name }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('driver_id', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </div>
 
                                         <!-- Hidden Fields -->
                                         <input type="hidden" name="package_id" value="{{ $package->id }}">
                                         <input type="hidden" name="active_tab" value="{{ $package->name }}">
-                                        <input type="hidden" name="distance" value="" id="distance_{{ $package->id }}">
+                                        <input type="hidden" name="distance" value="{{ old('distance') }}" id="distance_{{ $package->id }}">
 
                                         <!-- Remarks -->
                                         <div class="col-xl-12 col-lg-12 col-md-12">
-                                            <textarea name="remarks" placeholder="Additional Remarks or Special Instructions" class="form-control" rows="4">{{ old('remarks') }}</textarea>
-                                            @error('remarks', $package->id)
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            <textarea name="remarks" placeholder="Additional Remarks or Special Instructions" class="form-control {{ $errors->has('remarks') ? 'is-invalid' : '' }}" rows="4">{{ old('remarks') }}</textarea>
                                         </div>
 
                                         <!-- Submit Button -->
@@ -540,5 +542,36 @@
 
     // Initialize Date Time Picker
     initializeDateTimePickers();
+
+    // Scroll to errors if they exist
+    @if ($errors->any())
+        setTimeout(function() {
+            $('html, body').animate({
+                scrollTop: $('.alert-danger').offset().top - 100
+            }, 500);
+        }, 100);
+    @endif
+
+    // Maintain tab state on page load
+    $(document).ready(function() {
+        @if(session('active_tab') || old('active_tab'))
+            let activeTabName = '{{ session('active_tab') ?? old('active_tab') }}';
+            let tabId = activeTabName.toLowerCase().replace(' ', '_');
+
+            // Remove active from all tabs
+            $('#bookingTabs .nav-link').removeClass('active');
+            $('.tab-pane').removeClass('show active');
+
+            // Activate the correct tab
+            $('#' + tabId + 'Tab').addClass('active');
+            $('#' + tabId + 'Form').addClass('show active');
+
+            // Reinitialize for the active tab
+            setTimeout(function() {
+                initAutocomplete();
+                initializeDateTimePickers();
+            }, 200);
+        @endif
+    });
 </script>
 @endpush
