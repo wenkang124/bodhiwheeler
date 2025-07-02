@@ -110,38 +110,9 @@ class AdminBookingController extends Controller
         // Calculate price using the same logic as public bookings
         $this->bookingPriceCalculator->calculatePrice($package->id, $booking);
 
-        // Send WhatsApp notification with admin info
-        $this->sendAdminBookingNotification($booking);
-
-        Session::flash('alert-success', 'Booking created successfully and submitted for super admin approval');
-        return redirect()->route('admin.booking.pending-approval');
+        Session::flash('alert-success', 'Booking created successfully and will be comfirmed once approval');
+        return redirect()->route('admin.booking.pending-approval.detail', $booking);
     }
 
-    private function sendAdminBookingNotification(Booking $booking)
-    {
-        if (env('APP_ENV') === 'production') {
-            $admin = Auth::guard('admin')->user();
 
-            $messageContent = "*New Booking Created by Admin - Pending Approval*\n\n";
-            $messageContent .= "*Created by:* " . $admin->name . " (" . $admin->email . ")\n";
-            $messageContent .= "*Status:* Pending Super Admin Approval\n\n";
-            $messageContent .= "*Customer Details:*\n";
-            $messageContent .= "*Name:* " . $booking->name . "\n";
-            $messageContent .= "*Email:* " . $booking->email . "\n";
-            $messageContent .= "*Phone:* " . $booking->phone . "\n\n";
-
-            $messageContent .= "*Trip Details:*\n";
-            $messageContent .= "*Pick-up Date:* " . $booking->pick_up_date . "\n";
-            $messageContent .= "*Pick-up Time:* " . $booking->pick_up_time . "\n";
-            $messageContent .= "*Pick-up Address:* " . $booking->pick_up_address . "\n";
-            $messageContent .= "*Drop-off Address:* " . $booking->drop_off_address . "\n";
-            $messageContent .= "*Passengers:* " . $booking->no_of_passenger . "\n\n";
-
-            $messageContent .= "*Total Price:* $" . number_format($booking->total_price, 2) . "\n\n";
-            $messageContent .= "Powered by *bodhiwheeler.org*";
-
-            $phoneNumber = env('WHATSAPP_RECEIVER');
-            $this->onsendService->sendWhatsAppMessage($phoneNumber, $messageContent, []);
-        }
-    }
 }

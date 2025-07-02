@@ -78,7 +78,6 @@
                         @endif
                     </a>
                 </li>
-                @if($currentAdmin->role && $currentAdmin->role->name === 'super_admin')
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.pending-approval') ? 'active' : '' }}"
                         href="{{ route('admin.booking.pending-approval') }}" aria-expanded="false">
@@ -92,7 +91,6 @@
                         @endif
                     </a>
                 </li>
-                @endif
                 <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link {{ request()->routeIs('admin.booking.approved-booking') ? 'active' : '' }}"
                         href="{{ route('admin.booking.approved-booking') }}" aria-expanded="false">

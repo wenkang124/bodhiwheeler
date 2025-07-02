@@ -39,6 +39,17 @@
                                             <div class="col-auto mt-3 mt-md-0 align-self-center">
                                                 <div class="d-flex">
                                                     <a href="{{ route('admin.booking.edit', ['booking' => $booking->id]) }}" class="btn btn-outline-info">Assign Driver</a>
+
+                                                    <!-- Approve Button -->
+                                                    <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#approveModal">
+                                                        <i class="mdi mdi-check-circle"></i> Approve
+                                                    </button>
+
+                                                    <!-- Reject Button -->
+                                                    <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#rejectModal">
+                                                        <i class="mdi mdi-close-circle"></i> Reject
+                                                    </button>
+
                                                     <a href="{{ route('admin.booking.pending-approval.send-mail-notification', ['booking' => $booking->id]) }}" class="btn btn-outline-warning ms-2" onclick="return confirm('Are you confirm to send mail notification?')">Send Mail Notification</a>
                                                     <a href="{{ route('admin.booking.pending-approval.download-invoice', ['booking' => $booking->id]) }}" class="btn btn-outline-primary ms-2">
                                                         Download Invoice
@@ -251,6 +262,41 @@
     </div>
 @endsection
 
+@push('styles')
+<style>
+    .booking-summary {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin-top: 15px;
+    }
+
+    .booking-summary h6 {
+        color: #495057;
+        margin-bottom: 10px;
+        font-weight: 600;
+    }
+
+    .booking-summary p {
+        margin-bottom: 5px;
+        color: #6c757d;
+    }
+
+    .btn-success, .btn-danger {
+        min-width: 100px;
+    }
+
+    .modal-header {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .alert {
+        border: none;
+        border-radius: 8px;
+    }
+</style>
+@endpush
+
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -268,3 +314,77 @@
         });
     </script>
 @endpush
+
+<!-- Approve Modal -->
+<div class="modal fade" id="approveModal" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="approveModalLabel">Approve Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.booking.pending-approval.update-status', $booking) }}" method="POST">
+                @csrf
+                <input type="hidden" name="status" value="approved">
+                <div class="modal-body">
+                    <div class="alert alert-success">
+                        <i class="mdi mdi-check-circle me-2"></i>
+                        Are you sure you want to approve this booking?
+                    </div>
+                    <div class="booking-summary">
+                        <h6>Booking Summary:</h6>
+                        <p><strong>Customer:</strong> {{ $booking->name }}</p>
+                        <p><strong>Pick-up Date:</strong> {{ $booking->pick_up_date }}</p>
+                        <p><strong>Pick-up Time:</strong> {{ $booking->pick_up_time }}</p>
+                        <p><strong>Total Price:</strong> ${{ number_format($booking->total_price, 2) }}</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="mdi mdi-check-circle me-2"></i>Approve Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">Reject Booking</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin.booking.pending-approval.update-status', $booking) }}" method="POST">
+                @csrf
+                <input type="hidden" name="status" value="rejected">
+                <div class="modal-body">
+                    <div class="alert alert-danger">
+                        <i class="mdi mdi-close-circle me-2"></i>
+                        Are you sure you want to reject this booking?
+                    </div>
+                    <div class="booking-summary">
+                        <h6>Booking Summary:</h6>
+                        <p><strong>Customer:</strong> {{ $booking->name }}</p>
+                        <p><strong>Pick-up Date:</strong> {{ $booking->pick_up_date }}</p>
+                        <p><strong>Pick-up Time:</strong> {{ $booking->pick_up_time }}</p>
+                        <p><strong>Total Price:</strong> ${{ number_format($booking->total_price, 2) }}</p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rejection_reason" class="form-label">Reason for Rejection (Optional)</label>
+                        <textarea class="form-control" id="rejection_reason" name="rejection_reason" rows="3" placeholder="Enter reason for rejection..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="mdi mdi-close-circle me-2"></i>Reject Booking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

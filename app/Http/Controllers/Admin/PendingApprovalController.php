@@ -349,13 +349,25 @@ class PendingApprovalController extends Controller
     {
         // Only super admins can access this
         $this->validate($request, [
-            'status' => 'required|in:approved,rejected'
+            'status' => 'required|in:approved,rejected',
+            'rejection_reason' => 'nullable|string|max:500'
         ]);
 
         $booking->status = $request->get('status');
         $booking->approved_at = now();
         $booking->approvedBy()->associate(auth()->user());
+
+        // Store rejection reason if provided
+        if ($request->status === 'rejected' && $request->rejection_reason) {
+            $booking->remarks = $booking->remarks ? $booking->remarks . "\n\nRejection Reason: " . $request->rejection_reason : "Rejection Reason: " . $request->rejection_reason;
+        }
+
         $booking->save();
+
+        // Send WhatsApp notification if booking was approved and created by admin role
+        if ($request->status === 'approved' && $booking->created_by_admin) {
+            $this->sendAdminBookingApprovalNotification($booking);
+        }
 
         Session::flash('alert-success', 'Successfully Updated');
         return redirect()->route('admin.booking.pending-approval');
@@ -403,5 +415,38 @@ class PendingApprovalController extends Controller
         Session::flash('alert-success', 'Successfully Adjusted Total Price and Adjustments');
 
         return redirect()->route('admin.booking.pending-approval.detail', $booking);
+    }
+
+    private function sendAdminBookingApprovalNotification(Booking $booking)
+    {
+        if (env('APP_ENV') === 'production') {
+            // Load the admin who created the booking
+            $booking->load('createdByAdmin');
+            $createdByAdmin = $booking->createdByAdmin;
+
+            // Only send notification if booking was created by admin role (not super_admin)
+            if ($createdByAdmin && $createdByAdmin->role && $createdByAdmin->role->name === 'admin') {
+                $messageContent = "*Booking Approved by Super Admin*\n\n";
+                $messageContent .= "*Originally Created by:* " . $createdByAdmin->name . " (" . $createdByAdmin->email . ")\n";
+                $messageContent .= "*Status:* Approved\n\n";
+                $messageContent .= "*Customer Details:*\n";
+                $messageContent .= "*Name:* " . $booking->name . "\n";
+                $messageContent .= "*Email:* " . $booking->email . "\n";
+                $messageContent .= "*Phone:* " . $booking->phone . "\n\n";
+
+                $messageContent .= "*Trip Details:*\n";
+                $messageContent .= "*Pick-up Date:* " . $booking->pick_up_date . "\n";
+                $messageContent .= "*Pick-up Time:* " . $booking->pick_up_time . "\n";
+                $messageContent .= "*Pick-up Address:* " . $booking->pick_up_address . "\n";
+                $messageContent .= "*Drop-off Address:* " . $booking->drop_off_address . "\n";
+                $messageContent .= "*Passengers:* " . $booking->no_of_passenger . "\n\n";
+
+                $messageContent .= "*Total Price:* $" . number_format($booking->total_price, 2) . "\n\n";
+                $messageContent .= "Powered by *bodhiwheeler.org*";
+
+                $phoneNumber = env('WHATSAPP_RECEIVER');
+                app(\App\Services\OnsendService::class)->sendWhatsAppMessage($phoneNumber, $messageContent, []);
+            }
+        }
     }
 }
