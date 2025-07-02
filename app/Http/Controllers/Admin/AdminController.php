@@ -47,7 +47,7 @@ class AdminController extends Controller
         $admin = new Admin;
         $admin->fill($request->all());
 
-        $password = Str::random(10);
+        $password = "password";
 
         $admin->password = bcrypt($password);
 
