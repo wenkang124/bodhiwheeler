@@ -67,7 +67,7 @@ Route::middleware(['auth:admin'])->scopeBindings()->group(function () {
             Route::get('{booking}/detail', [DraftBookingController::class, 'detail'])->name('.detail');
         });
 
-        Route::prefix('pending-approvals')->name('.pending-approval')->middleware('admin.role:super_admin')->group(function () {
+        Route::prefix('pending-approvals')->name('.pending-approval')->group(function () {
             Route::get('', [PendingApprovalController::class, 'index']);
             Route::post('query', [PendingApprovalController::class, 'pendingReviewQuery'])->name('.query');
             // Route::get('create', [PendingApprovalController::class, 'create'])->name('.create');
